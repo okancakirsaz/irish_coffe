@@ -35,6 +35,7 @@ dependencies:
 
   #Others
   shared_preferences: ^2.2.1
+  image_picker: ^1.0.4
   
 
 dev_dependencies:

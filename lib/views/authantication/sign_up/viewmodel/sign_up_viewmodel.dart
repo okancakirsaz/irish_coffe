@@ -35,6 +35,7 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
     try {
       final UserDataModel request = UserDataModel(
         token: "3124rıwajroıj12j1",
+        profileImage: "",
         name: nameController.text,
         phoneNumber: numberController.text,
         password: passwordController.text,
@@ -53,7 +54,6 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
   }
 
   bool _validation(UserDataModel response) {
-    print(response);
     if (response.name != "" &&
         response.phoneNumber != "" &&
         response.password != "" &&

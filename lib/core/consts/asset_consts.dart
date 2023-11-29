@@ -5,5 +5,7 @@ class AssetConsts {
   final String events = "assets/icons/arm.svg";
   final String games = "assets/icons/gild.svg";
   final String profile = "assets/icons/parade.svg";
+  final String man = "assets/icons/man.svg";
+  final String hand = "assets/icons/hand.svg";
   final String backgroundImage = "assets/images/bg.jpeg";
 }

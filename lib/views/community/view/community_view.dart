@@ -1,12 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:irish_coffe/core/base/view/base_view.dart';
+import 'package:irish_coffe/core/consts/asset_consts.dart';
 import 'package:irish_coffe/core/consts/color_consts/color_consts.dart';
 import 'package:irish_coffe/core/consts/padding_consts.dart';
 import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/widgets/custom_button.dart';
 import 'package:irish_coffe/core/widgets/custom_scaffold.dart';
+import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/community/viewmodel/community_viewmodel.dart';
 import '../../../core/consts/text_consts.dart';
 import '../../../core/widgets/custom_app_bar.dart';

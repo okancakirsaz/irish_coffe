@@ -49,6 +49,8 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
           LocaleKeysEnums.name.name, response.name);
       await localeManager.setStringData(
           LocaleKeysEnums.mail.name, response.eMail!);
+      await localeManager.setNullableStringData(
+          LocaleKeysEnums.profileImage.name, response.profileImage);
     } catch (e) {
       //TODO: Add crashlytics
       showErrorDialog("Bir şeyler ters gitti, lütfen tekrar deneyiniz.");

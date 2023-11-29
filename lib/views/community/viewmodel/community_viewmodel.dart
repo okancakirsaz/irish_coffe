@@ -5,8 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:irish_coffe/core/consts/color_consts/color_consts.dart';
 import 'package:irish_coffe/core/consts/radius_consts.dart';
+import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
+import 'package:irish_coffe/core/service/mock_services/posts_mock_service.dart';
+import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
+import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/community/view/community_view.dart';
+import 'package:irish_coffe/views/main/view/main_view.dart';
 import 'package:mobx/mobx.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
 
@@ -29,6 +35,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   }
 
   Uint8List? pickedImage;
+  final PostsMockService service = PostsMockService();
   final TextEditingController postDescriptionController =
       TextEditingController();
 
@@ -79,10 +86,57 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   navigateToCreatePostPage() {
     //TODO: Use navigation manager
     Navigator.push(
+      viewModelContext,
+      CupertinoPageRoute(
+        builder: (context) => CreatePost(
+          onPressed: sharePost,
+          controller: postDescriptionController,
+          pickedImage: pickedImage!,
+        ),
+      ),
+    );
+  }
+
+  sharePost() async {
+    await service.postNewPost(
+      PostModel(
+        image: pickedImage,
+        description: postDescriptionController.text,
+        user: UserDataModel(
+          token:
+              localeManager.getNullableStringData(LocaleKeysEnums.token.name)!,
+          name: localeManager.getNullableStringData(LocaleKeysEnums.name.name)!,
+          profileImage: localeManager
+                  .getNullableStringData(LocaleKeysEnums.profileImage.name) ??
+              "",
+          phoneNumber: "",
+        ),
+        time: getCurrentTimeAsString(),
+        id: const Uuid().v1(),
+      ),
+    );
+    goBackPosts();
+  }
+
+  goBackPosts() {
+    Navigator.pushAndRemoveUntil(
         viewModelContext,
-        CupertinoPageRoute(
-            builder: (context) => CreatePost(
-                controller: postDescriptionController,
-                pickedImage: pickedImage!)));
+        CupertinoPageRoute(builder: (context) => const MainView()),
+        (route) => false);
+  }
+
+  String getCurrentTimeAsString() {
+    final DateTime dateTime = DateTime.now();
+    final int day = dateTime.day;
+    final int month = dateTime.month;
+    final int year = dateTime.year;
+    final int hour = dateTime.hour;
+    final int minute = dateTime.minute;
+    return "$day.$month.$year/$hour.$minute";
+  }
+
+  Future<List<PostModel>> getAllPosts() async {
+    final List<PostModel> response = await service.getPosts();
+    return response;
   }
 }

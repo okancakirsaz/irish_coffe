@@ -13,8 +13,7 @@ class LocaleManager {
     await _instance.setString(key, jsonEncode(value));
   }
 
-  Future<void> setNullableJsonData(
-      String key, Map<String, dynamic>? value) async {
+  Future<void> setNullableJsonData(String key, var value) async {
     if (value != null) {
       await _instance.setString(key, jsonEncode(value));
     }
@@ -24,7 +23,7 @@ class LocaleManager {
     return jsonDecode(_instance.getString(key)!);
   }
 
-  Map<String, dynamic>? getNullableJsonData(String key) {
+  getNullableJsonData(String key) {
     String? data = _instance.getString(key);
     return data != null ? jsonDecode(data) : null;
   }

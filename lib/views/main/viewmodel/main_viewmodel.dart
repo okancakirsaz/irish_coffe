@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:irish_coffe/views/community/view/community_view.dart';
+import 'package:irish_coffe/views/menu/views/menu_view.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
@@ -17,7 +18,7 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
   @observable
   ObservableList<Widget> pages = ObservableList.of(<Widget>[
     const CommunityView(),
-    Center(child: Text("2")),
+    const MenuView(),
     Center(child: Text("3")),
     Center(child: Text("4")),
   ]);

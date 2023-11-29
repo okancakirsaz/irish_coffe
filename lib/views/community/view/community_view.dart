@@ -44,28 +44,30 @@ class _CommunityViewState extends State<CommunityView>
               ),
             ),
             appBar: CustomAppBar(
-                title: Text(
-                  "Irish Coffe",
-                  style: TextConsts.instance.regularWhite25Bold,
-                ),
-                tabs: TabBar(
-                    indicatorColor: ColorConsts.instance.orange,
-                    onTap: (index) => model.navigateToIndexedPage(index),
-                    controller: TabController(length: 2, vsync: this),
-                    tabs: <Widget>[
-                      Tab(
-                        icon: Text(
-                          "Topluluk Paylaşımları",
-                          style: TextConsts.instance.regularWhite16Bold,
-                        ),
-                      ),
-                      Tab(
-                        icon: Text(
-                          "Kimler Irish'te?",
-                          style: TextConsts.instance.regularWhite16Bold,
-                        ),
-                      ),
-                    ])).build(),
+              title: Text(
+                "Irish Coffe",
+                style: TextConsts.instance.regularWhite25Bold,
+              ),
+              tabs: TabBar(
+                indicatorColor: ColorConsts.instance.orange,
+                onTap: (index) => model.navigateToIndexedPage(index),
+                controller: TabController(length: 2, vsync: this),
+                tabs: <Widget>[
+                  Tab(
+                    icon: Text(
+                      "Topluluk Paylaşımları",
+                      style: TextConsts.instance.regularWhite16Bold,
+                    ),
+                  ),
+                  Tab(
+                    icon: Text(
+                      "Kimler Irish'te?",
+                      style: TextConsts.instance.regularWhite16Bold,
+                    ),
+                  ),
+                ],
+              ),
+            ).build(),
             body: PageView(
               controller: model.pageController,
               children: <Widget>[

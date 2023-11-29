@@ -8,5 +8,9 @@ class AssetConsts {
   final String man = "assets/icons/man.svg";
   final String hand = "assets/icons/hand.svg";
   final String beer = "assets/icons/beer.svg";
+  final String coin = "assets/icons/coin.svg";
+  final String balloon = "assets/icons/balloon.svg";
+  final String snake = "assets/icons/snake.svg";
+  final String event = "assets/images/event.png";
   final String backgroundImage = "assets/images/bg.jpeg";
 }

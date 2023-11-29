@@ -22,10 +22,11 @@ class CreatePost extends StatelessWidget {
             height: 400,
             fit: BoxFit.fitHeight,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Padding(
             padding: PaddingConsts.instance.all5,
             child: TextField(
+              maxLength: 35,
               style: TextConsts.instance.regularBlack18,
               decoration: InputDecoration(
                 hintText: "Açıklama girebilirsiniz",
@@ -37,13 +38,13 @@ class CreatePost extends StatelessWidget {
               controller: controller,
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 10),
           CustomButton(
             onPressed: () async => onPressed(),
             style: TextConsts.instance.regularBlack18,
             text: "Paylaş",
             width: 150,
-            height: 50,
+            height: 45,
           ),
         ],
       ),

@@ -15,13 +15,14 @@ class MenuItem extends StatelessWidget {
                 data: data,
               )),
       child: Container(
+        padding: PaddingConsts.instance.bottom25,
         margin: PaddingConsts.instance.all5,
         decoration: BoxDecoration(
             borderRadius: RadiusConsts.instance.circularAll10,
             color: ColorConsts.instance.green,
             boxShadow: ColorConsts.instance.shadow),
         child: Column(
-          children: <Widget>[elementImage(), elementInfo()],
+          children: <Widget>[elementImage(), Expanded(child: elementInfo())],
         ),
       ),
     );
@@ -30,7 +31,7 @@ class MenuItem extends StatelessWidget {
   Widget elementImage() {
     return Container(
       width: double.infinity,
-      height: 300,
+      height: 270,
       decoration: BoxDecoration(
         borderRadius: RadiusConsts.instance.circularTop10,
         image:

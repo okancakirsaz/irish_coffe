@@ -11,15 +11,14 @@ class CustomerList extends StatelessWidget {
         itemBuilder: (context, index) {
           return Card(
             child: ListTile(
-              leading: Text(
-                "Masa ${index + 1}",
-                style: TextConsts.instance.regularBlack18Bold,
-              ),
-              title: Text(
-                "Volkan Konak",
-                style: TextConsts.instance.regularBlack18,
-              ),
-            ),
+                title: Text(
+                  "Volkan Konak",
+                  style: TextConsts.instance.regularBlack18,
+                ),
+                trailing: IconButton(
+                  onPressed: () {},
+                  icon: SvgPicture.asset(AssetConsts.instance.profile),
+                )),
           );
         });
   }

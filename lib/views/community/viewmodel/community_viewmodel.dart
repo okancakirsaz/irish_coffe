@@ -24,20 +24,28 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   @override
   void setContext(BuildContext context) => viewModelContext = context;
 
-  final PageController pageController = PageController();
-
   @override
   void init() {}
+
+  final PageController pageController = PageController();
+  Uint8List? pickedImage;
+  final PostsMockService service = PostsMockService();
+  final TextEditingController postDescriptionController =
+      TextEditingController();
+  late final TabController tabController;
 
   navigateToIndexedPage(int index) {
     pageController.animateToPage(index,
         duration: const Duration(milliseconds: 200), curve: Curves.linear);
   }
 
-  Uint8List? pickedImage;
-  final PostsMockService service = PostsMockService();
-  final TextEditingController postDescriptionController =
-      TextEditingController();
+  initializeTabController(TickerProvider vsync) {
+    tabController = TabController(length: 2, vsync: vsync);
+  }
+
+  whenPageChangedWithHand(int index) {
+    tabController.animateTo(index);
+  }
 
   openImageModeSelector() {
     showBottomSheet(

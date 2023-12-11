@@ -33,23 +33,25 @@ class _GamesViewState extends State<GamesView> with TickerProviderStateMixin {
           return CustomScaffold(
             appBar: CustomAppBar(
               title: Text(
-                "Irish Coffe",
+                "Irish Coffee",
                 style: TextConsts.instance.regularWhite25Bold,
               ),
               tabs: TabBar(
                 indicatorColor: ColorConsts.instance.orange,
                 onTap: (index) => model.navigateToIndexedPage(index),
-                controller: TabController(length: 2, vsync: this),
+                controller: model.tabController,
                 tabs: <Widget>[
                   Tab(
                     icon: Text(
                       "Oyunlar",
+                      textAlign: TextAlign.center,
                       style: TextConsts.instance.regularWhite16Bold,
                     ),
                   ),
                   Tab(
                     icon: Text(
                       "Etkinlikler",
+                      textAlign: TextAlign.center,
                       style: TextConsts.instance.regularWhite16Bold,
                     ),
                   ),
@@ -57,6 +59,9 @@ class _GamesViewState extends State<GamesView> with TickerProviderStateMixin {
               ),
             ).build(),
             body: PageView(
+              onPageChanged: (index) {
+                model.whenPageChangedWithHand(index);
+              },
               controller: model.pageController,
               children: <Widget>[
                 Games(viewModel: model),
@@ -68,6 +73,7 @@ class _GamesViewState extends State<GamesView> with TickerProviderStateMixin {
         onModelReady: (model) {
           model.setContext(context);
           model.init();
+          model.initializeTabController(this);
         },
         onDispose: () {});
   }

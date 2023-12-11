@@ -19,10 +19,10 @@ class CreatePost extends StatelessWidget {
           Image.memory(
             pickedImage,
             width: double.infinity,
-            height: 400,
+            height: MediaQuery.of(context).size.height / 3,
             fit: BoxFit.fitHeight,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Padding(
             padding: PaddingConsts.instance.all5,
             child: TextField(
@@ -38,7 +38,7 @@ class CreatePost extends StatelessWidget {
               controller: controller,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           CustomButton(
             onPressed: () async => onPressed(),
             style: TextConsts.instance.regularBlack18,

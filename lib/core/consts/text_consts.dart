@@ -60,6 +60,14 @@ class TextConsts {
     );
   }
 
+  TextStyle get regularWhite14Bold {
+    return GoogleFonts.montserrat(
+      fontSize: 14,
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+    );
+  }
+
   TextStyle get regularWhite16Bold {
     return GoogleFonts.montserrat(
       fontSize: 16,
@@ -154,6 +162,15 @@ class TextConsts {
         color: Colors.white,
         fontWeight: FontWeight.normal,
         decorationColor: Colors.white);
+  }
+
+  TextStyle get regularBlack20Underlined {
+    return GoogleFonts.montserrat(
+        fontSize: 20,
+        decoration: TextDecoration.underline,
+        color: Colors.black,
+        fontWeight: FontWeight.normal,
+        decorationColor: Colors.black);
   }
 
   TextStyle get regularWhite20Bold {

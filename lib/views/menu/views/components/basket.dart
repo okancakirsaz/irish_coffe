@@ -22,12 +22,12 @@ class Basket extends StatelessWidget {
             Padding(
               padding: PaddingConsts.instance.bottom50,
               child: CustomButton(
-                  //TODO: do enter table number and payment informations
-                  onPressed: () {},
-                  style: TextConsts.instance.regularBlack18,
-                  text: "Sepeti Onayla",
-                  width: 200,
-                  height: 50),
+                onPressed: () => viewModel.navigateToPayment(),
+                style: TextConsts.instance.regularBlack18,
+                text: "Sepeti Onayla",
+                width: 200,
+                height: 50,
+              ),
             ),
           ],
         ));
@@ -43,6 +43,10 @@ class Basket extends StatelessWidget {
                 title: Text(
                   viewModel.basket[index]["element"].name!,
                   style: TextConsts.instance.regularBlack18Bold,
+                ),
+                subtitle: Text(
+                  "${viewModel.calculateElementPrice(index)}₺",
+                  style: TextConsts.instance.regularBlack14Bold,
                 ),
                 leading: Text(
                   "x${viewModel.basket[index]["count"]}",

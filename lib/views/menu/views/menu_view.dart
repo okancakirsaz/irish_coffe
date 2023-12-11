@@ -40,7 +40,7 @@ class MenuView extends StatelessWidget {
                 ),
               ],
               title: Text(
-                "Irish Coffe",
+                "Irish Coffee",
                 style: TextConsts.instance.regularWhite25Bold,
               ),
             ).build(),

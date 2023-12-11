@@ -25,6 +25,7 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
   final PageController pageController = PageController();
   final GamesMockService service = GamesMockService();
   bool isEventsFetched = false;
+  late final TabController tabController;
 
   //TODO: Do remove event in overdue logic
   final List<Widget> eventsAsWidget = [];
@@ -32,6 +33,14 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
   navigateToIndexedPage(int index) {
     pageController.animateToPage(index,
         duration: const Duration(milliseconds: 200), curve: Curves.linear);
+  }
+
+  initializeTabController(TickerProvider vsync) {
+    tabController = TabController(length: 2, vsync: vsync);
+  }
+
+  whenPageChangedWithHand(int index) {
+    tabController.animateTo(index);
   }
 
   Future<List<EventModel>> getEvents() async {

@@ -32,7 +32,9 @@ class CustomTextField extends StatelessWidget {
           inputFormatters: inputType == TextInputType.phone ||
                   inputType == TextInputType.number
               ? [FilteringTextInputFormatter.digitsOnly]
-              : null,
+              : inputType == TextInputType.datetime
+                  ? [FilteringTextInputFormatter.digitsOnly]
+                  : null,
           cursorColor: Colors.black,
           style: style,
           decoration: const InputDecoration(

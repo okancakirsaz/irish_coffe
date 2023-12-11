@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irish_coffe/core/service/mock_services/menu_mock_services.dart';
 import 'package:irish_coffe/views/menu/models/menu_item_model.dart';
 import 'package:irish_coffe/views/menu/views/menu_view.dart';
+import 'package:irish_coffe/views/payment/view/payment_view.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
@@ -23,7 +24,7 @@ abstract class _MenuViewModelBase with Store, BaseViewModel {
 
   @observable
   ObservableList basket = ObservableList.of([]);
-
+  List<int> selectedItemsPrices = [];
   final MenuMockServices service = MenuMockServices();
 
   Future<List<MenuItemModel>> getMenu() async {
@@ -51,6 +52,14 @@ abstract class _MenuViewModelBase with Store, BaseViewModel {
     Navigator.pop(viewModelContext);
   }
 
+  int calculateElementPrice(int index) {
+    String price = basket[index]["element"].price!;
+    int response = int.parse(price.substring(0, price.length - 1)) *
+        basket[index]["count"] as int;
+    selectedItemsPrices.add(response);
+    return response;
+  }
+
   @action
   deleteElementFromBasket(int index) {
     basket.removeAt(index);
@@ -60,5 +69,21 @@ abstract class _MenuViewModelBase with Store, BaseViewModel {
     //TODO: use navigation manager
     Navigator.push(viewModelContext,
         CupertinoPageRoute(builder: (context) => Basket(viewModel: viewModel)));
+  }
+
+  navigateToPayment() {
+    if (basket.isEmpty) {
+      Fluttertoast.showToast(msg: "Önce sepete bir şeyler eklemelisiniz.");
+    } else {
+      //TODO: use navigation manager
+      Navigator.push(
+        viewModelContext,
+        CupertinoPageRoute(
+          builder: (context) => PaymentView(
+            priceList: selectedItemsPrices,
+          ),
+        ),
+      );
+    }
   }
 }

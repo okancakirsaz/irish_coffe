@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:mobx/mobx.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/init/navigation/navigation_enums.dart';
@@ -13,12 +14,26 @@ class ProfileViewModel = _ProfileViewModelBase with _$ProfileViewModel;
 abstract class _ProfileViewModelBase with Store, BaseViewModel {
   @override
   void setContext(BuildContext context) => viewModelContext = context;
+
   String? userName;
   String? mail;
+  String? profileImage;
+  final PageController pageController = PageController();
+  final List<PostModel> posts = [];
   @override
-  void init() {
+  init() async {
+    initProfileValues();
+  }
+
+  changePageView(int index) {
+    pageController.jumpToPage(index);
+  }
+
+  initProfileValues() {
     userName = localeManager.getNullableStringData(LocaleKeysEnums.name.name);
     mail = localeManager.getNullableStringData(LocaleKeysEnums.mail.name);
+    profileImage =
+        localeManager.getNullableStringData(LocaleKeysEnums.profileImage.name);
   }
 
   navigateToResetPassword() {

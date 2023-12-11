@@ -5,7 +5,7 @@ import 'package:irish_coffe/core/consts/padding_consts.dart';
 import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/consts/text_consts.dart';
 import 'package:irish_coffe/core/widgets/custom_scaffold.dart';
-import 'package:irish_coffe/views/menu/views/menu_view.dart';
+import 'package:irish_coffe/views/main/view/main_view.dart';
 
 class OrderFinal extends StatelessWidget {
   const OrderFinal({super.key});
@@ -36,7 +36,7 @@ class OrderFinal extends StatelessWidget {
               Navigator.pushAndRemoveUntil(
                 context,
                 CupertinoPageRoute(
-                  builder: (context) => const MenuView(),
+                  builder: (context) => const MainView(),
                 ),
                 (route) => false,
               );

@@ -32,6 +32,10 @@ class LocaleManager {
     await _instance.setString(key, value);
   }
 
+  Future<void> setBoolData(String key, bool value) async {
+    await _instance.setBool(key, value);
+  }
+
   Future<void> setNullableStringData(String key, String? value) async {
     if (value != null) {
       await _instance.setString(key, value);
@@ -40,6 +44,10 @@ class LocaleManager {
 
   String? getNullableStringData(String key) {
     return _instance.getString(key);
+  }
+
+  bool? getNullableBoolData(String key) {
+    return _instance.getBool(key);
   }
 
   Future<void> removeData(String key) async {

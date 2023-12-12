@@ -1,1 +1,1 @@
-enum LocaleKeysEnums { token, name, mail, profileImage }
+enum LocaleKeysEnums { token, name, mail, profileImage, isUserAnonym }

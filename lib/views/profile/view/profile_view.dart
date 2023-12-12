@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:irish_coffe/core/base/view/base_view.dart';
 import 'package:irish_coffe/core/consts/asset_consts.dart';
@@ -12,6 +13,10 @@ import 'package:irish_coffe/views/authantication/core/models/user_data_model.dar
 import 'package:irish_coffe/views/profile/viewmodel/profile_viewmodel.dart';
 
 part 'components/user_posts.dart';
+part 'components/game_scors.dart';
+part 'components/favorite_foods.dart';
+part 'components/settings.dart';
+part 'components/profile_image.dart';
 
 class ProfileView extends StatelessWidget {
   //TODO: Implement this.
@@ -56,21 +61,7 @@ class ProfileView extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: model.profileImage!.isNotEmpty
-                  ? NetworkImage(model.profileImage!)
-                  : Svg(
-                      AssetConsts.instance.man,
-                    ) as ImageProvider<Object>,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
+        ProfileImage(viewModel: model),
         const SizedBox(width: 20),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,18 +70,18 @@ class ProfileView extends StatelessWidget {
               model.userName!,
               style: TextConsts.instance.regularBlack20,
             ),
-            settingsButton(),
+            settingsButton(model),
           ],
         )
       ],
     );
   }
 
-  Widget settingsButton() {
+  Widget settingsButton(ProfileViewModel model) {
     return userData != null
         ? const SizedBox()
         : ElevatedButton(
-            onPressed: () {},
+            onPressed: () => model.navigateToSettings(model),
             style: ButtonStyle(
               shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                   borderRadius: RadiusConsts.instance.circularAll10)),
@@ -143,8 +134,8 @@ class ProfileView extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
         UserPosts(viewModel: model),
-        const Text("1"),
-        const Text("2"),
+        GameScors(viewModel: model),
+        FavoriteFoods(viewModel: model)
       ],
     );
   }

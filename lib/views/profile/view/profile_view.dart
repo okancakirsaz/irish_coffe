@@ -11,6 +11,7 @@ import 'package:irish_coffe/core/widgets/custom_app_bar.dart';
 import 'package:irish_coffe/core/widgets/custom_button.dart';
 import 'package:irish_coffe/core/widgets/custom_scaffold.dart';
 import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
+import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/profile/viewmodel/profile_viewmodel.dart';
 
 part 'components/user_posts.dart';

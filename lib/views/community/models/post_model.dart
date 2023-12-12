@@ -5,7 +5,6 @@ import 'package:irish_coffe/views/authantication/core/models/user_data_model.dar
 class PostModel {
   UserDataModel? user;
   String? description;
-  //TODO: change string image param when you changed real services
   Uint8List? image;
   String? apiImage;
   String? time;

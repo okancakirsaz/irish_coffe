@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:irish_coffe/core/service/mock_services/profile_mock_services.dart';
 import 'package:irish_coffe/core/widgets/are_you_sure_dialog.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/profile/view/profile_view.dart';
@@ -22,18 +23,22 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   String? userName;
   String? mail;
   String? profileImage;
+  String? phoneNumber;
   final PageController pageController = PageController();
   final List<PostModel> posts = [];
+  final ProfileMockServices services = ProfileMockServices();
   @observable
   bool? anonymValue;
   late final TextEditingController nameController;
   late final TextEditingController mailController;
+  late final TextEditingController numberController;
 
   @override
   init() async {
     initProfileValues();
     nameController = TextEditingController(text: userName);
     mailController = TextEditingController(text: mail);
+    numberController = TextEditingController(text: phoneNumber);
     anonymValue =
         localeManager.getNullableBoolData(LocaleKeysEnums.isUserAnonym.name) ??
             false;
@@ -60,6 +65,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     mail = localeManager.getNullableStringData(LocaleKeysEnums.mail.name);
     profileImage =
         localeManager.getNullableStringData(LocaleKeysEnums.profileImage.name);
+    //TODO: Add this
+    //phoneNumber =localeManager.getNullableStringData(LocaleKeysEnums.phoneNumber.name);
   }
 
   navigateToResetPassword() {
@@ -126,5 +133,11 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
             ),
           );
         });
+  }
+
+  //TODO: Add user token query
+  Future<List<PostModel>> getUserPosts() async {
+    final List<PostModel> response = await services.getUserPosts() ?? [];
+    return response;
   }
 }

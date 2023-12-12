@@ -6,7 +6,20 @@ class FavoriteFoods extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return foods(viewModel);
+    return FutureBuilder<List<FavoreiteFoodsModel>>(
+      future: viewModel.getUserFavoriteFoods(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data!.isNotEmpty) {
+            return foods(snapshot.data!);
+          } else {
+            return haventData();
+          }
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 
   Widget haventData() {
@@ -28,26 +41,26 @@ class FavoriteFoods extends StatelessWidget {
     );
   }
 
-  Widget foods(ProfileViewModel viewModel) {
+  Widget foods(List<FavoreiteFoodsModel> snapshot) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: snapshot.length,
       itemBuilder: (context, index) {
         return Card(
           margin: PaddingConsts.instance.all5,
           child: ListTile(
             title: Text(
-              "Irish Coffee",
+              snapshot[index].foodName,
               style: TextConsts.instance.regularBlack18Bold,
             ),
             subtitle: Text(
-              "x10",
+              "x${snapshot[index].count}",
               style: TextConsts.instance.regularBlack14Bold,
             ),
             trailing: Image.network(
                 width: 50,
                 height: 50,
                 fit: BoxFit.cover,
-                "https://i.pinimg.com/236x/d4/6c/54/d46c545effbcadc65546b9a6d3ba8697.jpg"),
+                snapshot[index].photo),
           ),
         );
       },

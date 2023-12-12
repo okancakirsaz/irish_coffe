@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
+import 'package:irish_coffe/views/profile/models/favorite_foods_model.dart';
+import 'package:irish_coffe/views/profile/models/scores_model.dart';
 
 class ProfileMockServices {
   Future<List<PostModel>?> getUserPosts() async {
@@ -11,6 +13,60 @@ class ProfileMockServices {
     }
     return response;
   }
+
+  Future<List<ScoresModel>?> getUserScores() async {
+    List<ScoresModel> response = [];
+    for (Map<String, dynamic> score in scores) {
+      response.add(ScoresModel.fromJson(score));
+    }
+    return response;
+  }
+
+  Future<List<FavoreiteFoodsModel>?> getFavoriteFoods() async {
+    List<FavoreiteFoodsModel> response = [];
+    for (Map<String, dynamic> food in foods) {
+      response.add(FavoreiteFoodsModel.fromJson(food));
+    }
+    return response;
+  }
+
+  List<Map<String, dynamic>> foods = [
+    {
+      "foodName": "Irish Coffee",
+      "count": 10,
+      "photo":
+          "https://i.pinimg.com/236x/d4/6c/54/d46c545effbcadc65546b9a6d3ba8697.jpg",
+    }
+  ];
+
+  List<Map<String, dynamic>> scores = [
+    {
+      "userName": "İsmet Okan Çakırsaz",
+      "challengedUserName": "Volkan Konak",
+      "isWinned": true,
+      "game": "Yılan ve Yonca"
+    },
+    {
+      "userName": "İsmet Okan Çakırsaz",
+      "challengedUserName": "Ahmet Kaya",
+      "isWinned": false,
+      "game": "Bil ve Kazan"
+    },
+    {
+      "userName": "İsmet Okan Çakırsaz",
+      "challengedUserName": "Süleyman Soyluluğutartışılıroğulları",
+      "isWinned": true,
+      "game": "Yılan ve Yonca"
+    },
+    {
+      "userName": "İsmet Okan Çakırsaz",
+      "challengedUserName": "Yan Caman",
+      "isWinned": true,
+      "game": "Yılan ve Yonca"
+    },
+  ];
+
+  List<Map<String, dynamic>> emptyPosts = [];
 
   List<Map<String, dynamic>> posts = [
     {

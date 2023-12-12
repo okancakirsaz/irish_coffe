@@ -6,7 +6,20 @@ class GameScors extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return scores(viewModel);
+    return FutureBuilder<List<ScoresModel>>(
+      future: viewModel.getUserScores(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data!.isNotEmpty) {
+            return scores(snapshot.data!);
+          } else {
+            return didntPlayedGame();
+          }
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 
   Widget didntPlayedGame() {
@@ -28,19 +41,19 @@ class GameScors extends StatelessWidget {
     );
   }
 
-  Widget scores(ProfileViewModel viewModel) {
+  Widget scores(List<ScoresModel> snapshot) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: snapshot.length,
       itemBuilder: (context, index) {
         return Card(
           margin: PaddingConsts.instance.all5,
           child: ListTile(
             title: Text(
-              "${viewModel.userName} VS Volkan Konak",
+              "${snapshot[index].userName} VS ${snapshot[index].challengedUserName}",
               style: TextConsts.instance.regularGreen14Bold,
             ),
             subtitle: Text(
-              "Yılan ve Yonca",
+              snapshot[index].game,
               style: TextConsts.instance.regularBlack12,
             ),
             trailing: SizedBox(
@@ -51,13 +64,13 @@ class GameScors extends StatelessWidget {
                     width: 30,
                     height: 30,
                     image: Svg(
-                      index % 2 == 0
+                      snapshot[index].isWinned
                           ? AssetConsts.instance.rainbow
                           : AssetConsts.instance.pipe,
                     ),
                   ),
                   Text(
-                    index % 2 == 0 ? "Kazandı" : "Kaybetti",
+                    snapshot[index].isWinned ? "Kazandı" : "Kaybetti",
                     style: TextConsts.instance.regularBlack14Bold,
                   ),
                 ],

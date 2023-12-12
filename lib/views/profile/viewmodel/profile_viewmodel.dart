@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:irish_coffe/core/service/mock_services/profile_mock_services.dart';
 import 'package:irish_coffe/core/widgets/are_you_sure_dialog.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
+import 'package:irish_coffe/views/profile/models/favorite_foods_model.dart';
+import 'package:irish_coffe/views/profile/models/scores_model.dart';
 import 'package:irish_coffe/views/profile/view/profile_view.dart';
 import 'package:mobx/mobx.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
@@ -138,6 +140,17 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   //TODO: Add user token query
   Future<List<PostModel>> getUserPosts() async {
     final List<PostModel> response = await services.getUserPosts() ?? [];
+    return response;
+  }
+
+  Future<List<ScoresModel>> getUserScores() async {
+    final List<ScoresModel> response = await services.getUserScores() ?? [];
+    return response;
+  }
+
+  Future<List<FavoreiteFoodsModel>> getUserFavoriteFoods() async {
+    final List<FavoreiteFoodsModel> response =
+        await services.getFavoriteFoods() ?? [];
     return response;
   }
 }

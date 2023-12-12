@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:irish_coffe/core/widgets/are_you_sure_dialog.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/profile/view/profile_view.dart';
 import 'package:mobx/mobx.dart';
@@ -7,6 +9,7 @@ import 'package:irish_coffe/core/init/navigation/navigation_enums.dart';
 import 'package:irish_coffe/core/init/navigation/navigation_manager.dart';
 
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
+import '../../../core/consts/color_consts/color_consts.dart';
 
 part 'profile_viewmodel.g.dart';
 
@@ -44,6 +47,12 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
 
   changePageView(int index) {
     pageController.jumpToPage(index);
+  }
+
+  showSureDialog(VoidCallback onPressed) {
+    showDialog(
+        context: viewModelContext,
+        builder: (context) => AreYouSure(onPressed: onPressed));
   }
 
   initProfileValues() {
@@ -86,5 +95,36 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
                   viewModel: viewModel,
                 ),
             context: viewModelContext));
+  }
+
+  openImageModeSelector() {
+    showDialog(
+        context: viewModelContext,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: ColorConsts.instance.orange,
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.camera_alt,
+                    color: ColorConsts.instance.lightGray,
+                    size: 60,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.photo,
+                    color: ColorConsts.instance.lightGray,
+                    size: 60,
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }

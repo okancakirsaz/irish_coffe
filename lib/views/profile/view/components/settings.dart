@@ -22,8 +22,10 @@ class Settigns extends StatelessWidget {
               ProfileImage(viewModel: viewModel),
               Column(
                 children: <Widget>[
-                  buildSpecialButton(() {}, "Fotoğrafı Değiştir"),
-                  buildSpecialButton(() {}, "Fotoğrafı Kaldır"),
+                  buildSpecialButton(() => viewModel.openImageModeSelector(),
+                      "Fotoğrafı Değiştir"),
+                  buildSpecialButton(() => viewModel.showSureDialog(() {}),
+                      "Fotoğrafı Kaldır"),
                 ],
               ),
             ],
@@ -41,7 +43,15 @@ class Settigns extends StatelessWidget {
             child: specialSwitch(viewModel),
           ),
           buildSpecialButton(() async => await viewModel.logOut(), "Çıkış Yap"),
-          buildSpecialButton(() {}, "Hesabı Sil"),
+          buildSpecialButton(
+              () => viewModel.showSureDialog(() {}), "Hesabı Sil"),
+          const SizedBox(height: 30),
+          CustomButton(
+              onPressed: () {},
+              style: TextConsts.instance.regularBlack20,
+              text: "Kaydet",
+              width: 200,
+              height: 40)
         ],
       ),
     );
@@ -53,7 +63,7 @@ class Settigns extends StatelessWidget {
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: ColorConsts.instance.orange, width: 2),
         ),
-        border: UnderlineInputBorder(
+        disabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: ColorConsts.instance.orange, width: 2),
         ),
       ),

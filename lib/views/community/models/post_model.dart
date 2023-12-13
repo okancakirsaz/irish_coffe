@@ -5,7 +5,6 @@ import 'package:irish_coffe/views/authantication/core/models/user_data_model.dar
 class PostModel {
   UserDataModel? user;
   String? description;
-  Uint8List? image;
   String? apiImage;
   String? time;
   String? id;
@@ -13,7 +12,6 @@ class PostModel {
   PostModel({
     this.user,
     this.description,
-    this.image,
     this.apiImage,
     this.time,
     this.id,
@@ -30,7 +28,6 @@ class PostModel {
     return PostModel(
       user: user ?? this.user,
       description: description ?? this.description,
-      image: image ?? this.image,
       time: time ?? this.time,
       apiImage: apiImage ?? this.apiImage,
       id: id ?? this.id,
@@ -41,7 +38,6 @@ class PostModel {
     return {
       'user': user,
       'description': description,
-      'image': image,
       'time': time,
       'apiImage': apiImage,
       'id': id,
@@ -52,7 +48,6 @@ class PostModel {
     return PostModel(
       user: json['user'] as UserDataModel?,
       description: json['description'] as String?,
-      image: json['image'] as Uint8List,
       apiImage: json['apiImage'] as String?,
       time: json['time'] as String?,
       id: json['id'] as String?,
@@ -61,10 +56,10 @@ class PostModel {
 
   @override
   String toString() =>
-      "PostModel(user: $user,description: $description,image: $image,time: $time,id: $id)";
+      "PostModel(user: $user,description: $description,time: $time,id: $id)";
 
   @override
-  int get hashCode => Object.hash(user, description, image, time, id);
+  int get hashCode => Object.hash(user, description, time, id);
 
   @override
   bool operator ==(Object other) =>
@@ -73,7 +68,6 @@ class PostModel {
           runtimeType == other.runtimeType &&
           user == other.user &&
           description == other.description &&
-          image == other.image &&
           time == other.time &&
           id == other.id;
 }

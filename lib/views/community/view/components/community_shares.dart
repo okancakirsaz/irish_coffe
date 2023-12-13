@@ -15,6 +15,7 @@ class CommunityShares extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     return SharedPost(
+                      viewModel: viewModel,
                       data: snapshot.data![index],
                     );
                   });

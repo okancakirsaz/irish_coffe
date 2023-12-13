@@ -25,6 +25,7 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController numberController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
   final LoginViewModel loginViewModel = LoginViewModel();
 
   showErrorDialog(String reason) {
@@ -37,6 +38,7 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
         token: "3124rıwajroıj12j1",
         profileImage: "",
         name: nameController.text,
+        gender: genderController.text,
         phoneNumber: numberController.text,
         password: passwordController.text,
         eMail: emailController.text,
@@ -57,6 +59,7 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
     if (response.name != "" &&
         response.phoneNumber != "" &&
         response.password != "" &&
+        response.gender != "" &&
         response.eMail != "") {
       return true;
     } else {

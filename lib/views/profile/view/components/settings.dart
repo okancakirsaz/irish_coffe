@@ -14,51 +14,67 @@ class Settigns extends StatelessWidget {
           style: TextConsts.instance.regularWhite20Bold,
         ),
       ).build(),
-      body: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ProfileImage(viewModel: viewModel),
-              Column(
-                children: <Widget>[
-                  buildSpecialButton(() => viewModel.openImageModeSelector(),
-                      "Fotoğrafı Değiştir"),
-                  buildSpecialButton(() => viewModel.showSureDialog(() {}),
-                      "Fotoğrafı Kaldır"),
-                ],
-              ),
-            ],
-          ),
-          Padding(
-            padding: PaddingConsts.instance.all5,
-            child: buildSpecialTextField(viewModel.nameController),
-          ),
-          Padding(
-            padding: PaddingConsts.instance.all5,
-            child: buildSpecialTextField(viewModel.mailController),
-          ),
-          Padding(
-            padding: PaddingConsts.instance.all10,
-            child: specialSwitch(viewModel),
-          ),
-          buildSpecialButton(() async => await viewModel.logOut(), "Çıkış Yap"),
-          buildSpecialButton(
-              () => viewModel.showSureDialog(() {}), "Hesabı Sil"),
-          const SizedBox(height: 30),
-          CustomButton(
-              onPressed: () {},
-              style: TextConsts.instance.regularBlack20,
-              text: "Kaydet",
-              width: 200,
-              height: 40)
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ProfileImage(viewModel: viewModel),
+                Column(
+                  children: <Widget>[
+                    buildSpecialButton(() => viewModel.openImageModeSelector(),
+                        "Fotoğrafı Değiştir"),
+                    buildSpecialButton(() => viewModel.showSureDialog(() {}),
+                        "Fotoğrafı Kaldır"),
+                  ],
+                ),
+              ],
+            ),
+            Padding(
+              padding: PaddingConsts.instance.all5,
+              child: buildSpecialTextField(viewModel.nameController),
+            ),
+            Padding(
+              padding: PaddingConsts.instance.all5,
+              child: buildSpecialTextField(viewModel.mailController),
+            ),
+            Padding(
+              padding: PaddingConsts.instance.all5,
+              child: buildSpecialTextField(
+                  viewModel.numberController, TextInputType.phone),
+            ),
+            Padding(
+              padding: PaddingConsts.instance.all10,
+              child: specialSwitch(viewModel),
+            ),
+            buildSpecialButton(
+                () async => await viewModel.logOut(), "Çıkış Yap"),
+            buildSpecialButton(
+                () => viewModel.showSureDialog(
+                    () async => await viewModel.deleteAccount()),
+                "Hesabı Sil"),
+            const SizedBox(height: 30),
+            CustomButton(
+                onPressed: () async => await viewModel.setNewUserSettings(),
+                style: TextConsts.instance.regularBlack20,
+                text: "Kaydet",
+                width: 200,
+                height: 40)
+          ],
+        ),
       ),
     );
   }
 
-  Widget buildSpecialTextField(TextEditingController controller) {
+  Widget buildSpecialTextField(TextEditingController controller,
+      [TextInputType? type]) {
     return TextFormField(
+      inputFormatters:
+          type == TextInputType.phone || type == TextInputType.number
+              ? [FilteringTextInputFormatter.digitsOnly]
+              : [],
+      keyboardType: type,
       decoration: InputDecoration(
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: ColorConsts.instance.orange, width: 2),

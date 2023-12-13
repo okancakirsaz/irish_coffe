@@ -16,15 +16,46 @@ class LoginMockServices {
     }
   }
 
+  static Future<UserDataModel> findUserFromToken(String token) async {
+    UserDataModel res = UserDataModel(
+        token: "", profileImage: "", name: "name", phoneNumber: "phoneNumber");
+    for (var data in dataSet) {
+      final UserDataModel dataAsModel = UserDataModel.fromJson(data);
+      if (dataAsModel.token == token) {
+        res = dataAsModel;
+      }
+    }
+    return res;
+  }
+
   static List<Map<String, dynamic>> dataSet = [
     {
       "e_mail": "ocakirsaz@gmail.com",
       "password": "deneme123",
       "token": "UFC123JAOKF0P0ICJOJFOĞ0Q0J03UJVPOAS",
       "name": "Volkan Konak",
+      "gender": "Erkek",
       "profileImage":
           "https://i.pinimg.com/564x/d4/6c/54/d46c545effbcadc65546b9a6d3ba8697.jpg",
       "phoneNumber": "0532 134 32 00"
+    },
+    {
+      "e_mail": "ocakirsaz@hotmail.com",
+      "password": "deneme123",
+      "token": "UFC123JAOKF0P0ICJOJFOĞ0Q0J03UJVPOAS",
+      "name": "Okan Reis",
+      "gender": "Erkek",
+      "profileImage": null,
+      "phoneNumber": "0532 134 32 11"
+    },
+    {
+      "e_mail": "explode03@gmail.com",
+      "password": "slay",
+      "token": "UFC123JAOKF0P0ICdas",
+      "name": "İrem Abdestsizyatmazoğulları",
+      "gender": "Kadın",
+      "profileImage": null,
+      "phoneNumber": "0532123232"
     },
   ];
 }

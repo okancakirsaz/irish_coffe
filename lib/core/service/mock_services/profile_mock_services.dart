@@ -1,9 +1,11 @@
 import 'dart:typed_data';
 
+import 'package:irish_coffe/core/service/mock_services/login_mock_services.dart';
 import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/profile/models/favorite_foods_model.dart';
 import 'package:irish_coffe/views/profile/models/scores_model.dart';
+import 'package:irish_coffe/views/profile/models/user_settings_model.dart';
 
 class ProfileMockServices {
   Future<List<PostModel>?> getUserPosts() async {
@@ -28,6 +30,35 @@ class ProfileMockServices {
       response.add(FavoreiteFoodsModel.fromJson(food));
     }
     return response;
+  }
+
+  Future<bool> deleteAccount(String userToken) async {
+    try {
+      Map<String, dynamic>? deletableUser;
+      for (Map<String, dynamic> user in LoginMockServices.dataSet) {
+        if (user["token"] == userToken) {
+          deletableUser = user;
+        }
+      }
+      LoginMockServices.dataSet.remove(deletableUser);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<UserSettingsModel> getUserSettings() async {
+    return UserSettingsModel.fromJson(userSettings);
+  }
+
+  Future<bool> setNewSettings(UserSettingsModel newSettings) async {
+    try {
+      userSettings = newSettings.toJson();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   List<Map<String, dynamic>> foods = [
@@ -122,4 +153,12 @@ class ProfileMockServices {
       "id": "sdsds-dasdsa-dasdsa-dasdas"
     },
   ];
+
+  Map<String, dynamic> userSettings = {
+    "photoUrl": null,
+    "name": "Yan Caman",
+    "mail": "user@gmail.com",
+    "phoneNumber": "05321343200",
+    "isAnonym": true,
+  };
 }

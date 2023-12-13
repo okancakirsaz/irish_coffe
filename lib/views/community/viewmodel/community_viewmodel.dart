@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:irish_coffe/core/consts/color_consts/color_consts.dart';
 import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
-import 'package:irish_coffe/core/service/mock_services/posts_mock_service.dart';
+import 'package:irish_coffe/core/service/mock_services/community_mock_service.dart';
 import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/community/view/community_view.dart';
@@ -29,7 +29,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
 
   final PageController pageController = PageController();
   Uint8List? pickedImage;
-  final PostsMockService service = PostsMockService();
+  final CommunityMockService service = CommunityMockService();
   final TextEditingController postDescriptionController =
       TextEditingController();
   late final TabController tabController;
@@ -108,7 +108,8 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   sharePost() async {
     await service.postNewPost(
       PostModel(
-        image: pickedImage,
+        //TODO: This will be dont work use an api and get api image path
+        //apiImage: pickedImage,
         description: postDescriptionController.text,
         user: UserDataModel(
           token:

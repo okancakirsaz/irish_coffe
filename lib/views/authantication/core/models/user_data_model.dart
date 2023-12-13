@@ -3,12 +3,14 @@ class UserDataModel {
   String? password;
   String name;
   String token;
+  String? gender;
   String? profileImage;
   String? phoneNumber;
 
   UserDataModel({
     this.eMail,
     this.password,
+    this.gender,
     required this.token,
     required this.profileImage,
     required this.name,
@@ -19,6 +21,7 @@ class UserDataModel {
     return {
       'e_mail': eMail,
       'password': password,
+      'gender': gender,
       'token': token,
       'name': name,
       'profileImage': profileImage,
@@ -29,6 +32,7 @@ class UserDataModel {
   factory UserDataModel.fromJson(Map<String, dynamic> json) {
     return UserDataModel(
       eMail: json['e_mail'] as String?,
+      gender: json['gender'] as String?,
       password: json['password'] as String?,
       token: json['token'] as String,
       profileImage: json['profileImage'] as String?,

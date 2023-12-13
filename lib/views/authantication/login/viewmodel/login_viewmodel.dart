@@ -30,7 +30,7 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
 
       if (response != null) {
         //Navigate to main page
-        await cacheDatas(response);
+        await _cacheDatas(response);
         navigateToMainPage();
       } else {
         showErrorDialog("Email veya şifre yanlış, tekrar deneyiniz.");
@@ -41,7 +41,7 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
     }
   }
 
-  Future<void> cacheDatas(UserDataModel response) async {
+  Future<void> _cacheDatas(UserDataModel response) async {
     try {
       await localeManager.setStringData(
           LocaleKeysEnums.token.name, response.token);
@@ -49,8 +49,12 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
           LocaleKeysEnums.name.name, response.name);
       await localeManager.setStringData(
           LocaleKeysEnums.mail.name, response.eMail!);
+      await localeManager.setStringData(
+          LocaleKeysEnums.phoneNumber.name, response.phoneNumber!);
       await localeManager.setNullableStringData(
           LocaleKeysEnums.profileImage.name, response.profileImage);
+      await localeManager.setNullableStringData(
+          LocaleKeysEnums.gender.name, response.gender);
     } catch (e) {
       //TODO: Add crashlytics
       showErrorDialog("Bir şeyler ters gitti, lütfen tekrar deneyiniz.");

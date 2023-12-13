@@ -2,7 +2,8 @@ part of '../community_view.dart';
 
 class SharedPost extends StatelessWidget {
   final PostModel data;
-  const SharedPost({super.key, required this.data});
+  final CommunityViewModel viewModel;
+  const SharedPost({super.key, required this.data, required this.viewModel});
   //TODO: Use NetworkImage when you changed real services
   @override
   Widget build(BuildContext context) {
@@ -35,8 +36,19 @@ class SharedPost extends StatelessWidget {
           )
         : Padding(
             padding: PaddingConsts.instance.left10,
-            child:
-                CircleAvatar(child: SvgPicture.asset(AssetConsts.instance.man)),
+            child: FutureBuilder<String>(
+                future: viewModel.pickImageForGender(data.user!.token),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return CircleAvatar(
+                      child: SvgPicture.asset(snapshot.data!),
+                    );
+                  } else {
+                    return CircleAvatar(
+                      child: SvgPicture.asset(AssetConsts.instance.man),
+                    );
+                  }
+                }),
           );
   }
 
@@ -87,10 +99,7 @@ class SharedPost extends StatelessWidget {
       height: 400,
       decoration: BoxDecoration(
         image: DecorationImage(
-            image: MemoryImage(
-              data.image!,
-            ),
-            fit: BoxFit.fitHeight),
+            image: NetworkImage(data.apiImage!), fit: BoxFit.cover),
       ),
     );
   }

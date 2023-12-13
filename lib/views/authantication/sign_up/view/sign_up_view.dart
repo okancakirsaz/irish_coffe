@@ -4,9 +4,9 @@ import 'package:irish_coffe/core/consts/asset_consts.dart';
 import 'package:irish_coffe/core/consts/padding_consts.dart';
 import 'package:irish_coffe/core/consts/text_consts.dart';
 import 'package:irish_coffe/core/widgets/custom_button.dart';
+import 'package:irish_coffe/core/widgets/custom_dropdown.dart';
 import 'package:irish_coffe/core/widgets/pop_button.dart';
 import 'package:irish_coffe/views/authantication/core/components/auth_text_field.dart';
-import 'package:irish_coffe/views/authantication/core/components/logo_view_auth.dart';
 import 'package:irish_coffe/views/authantication/core/components/title.dart';
 import '../../../../core/consts/color_consts/color_consts.dart';
 import '../viewmodel/sign_up_viewmodel.dart';
@@ -23,9 +23,11 @@ class SignUpView extends StatelessWidget {
             body: Container(
               height: double.infinity,
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(AssetConsts.instance.backgroundImage))),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(AssetConsts.instance.backgroundImage),
+                ),
+              ),
               child: SingleChildScrollView(
                 child: SafeArea(
                   child: Column(
@@ -50,6 +52,7 @@ class SignUpView extends StatelessWidget {
 
   Widget buildLoginArea(SignUpViewModel model, BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       decoration: BoxDecoration(color: ColorConsts.instance.green),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +60,6 @@ class SignUpView extends StatelessWidget {
         children: <Widget>[
           PopButton(style: TextConsts.instance.regularWhite20),
           const SizedBox(height: 10),
-          const Center(child: LogoViewAuth()),
           Padding(
               padding: PaddingConsts.instance.left30,
               child: const CustomTitle(text: "İsim Soyisim")),
@@ -92,14 +94,30 @@ class SignUpView extends StatelessWidget {
             inputType: TextInputType.visiblePassword,
             controller: model.passwordController,
           ),
+          const SizedBox(height: 15),
+          Center(
+            child: CustomDropdown(
+              width: 223,
+              props: const [
+                DropdownMenuEntry(value: "Erkek", label: "Erkek"),
+                DropdownMenuEntry(value: "Kadın", label: "Kadın"),
+                DropdownMenuEntry(
+                    value: "Belirtmek İstemiyorum",
+                    label: "Belirtmek İstemiyorum"),
+              ],
+              hint: "Cinsiyetiniz",
+              controller: model.genderController,
+            ),
+          ),
           const SizedBox(height: 20),
           Center(
             child: CustomButton(
-                onPressed: () async => await model.createMembership(),
-                style: TextConsts.instance.regularBlack25Bold,
-                text: "Hesap Oluştur",
-                width: 245,
-                height: 50),
+              onPressed: () async => await model.createMembership(),
+              style: TextConsts.instance.regularBlack25Bold,
+              text: "Hesap Oluştur",
+              width: 245,
+              height: 50,
+            ),
           ),
           const SizedBox(height: 10),
         ],

@@ -1,10 +1,16 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:irish_coffe/core/service/mock_services/profile_mock_services.dart';
 import 'package:irish_coffe/core/widgets/are_you_sure_dialog.dart';
+import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/profile/models/favorite_foods_model.dart';
 import 'package:irish_coffe/views/profile/models/scores_model.dart';
+import 'package:irish_coffe/views/profile/models/user_settings_model.dart';
 import 'package:irish_coffe/views/profile/view/profile_view.dart';
 import 'package:mobx/mobx.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
@@ -26,6 +32,9 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   String? mail;
   String? profileImage;
   String? phoneNumber;
+  String? token;
+  UserDataModel? comedUserData;
+  UserSettingsModel? settings;
   final PageController pageController = PageController();
   final List<PostModel> posts = [];
   final ProfileMockServices services = ProfileMockServices();
@@ -34,6 +43,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   late final TextEditingController nameController;
   late final TextEditingController mailController;
   late final TextEditingController numberController;
+  Uint8List? pickedImage;
 
   @override
   init() async {
@@ -41,15 +51,24 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     nameController = TextEditingController(text: userName);
     mailController = TextEditingController(text: mail);
     numberController = TextEditingController(text: phoneNumber);
+    await _initSettings();
     anonymValue =
         localeManager.getNullableBoolData(LocaleKeysEnums.isUserAnonym.name) ??
-            false;
+            settings?.isAnonym;
   }
 
   @action
   Future<void> changeAnonymValue(bool value) async {
     anonymValue = value;
-    await localeManager.setBoolData(LocaleKeysEnums.isUserAnonym.name, value);
+  }
+
+  Future<void> deleteAccount() async {
+    final bool response = await services.deleteAccount(token!);
+    if (response) {
+      logOut();
+    } else {
+      Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz");
+    }
   }
 
   changePageView(int index) {
@@ -62,13 +81,30 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
         builder: (context) => AreYouSure(onPressed: onPressed));
   }
 
+  Future<void> _initSettings() async {
+    settings = await services.getUserSettings();
+  }
+
   initProfileValues() {
-    userName = localeManager.getNullableStringData(LocaleKeysEnums.name.name);
-    mail = localeManager.getNullableStringData(LocaleKeysEnums.mail.name);
-    profileImage =
-        localeManager.getNullableStringData(LocaleKeysEnums.profileImage.name);
-    //TODO: Add this
-    //phoneNumber =localeManager.getNullableStringData(LocaleKeysEnums.phoneNumber.name);
+    if (comedUserData == null) {
+      userName =
+          localeManager.getNullableStringData(LocaleKeysEnums.name.name) ??
+              settings!.name;
+      mail = localeManager.getNullableStringData(LocaleKeysEnums.mail.name) ??
+          settings!.mail;
+      profileImage = localeManager
+              .getNullableStringData(LocaleKeysEnums.profileImage.name) ??
+          settings?.photoUrl;
+      phoneNumber = localeManager
+              .getNullableStringData(LocaleKeysEnums.phoneNumber.name) ??
+          settings!.phoneNumber;
+      token = localeManager.getNullableStringData(LocaleKeysEnums.token.name);
+    } else {
+      userName = comedUserData!.name;
+      mail = comedUserData!.eMail;
+      profileImage = comedUserData!.profileImage;
+      token = comedUserData!.token;
+    }
   }
 
   navigateToResetPassword() {
@@ -86,6 +122,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
       await localeManager.removeData(LocaleKeysEnums.name.name);
       await localeManager.removeData(LocaleKeysEnums.mail.name);
       await localeManager.removeData(LocaleKeysEnums.token.name);
+      await localeManager.removeData(LocaleKeysEnums.profileImage.name);
     } catch (e) {
       //TODO: Add crashlytics
     }
@@ -116,7 +153,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => _getNewProfileImage(ImageSource.camera),
                   icon: Icon(
                     Icons.camera_alt,
                     color: ColorConsts.instance.lightGray,
@@ -124,7 +161,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => _getNewProfileImage(ImageSource.camera),
                   icon: Icon(
                     Icons.photo,
                     color: ColorConsts.instance.lightGray,
@@ -137,7 +174,41 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
         });
   }
 
-  //TODO: Add user token query
+  Future<void> setNewUserSettings() async {
+    final bool response = await services.setNewSettings(UserSettingsModel(
+      name: nameController.text,
+      mail: mailController.text,
+      phoneNumber: numberController.text,
+      isAnonym: anonymValue,
+      //TODO: add profile image after real services
+    ));
+    if (response) {
+      await _resetLocalSettingsValues();
+      _navigatorPop();
+    } else {
+      Fluttertoast.showToast(msg: "Bir şeyler ters gitti, tekrar deneyiniz.");
+    }
+  }
+
+  Future<void> _resetLocalSettingsValues() async {
+    await _initSettings();
+    await localeManager.setNullableStringData(
+        LocaleKeysEnums.name.name, settings!.name);
+    await localeManager.setNullableStringData(
+        LocaleKeysEnums.phoneNumber.name, settings!.phoneNumber);
+    await localeManager.setNullableStringData(
+        LocaleKeysEnums.mail.name, settings!.mail);
+    await localeManager.setBoolData(
+        LocaleKeysEnums.isUserAnonym.name, settings!.isAnonym!);
+    await localeManager.setNullableStringData(
+        LocaleKeysEnums.profileImage.name, settings!.photoUrl);
+  }
+
+  _navigatorPop() {
+    Navigator.pop(viewModelContext);
+  }
+
+  //TODO: Update user data model,
   Future<List<PostModel>> getUserPosts() async {
     final List<PostModel> response = await services.getUserPosts() ?? [];
     return response;
@@ -152,5 +223,11 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     final List<FavoreiteFoodsModel> response =
         await services.getFavoriteFoods() ?? [];
     return response;
+  }
+
+  Future<void> _getNewProfileImage(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: source);
+    pickedImage = await image?.readAsBytes();
   }
 }

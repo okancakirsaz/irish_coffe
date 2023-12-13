@@ -100,6 +100,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
           settings!.phoneNumber;
       token = localeManager.getNullableStringData(LocaleKeysEnums.token.name);
     } else {
+      //TODO: Contuniue here with opened profile
       userName = comedUserData!.name;
       mail = comedUserData!.eMail;
       profileImage = comedUserData!.profileImage;

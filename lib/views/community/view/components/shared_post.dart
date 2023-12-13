@@ -4,7 +4,6 @@ class SharedPost extends StatelessWidget {
   final PostModel data;
   final CommunityViewModel viewModel;
   const SharedPost({super.key, required this.data, required this.viewModel});
-  //TODO: Use NetworkImage when you changed real services
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -73,6 +72,7 @@ class SharedPost extends StatelessWidget {
                   child: profileImage(),
                 ),
                 InkWell(
+                  onTap: () => viewModel.navigateToProfile(data.user!),
                   child: Text(
                     data.user!.name,
                     style: TextConsts.instance.regularWhite16Bold,

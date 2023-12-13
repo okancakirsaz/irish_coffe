@@ -59,6 +59,7 @@ class ProfileView extends StatelessWidget {
           model.setContext(context);
           model.init();
           model.comedUserData = userData;
+          print(userData);
         },
         onDispose: () {});
   }

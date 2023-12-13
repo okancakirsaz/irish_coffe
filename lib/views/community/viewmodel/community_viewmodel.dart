@@ -11,6 +11,7 @@ import 'package:irish_coffe/views/authantication/core/models/user_data_model.dar
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/community/view/community_view.dart';
 import 'package:irish_coffe/views/main/view/main_view.dart';
+import 'package:irish_coffe/views/profile/view/profile_view.dart';
 import 'package:mobx/mobx.dart';
 import 'package:uuid/uuid.dart';
 
@@ -147,5 +148,14 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   Future<List<PostModel>> getAllPosts() async {
     final List<PostModel> response = await service.getPosts();
     return response;
+  }
+
+  navigateToProfile(UserDataModel data) {
+    Navigator.push(
+        viewModelContext,
+        CupertinoPageRoute(
+            builder: (context) => ProfileView(
+                  userData: data,
+                )));
   }
 }

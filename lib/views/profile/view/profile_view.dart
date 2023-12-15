@@ -22,6 +22,7 @@ part 'components/game_scors.dart';
 part 'components/favorite_foods.dart';
 part 'components/settings.dart';
 part 'components/profile_image.dart';
+part 'components/opened_post.dart';
 
 class ProfileView extends StatelessWidget {
   //TODO: Implement this.

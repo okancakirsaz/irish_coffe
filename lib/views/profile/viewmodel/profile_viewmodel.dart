@@ -36,7 +36,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   UserDataModel? comedUserData;
   UserSettingsModel? settings;
   final PageController pageController = PageController();
-  final List<PostModel> posts = [];
+  @observable
+  ObservableList<PostModel> posts = ObservableList<PostModel>.of([]);
   final ProfileMockServices services = ProfileMockServices();
   @observable
   bool? anonymValue;
@@ -208,11 +209,11 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     Navigator.pop(viewModelContext);
   }
 
-  //TODO: Update user data model,
+  @action
   Future<List<PostModel>> getUserPosts() async {
-    final List<PostModel> response =
-        await services.getUserPosts(comedUserData?.token ?? token!) ?? [];
-    return response;
+    posts = ObservableList<PostModel>.of(
+        await services.getUserPosts(comedUserData?.token ?? token!) ?? []);
+    return posts;
   }
 
   Future<List<ScoresModel>> getUserScores() async {
@@ -231,5 +232,40 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: source);
     pickedImage = await image?.readAsBytes();
+  }
+
+  openPost(PostModel post, ProfileViewModel viewModel) {
+    showDialog(
+        context: viewModelContext,
+        builder: (context) {
+          return AlertDialog(
+            contentPadding: const EdgeInsets.all(0),
+            backgroundColor: ColorConsts.instance.green,
+            content: OpenedPost(
+              viewModel: viewModel,
+              postData: post,
+            ),
+          );
+        });
+  }
+
+  bool checkIsProfileMine(String comedToken) {
+    if (localeManager.getNullableStringData(LocaleKeysEnums.token.name) ==
+        comedToken) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @action
+  Future<void> deletePost(String postId) async {
+    final bool response = await services.removePost(postId);
+    if (response) {
+      await getUserPosts();
+    } else {
+      Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz.");
+    }
+    _navigatorPop();
   }
 }

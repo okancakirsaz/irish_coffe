@@ -76,6 +76,23 @@ class ProfileMockServices {
     }
   }
 
+  Future<bool> removePost(String postId) async {
+    try {
+      Map<String, dynamic>? removablePost;
+      for (Map<String, dynamic> data in dataSet) {
+        for (Map<String, dynamic> post in data["posts"]) {
+          if (post["id"] == postId) {
+            removablePost = post;
+          }
+        }
+        data["posts"].remove(removablePost);
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Map<String, dynamic> userSettings = {
     "photoUrl":
         "https://i.pinimg.com/564x/d4/6c/54/d46c545effbcadc65546b9a6d3ba8697.jpg",
@@ -85,7 +102,7 @@ class ProfileMockServices {
     "isAnonym": false,
   };
 
-  List<Map<String, dynamic>> dataSet = [
+  static List<Map<String, dynamic>> dataSet = [
     {
       "e_mail": "ocakirsaz@gmail.com",
       "password": "deneme123",
@@ -107,7 +124,7 @@ class ProfileMockServices {
           "apiImage":
               "https://i.pinimg.com/236x/e9/f8/60/e9f860c5f3c43baf6eaf408cb58a63c0.jpg",
           "time": "15.12.2023 14:53",
-          "id": "sdsds-dasdsa-dasdsa-dasdas"
+          "id": "sdsds-dasdasdsa-dasdsa-dasdas"
         },
         {
           "user": {
@@ -120,7 +137,7 @@ class ProfileMockServices {
           "apiImage":
               "https://i.pinimg.com/236x/9c/78/e0/9c78e019e1847ba9dc29c1bd6b75eeab.jpg",
           "time": "15.12.2023 14:53",
-          "id": "sdsds-dasdsa-dasdsa-dasdas"
+          "id": "sdsds-dadasdsa-dasdsa-dasdas"
         },
         {
           "user": {
@@ -133,7 +150,7 @@ class ProfileMockServices {
           "apiImage":
               "https://i.pinimg.com/236x/bf/86/c9/bf86c98fad4a1b3b20eb0644780e62ec.jpg",
           "time": "15.12.2023 14:53",
-          "id": "sdsds-dasdsa-dasdsa-dasdas"
+          "id": "sdsds-daassdsa-dasdsa-dasdas"
         }
       ],
       "scores": [
@@ -184,7 +201,7 @@ class ProfileMockServices {
           "apiImage":
               "https://i.pinimg.com/236x/84/7f/e9/847fe98af13d049a78bf28738ea6e166.jpg",
           "time": "15.12.2023 14:53",
-          "id": "sdsds-dasdsa-dasdsa-dasdas"
+          "id": "sdsds-dadsdsa-dasdsa-dasdas"
         },
         {
           "user": {
@@ -196,7 +213,7 @@ class ProfileMockServices {
           "apiImage":
               "https://i.pinimg.com/236x/67/0e/85/670e854e190f68acb7041d8c18cb3722.jpg",
           "time": "15.12.2023 14:53",
-          "id": "sdsds-dasdsa-dasdsa-dasdas"
+          "id": "sdsds-dasdfsa-dasdsa-dasdas"
         },
       ],
       "scores": [

@@ -11,7 +11,7 @@ class UserPosts extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isNotEmpty) {
-              return postsGrid(snapshot.data!);
+              return postsGrid();
             } else {
               return haventPosts();
             }
@@ -35,23 +35,27 @@ class UserPosts extends StatelessWidget {
     );
   }
 
-  Widget postsGrid(List<PostModel> snapshot) {
-    return GridView.builder(
-        itemCount: snapshot.length,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemBuilder: (context, index) {
-          return InkWell(
-            child: Container(
-              margin: PaddingConsts.instance.all5,
-              decoration: BoxDecoration(
-                borderRadius: RadiusConsts.instance.circularAll10,
-                image: DecorationImage(
-                    image: NetworkImage(snapshot[index].apiImage!),
-                    fit: BoxFit.cover),
+  Widget postsGrid() {
+    return Observer(builder: (context) {
+      return GridView.builder(
+          itemCount: viewModel.posts.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3),
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () =>
+                  viewModel.openPost(viewModel.posts[index], viewModel),
+              child: Container(
+                margin: PaddingConsts.instance.all5,
+                decoration: BoxDecoration(
+                  borderRadius: RadiusConsts.instance.circularAll10,
+                  image: DecorationImage(
+                      image: NetworkImage(viewModel.posts[index].apiImage!),
+                      fit: BoxFit.cover),
+                ),
               ),
-            ),
-          );
-        });
+            );
+          });
+    });
   }
 }

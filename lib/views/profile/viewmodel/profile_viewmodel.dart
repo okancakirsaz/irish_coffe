@@ -100,7 +100,6 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
           settings!.phoneNumber;
       token = localeManager.getNullableStringData(LocaleKeysEnums.token.name);
     } else {
-      //TODO: Contuniue here with opened profile
       userName = comedUserData!.name;
       mail = comedUserData!.eMail;
       profileImage = comedUserData!.profileImage;
@@ -162,7 +161,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => _getNewProfileImage(ImageSource.camera),
+                  onPressed: () => _getNewProfileImage(ImageSource.gallery),
                   icon: Icon(
                     Icons.photo,
                     color: ColorConsts.instance.lightGray,
@@ -211,18 +210,20 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
 
   //TODO: Update user data model,
   Future<List<PostModel>> getUserPosts() async {
-    final List<PostModel> response = await services.getUserPosts() ?? [];
+    final List<PostModel> response =
+        await services.getUserPosts(comedUserData?.token ?? token!) ?? [];
     return response;
   }
 
   Future<List<ScoresModel>> getUserScores() async {
-    final List<ScoresModel> response = await services.getUserScores() ?? [];
+    final List<ScoresModel> response =
+        await services.getUserScores(comedUserData?.token ?? token!) ?? [];
     return response;
   }
 
   Future<List<FavoreiteFoodsModel>> getUserFavoriteFoods() async {
     final List<FavoreiteFoodsModel> response =
-        await services.getFavoriteFoods() ?? [];
+        await services.getFavoriteFoods(comedUserData?.token ?? token!) ?? [];
     return response;
   }
 

@@ -19,7 +19,7 @@ class SharedPost extends StatelessWidget {
   }
 
   Widget profileImage() {
-    return data.user!.profileImage != ""
+    return data.user!.profileImage != null
         ? Container(
             margin: PaddingConsts.instance.left10,
             width: 45,
@@ -74,7 +74,7 @@ class SharedPost extends StatelessWidget {
                 InkWell(
                   onTap: () => viewModel.navigateToProfile(data.user!),
                   child: Text(
-                    data.user!.name,
+                    data.user!.name!,
                     style: TextConsts.instance.regularWhite16Bold,
                   ),
                 ),

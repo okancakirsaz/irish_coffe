@@ -43,9 +43,9 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
 
   Future<void> _cacheDatas(UserDataModel response) async {
     try {
-      await localeManager.setStringData(
+      await localeManager.setNullableStringData(
           LocaleKeysEnums.token.name, response.token);
-      await localeManager.setStringData(
+      await localeManager.setNullableStringData(
           LocaleKeysEnums.name.name, response.name);
       await localeManager.setStringData(
           LocaleKeysEnums.mail.name, response.eMail!);

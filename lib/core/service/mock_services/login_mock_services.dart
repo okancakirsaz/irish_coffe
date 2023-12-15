@@ -36,7 +36,7 @@ class LoginMockServices {
       "name": "Volkan Konak",
       "gender": "Erkek",
       "profileImage":
-          "https://i.pinimg.com/564x/d4/6c/54/d46c545effbcadc65546b9a6d3ba8697.jpg",
+          "https://i.pinimg.com/236x/0f/74/81/0f7481fcf1051babffa8a03c34c24ea8.jpg",
       "phoneNumber": "0532 134 32 00"
     },
     {

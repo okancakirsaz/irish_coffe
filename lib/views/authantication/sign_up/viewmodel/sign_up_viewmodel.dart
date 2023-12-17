@@ -56,13 +56,50 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
   }
 
   bool _validation(UserDataModel response) {
-    if (response.name != "" &&
-        response.phoneNumber != "" &&
-        response.password != "" &&
-        response.gender != "" &&
-        response.eMail != "") {
+    if (validateName(response.name!) &&
+        validateMail(response.eMail!) &&
+        validatePassword(response.password!) &&
+        validatePhoneNumber(response.phoneNumber!) &&
+        response.gender != "") {
       return true;
     } else {
+      return false;
+    }
+  }
+
+  bool validateName(String name) {
+    if (name.length <= 30 && name.length >= 8) {
+      return true;
+    } else {
+      Fluttertoast.showToast(
+          msg: "İsim 8 karakterden küçük 30 karakterden büyük olamaz.");
+      return false;
+    }
+  }
+
+  bool validatePhoneNumber(String number) {
+    if (number.length == 11) {
+      return true;
+    } else {
+      Fluttertoast.showToast(msg: "Lütfen geçerli bir numara giriniz.");
+      return false;
+    }
+  }
+
+  bool validatePassword(String password) {
+    if (password.length >= 8) {
+      return true;
+    } else {
+      Fluttertoast.showToast(msg: "Şifre 8 karakterden küçük olamaz.");
+      return false;
+    }
+  }
+
+  bool validateMail(String mail) {
+    if (mail.contains("@")) {
+      return true;
+    } else {
+      Fluttertoast.showToast(msg: "Lütfen geçerli bir mail adresi giriniz.");
       return false;
     }
   }

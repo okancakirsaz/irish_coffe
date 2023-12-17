@@ -107,8 +107,7 @@ class ProfileMockServices {
   }
 
   Map<String, dynamic> userSettings = {
-    "photoUrl":
-        "https://i.pinimg.com/564x/d4/6c/54/d46c545effbcadc65546b9a6d3ba8697.jpg",
+    "photoUrl": null,
     "mail": "ocakirsaz@gmail.com",
     "name": "Volkan Konak",
     "phoneNumber": "05321343200",

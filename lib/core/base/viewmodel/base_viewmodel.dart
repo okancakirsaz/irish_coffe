@@ -11,6 +11,7 @@ abstract mixin class BaseViewModel {
   void setContext(BuildContext context);
   LocaleManager localeManager = LocaleManager.instance;
   void init() {}
+  final ScrollController defaultScrollController = ScrollController();
   Future<String> pickImageForGender([String? userToken]) async {
     String? gender;
     if (userToken == null) {

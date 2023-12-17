@@ -30,8 +30,12 @@ class CustomButtonNavBar extends StatelessWidget {
                 elevation: 4,
                 items: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
-                      label: "Topluluk",
-                      icon: buildIcon(AssetConsts.instance.events)),
+                    label: "Topluluk",
+                    icon: InkWell(
+                      onDoubleTap: () => model.scrollToTop(),
+                      child: buildIcon(AssetConsts.instance.events),
+                    ),
+                  ),
                   BottomNavigationBarItem(
                       label: "Menü",
                       icon: buildIcon(AssetConsts.instance.menu)),

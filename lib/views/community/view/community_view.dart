@@ -9,10 +9,10 @@ import 'package:irish_coffe/core/consts/padding_consts.dart';
 import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/widgets/custom_button.dart';
 import 'package:irish_coffe/core/widgets/custom_scaffold.dart';
+import 'package:irish_coffe/core/widgets/custom_sliver_app_bar.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/community/viewmodel/community_viewmodel.dart';
 import '../../../core/consts/text_consts.dart';
-import '../../../core/widgets/custom_app_bar.dart';
 
 part 'components/community_shares.dart';
 part 'components/shared_post.dart';
@@ -43,46 +43,56 @@ class _CommunityViewState extends State<CommunityView>
                 size: 30,
               ),
             ),
-            appBar: CustomAppBar(
-              title: Text(
-                "Irish Coffee",
-                style: TextConsts.instance.regularWhite25Bold,
-              ),
-              tabs: TabBar(
-                controller: model.tabController,
-                indicatorColor: ColorConsts.instance.orange,
-                onTap: (index) => model.navigateToIndexedPage(index),
-                tabs: <Widget>[
-                  Tab(
-                    icon: Text(
-                      "Topluluk Paylaşımları",
-                      textAlign: TextAlign.center,
-                      style: TextConsts.instance.regularWhite14Bold,
+            body: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return <Widget>[
+                  CustomSliverAppBar(
+                    title: Text(
+                      "Irish Coffee",
+                      style: TextConsts.instance.regularWhite25Bold,
                     ),
-                  ),
-                  Tab(
-                    icon: Text(
-                      "Kimler Irish'te?",
-                      textAlign: TextAlign.center,
-                      style: TextConsts.instance.regularWhite14Bold,
+                    tabs: TabBar(
+                      controller: model.tabController,
+                      indicatorColor: ColorConsts.instance.orange,
+                      onTap: (index) => model.navigateToIndexedPage(index),
+                      tabs: <Widget>[
+                        Tab(
+                          icon: Text(
+                            "Topluluk Paylaşımları",
+                            textAlign: TextAlign.center,
+                            style: TextConsts.instance.regularWhite14Bold,
+                          ),
+                        ),
+                        Tab(
+                          icon: Text(
+                            "Kimler Irish'te?",
+                            textAlign: TextAlign.center,
+                            style: TextConsts.instance.regularWhite14Bold,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ).build(),
-            body: PageView(
-              onPageChanged: (index) {
-                model.whenPageChangedWithHand(index);
+                  ).build()
+                ];
               },
-              controller: model.pageController,
-              children: <Widget>[
-                CommunityShares(
-                  viewModel: model,
+              body: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: PageView(
+                  onPageChanged: (index) {
+                    model.whenPageChangedWithHand(index);
+                  },
+                  controller: model.pageController,
+                  children: <Widget>[
+                    CommunityShares(
+                      viewModel: model,
+                    ),
+                    CustomerList(
+                      viewModel: model,
+                    )
+                  ],
                 ),
-                CustomerList(
-                  viewModel: model,
-                )
-              ],
+              ),
             ),
           );
         },

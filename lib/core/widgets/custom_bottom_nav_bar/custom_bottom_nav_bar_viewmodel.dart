@@ -20,4 +20,16 @@ abstract class _CustomBottomNavBarViewModelBase with Store, BaseViewModel {
   void changePage(comedIndex) {
     currentIndex = comedIndex;
   }
+
+  scrollToTop() {
+    //TODO: Implement UI
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (defaultScrollController.hasClients) {
+        defaultScrollController.animateTo(
+            defaultScrollController.position.minScrollExtent,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.fastOutSlowIn);
+      }
+    });
+  }
 }

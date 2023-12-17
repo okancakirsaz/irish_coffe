@@ -16,6 +16,7 @@ import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/profile/models/favorite_foods_model.dart';
 import 'package:irish_coffe/views/profile/models/scores_model.dart';
 import 'package:irish_coffe/views/profile/viewmodel/profile_viewmodel.dart';
+import 'package:passwordfield/passwordfield.dart';
 
 part 'components/user_posts.dart';
 part 'components/game_scors.dart';
@@ -34,32 +35,39 @@ class ProfileView extends StatelessWidget {
     return BaseView<ProfileViewModel>(
         viewModel: ProfileViewModel(),
         onPageBuilder: (context, model) {
-          return CustomScaffold(
-            body: Column(
-              children: <Widget>[
-                Padding(
-                  padding: PaddingConsts.instance.top10,
-                  child: buildProfileRow(model),
-                ),
-                const SizedBox(height: 20),
-                buildTabBar(model),
-                Expanded(
-                  child: buildPageView(model),
-                ),
-              ],
-            ),
-            appBar: CustomAppBar(
-              title: Text(
-                model.userName!,
-                style: TextConsts.instance.regularWhite20Bold,
-              ),
-            ).build(),
-          );
+          return FutureBuilder(
+              future: model.init(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return CustomScaffold(
+                    body: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: PaddingConsts.instance.top10,
+                          child: buildProfileRow(model),
+                        ),
+                        const SizedBox(height: 20),
+                        buildTabBar(model),
+                        Expanded(
+                          child: buildPageView(model),
+                        ),
+                      ],
+                    ),
+                    appBar: CustomAppBar(
+                      title: Text(
+                        model.userName!,
+                        style: TextConsts.instance.regularWhite20Bold,
+                      ),
+                    ).build(),
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              });
         },
-        onModelReady: (model) {
+        onModelReady: (model) async {
           model.setContext(context);
-          model.comedUserData = userData;
-          model.init();
+          model.cameUserData = userData;
         },
         onDispose: () {});
   }
@@ -73,9 +81,12 @@ class ProfileView extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              model.userName!,
-              style: TextConsts.instance.regularBlack20,
+            SizedBox(
+              width: 210,
+              child: Text(
+                model.userName!,
+                style: TextConsts.instance.regularBlack18,
+              ),
             ),
             settingsButton(model),
           ],

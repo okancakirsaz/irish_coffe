@@ -6,6 +6,7 @@ import 'package:irish_coffe/core/consts/text_consts.dart';
 import 'package:irish_coffe/core/init/navigation/navigation_enums.dart';
 import 'package:irish_coffe/core/init/navigation/navigation_manager.dart';
 import 'package:irish_coffe/core/widgets/custom_button.dart';
+import 'package:irish_coffe/views/authantication/core/components/auth_text_field_password.dart';
 import 'package:irish_coffe/views/authantication/core/components/logo_view_auth.dart';
 import '../../../../core/consts/color_consts/color_consts.dart';
 import '../../../../core/consts/radius_consts.dart';
@@ -92,7 +93,7 @@ class LoginView extends StatelessWidget {
               padding: PaddingConsts.instance.left30,
               child: const CustomTitle(text: "Şifre")),
           const SizedBox(height: 5),
-          AuthTextField(
+          AuthTextFieldPassword(
             controller: model.passwordController,
           ),
           const SizedBox(height: 15),

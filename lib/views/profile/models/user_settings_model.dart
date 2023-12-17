@@ -3,6 +3,7 @@ class UserSettingsModel {
   String? name;
   String? mail;
   String? phoneNumber;
+  String? password;
   bool? isAnonym;
 
   UserSettingsModel({
@@ -10,6 +11,7 @@ class UserSettingsModel {
     this.name,
     this.mail,
     this.phoneNumber,
+    this.password,
     this.isAnonym,
   });
 
@@ -18,6 +20,7 @@ class UserSettingsModel {
     String? name,
     String? mail,
     String? phoneNumber,
+    String? password,
     bool? isAnonym,
   }) {
     return UserSettingsModel(
@@ -25,6 +28,7 @@ class UserSettingsModel {
       name: name ?? this.name,
       mail: mail ?? this.mail,
       phoneNumber: phoneNumber ?? this.phoneNumber,
+      password: password ?? this.password,
       isAnonym: isAnonym ?? this.isAnonym,
     );
   }
@@ -35,6 +39,7 @@ class UserSettingsModel {
       'name': name,
       'mail': mail,
       'phoneNumber': phoneNumber,
+      'password': password,
       'isAnonym': isAnonym,
     };
   }
@@ -45,13 +50,14 @@ class UserSettingsModel {
       name: json['name'] as String?,
       mail: json['mail'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
+      password: json['password'] as String?,
       isAnonym: json['isAnonym'] as bool?,
     );
   }
 
   @override
   String toString() =>
-      "UserSettingsModel(photoUrl: $photoUrl,name: $name,mail: $mail,phoneNumber: $phoneNumber,isAnonym: $isAnonym)";
+      "UserSettingsModel(photoUrl: $photoUrl,name: $name,mail: $mail,phoneNumber: $phoneNumber,isAnonym: $isAnonym, password: $password)";
 
   @override
   int get hashCode => Object.hash(photoUrl, name, mail, phoneNumber, isAnonym);

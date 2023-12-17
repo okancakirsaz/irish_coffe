@@ -25,7 +25,9 @@ class Settigns extends StatelessWidget {
                   children: <Widget>[
                     buildSpecialButton(() => viewModel.openImageModeSelector(),
                         "Fotoğrafı Değiştir"),
-                    buildSpecialButton(() => viewModel.showSureDialog(() {}),
+                    buildSpecialButton(
+                        () => viewModel.showSureDialog(
+                            () async => await viewModel.deleteProfileImage()),
                         "Fotoğrafı Kaldır"),
                   ],
                 ),
@@ -43,6 +45,10 @@ class Settigns extends StatelessWidget {
               padding: PaddingConsts.instance.all5,
               child: buildSpecialTextField(
                   viewModel.numberController, TextInputType.phone),
+            ),
+            Padding(
+              padding: PaddingConsts.instance.all5,
+              child: buildSpecialPasswordField(viewModel.passwordController),
             ),
             Padding(
               padding: PaddingConsts.instance.all10,
@@ -85,6 +91,30 @@ class Settigns extends StatelessWidget {
       ),
       cursorColor: ColorConsts.instance.orange,
       style: TextConsts.instance.regularWhite20,
+      controller: controller,
+    );
+  }
+
+  Widget buildSpecialPasswordField(
+    TextEditingController controller,
+  ) {
+    return PasswordField(
+      color: ColorConsts.instance.orange,
+      border: PasswordBorder(
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: ColorConsts.instance.orange, width: 2),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: ColorConsts.instance.orange, width: 2),
+        ),
+        focusedErrorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: ColorConsts.instance.orange, width: 2),
+        ),
+      ),
+      errorMessage: "",
+      passwordDecoration: PasswordDecoration(
+        inputStyle: TextConsts.instance.regularWhite20,
+      ),
       controller: controller,
     );
   }

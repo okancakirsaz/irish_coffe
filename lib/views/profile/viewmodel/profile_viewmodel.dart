@@ -32,8 +32,9 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   String? mail;
   String? profileImage;
   String? phoneNumber;
+  String? password;
   String? token;
-  UserDataModel? comedUserData;
+  UserDataModel? cameUserData;
   UserSettingsModel? settings;
   final PageController pageController = PageController();
   @observable
@@ -44,18 +45,21 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   late final TextEditingController nameController;
   late final TextEditingController mailController;
   late final TextEditingController numberController;
+  late final TextEditingController passwordController;
   Uint8List? pickedImage;
 
   @override
-  init() async {
-    initProfileValues();
+  Future<bool> init() async {
+    await initProfileValues();
     nameController = TextEditingController(text: userName);
     mailController = TextEditingController(text: mail);
     numberController = TextEditingController(text: phoneNumber);
-    await _initSettings();
+    passwordController = TextEditingController(text: password);
     anonymValue =
         localeManager.getNullableBoolData(LocaleKeysEnums.isUserAnonym.name) ??
             settings?.isAnonym;
+    //Returning any value because init function using in future builder and snapshot requires any data
+    return true;
   }
 
   @action
@@ -86,8 +90,9 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     settings = await services.getUserSettings();
   }
 
-  initProfileValues() {
-    if (comedUserData == null) {
+  Future<void> initProfileValues() async {
+    if (cameUserData == null) {
+      await _initSettings();
       userName =
           localeManager.getNullableStringData(LocaleKeysEnums.name.name) ??
               settings!.name;
@@ -99,12 +104,13 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
       phoneNumber = localeManager
               .getNullableStringData(LocaleKeysEnums.phoneNumber.name) ??
           settings!.phoneNumber;
-      token = localeManager.getNullableStringData(LocaleKeysEnums.token.name);
+      token = localeManager.getStringData(LocaleKeysEnums.token.name);
+      password = settings?.password;
     } else {
-      userName = comedUserData!.name;
-      mail = comedUserData!.eMail;
-      profileImage = comedUserData!.profileImage;
-      token = comedUserData!.token;
+      userName = cameUserData!.name;
+      mail = cameUserData!.eMail;
+      profileImage = cameUserData!.profileImage;
+      token = cameUserData!.token;
     }
   }
 
@@ -177,12 +183,13 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
 
   Future<void> setNewUserSettings() async {
     final bool response = await services.setNewSettings(UserSettingsModel(
-      name: nameController.text,
-      mail: mailController.text,
-      phoneNumber: numberController.text,
-      isAnonym: anonymValue,
-      //TODO: add profile image after real services
-    ));
+        name: nameController.text,
+        mail: mailController.text,
+        phoneNumber: numberController.text,
+        isAnonym: anonymValue,
+        password: passwordController.text
+        //TODO: add profile image after real services
+        ));
     if (response) {
       await _resetLocalSettingsValues();
       _navigatorPop();
@@ -212,19 +219,19 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   @action
   Future<List<PostModel>> getUserPosts() async {
     posts = ObservableList<PostModel>.of(
-        await services.getUserPosts(comedUserData?.token ?? token!) ?? []);
+        await services.getUserPosts(cameUserData?.token ?? token!) ?? []);
     return posts;
   }
 
   Future<List<ScoresModel>> getUserScores() async {
     final List<ScoresModel> response =
-        await services.getUserScores(comedUserData?.token ?? token!) ?? [];
+        await services.getUserScores(cameUserData?.token ?? token!) ?? [];
     return response;
   }
 
   Future<List<FavoreiteFoodsModel>> getUserFavoriteFoods() async {
     final List<FavoreiteFoodsModel> response =
-        await services.getFavoriteFoods(comedUserData?.token ?? token!) ?? [];
+        await services.getFavoriteFoods(cameUserData?.token ?? token!) ?? [];
     return response;
   }
 
@@ -255,6 +262,17 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<void> deleteProfileImage() async {
+    final bool response = await services.removeProfileImage(
+        localeManager.getStringData(LocaleKeysEnums.token.name));
+    if (!response) {
+      Fluttertoast.showToast(msg: "Bir şeyler ters gitti. Tekrar deneyiniz.");
+    } else {
+      await localeManager.removeData(LocaleKeysEnums.profileImage.name);
+      _navigatorPop();
     }
   }
 

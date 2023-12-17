@@ -7,6 +7,7 @@ import 'package:irish_coffe/core/widgets/custom_button.dart';
 import 'package:irish_coffe/core/widgets/custom_dropdown.dart';
 import 'package:irish_coffe/core/widgets/pop_button.dart';
 import 'package:irish_coffe/views/authantication/core/components/auth_text_field.dart';
+import 'package:irish_coffe/views/authantication/core/components/auth_text_field_password.dart';
 import 'package:irish_coffe/views/authantication/core/components/title.dart';
 import '../../../../core/consts/color_consts/color_consts.dart';
 import '../viewmodel/sign_up_viewmodel.dart';
@@ -90,8 +91,7 @@ class SignUpView extends StatelessWidget {
               padding: PaddingConsts.instance.left30,
               child: const CustomTitle(text: "Şifre")),
           const SizedBox(height: 5),
-          AuthTextField(
-            inputType: TextInputType.visiblePassword,
+          AuthTextFieldPassword(
             controller: model.passwordController,
           ),
           const SizedBox(height: 15),

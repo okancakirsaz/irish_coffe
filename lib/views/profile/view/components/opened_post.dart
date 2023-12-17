@@ -10,7 +10,7 @@ class OpenedPost extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 500,
-      width: MediaQuery.of(context).size.width - 50,
+      width: MediaQuery.of(context).size.width - 20,
       child: Column(
         children: <Widget>[
           Row(
@@ -18,9 +18,15 @@ class OpenedPost extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: PaddingConsts.instance.all10,
-                child: Text(
-                  postData.user!.name!,
-                  style: TextConsts.instance.regularWhite20Bold,
+                child: SizedBox(
+                  width: 220,
+                  child: Text(
+                    postData.user!.name!,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    softWrap: false,
+                    style: TextConsts.instance.regularWhite16Bold,
+                  ),
                 ),
               ),
               viewModel.checkIsProfileMine(postData.user!.token!)

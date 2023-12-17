@@ -7,7 +7,7 @@ class ProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-        future: viewModel.pickImageForGender(viewModel.comedUserData?.token),
+        future: viewModel.pickImageForGender(viewModel.cameUserData?.token),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Container(

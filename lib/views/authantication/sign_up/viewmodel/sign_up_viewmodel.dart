@@ -36,7 +36,7 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
     try {
       final UserDataModel request = UserDataModel(
         token: "3124rıwajroıj12j1",
-        profileImage: "",
+        profileImage: null,
         name: nameController.text,
         gender: genderController.text,
         phoneNumber: numberController.text,

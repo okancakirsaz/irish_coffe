@@ -93,6 +93,19 @@ class ProfileMockServices {
     }
   }
 
+  Future<bool> removeProfileImage(String userToken) async {
+    try {
+      for (Map<String, dynamic> data in dataSet) {
+        if (data["token"] == userToken) {
+          data["profileImage"] = null;
+        }
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Map<String, dynamic> userSettings = {
     "photoUrl":
         "https://i.pinimg.com/564x/d4/6c/54/d46c545effbcadc65546b9a6d3ba8697.jpg",
@@ -100,6 +113,7 @@ class ProfileMockServices {
     "name": "Volkan Konak",
     "phoneNumber": "05321343200",
     "isAnonym": false,
+    "password": "deneme123"
   };
 
   static List<Map<String, dynamic>> dataSet = [

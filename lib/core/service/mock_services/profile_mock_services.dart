@@ -5,6 +5,7 @@ import 'package:irish_coffe/views/profile/models/favorite_foods_model.dart';
 import 'package:irish_coffe/views/profile/models/scores_model.dart';
 import 'package:irish_coffe/views/profile/models/user_settings_model.dart';
 
+//!!!IMPORTANT TODO: We are already getting user datas with token. Sepereate datas in viewmodel file!!!
 class ProfileMockServices {
   Future<List<PostModel>?> getUserPosts(String userToken) async {
     List<PostModel> response = [];

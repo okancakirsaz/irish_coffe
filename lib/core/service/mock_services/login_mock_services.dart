@@ -28,6 +28,7 @@ class LoginMockServices {
     return res;
   }
 
+  //Deprecated, we are using profile_mock_services data in mock api
   static List<Map<String, dynamic>> dataSet = [
     {
       "e_mail": "ocakirsaz@gmail.com",

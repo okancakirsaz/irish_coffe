@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:irish_coffe/core/service/mock_services/Games_mock_services.dart';
 import 'package:irish_coffe/views/games/models/event_model.dart';
+import 'package:irish_coffe/views/games/services/games_services.dart';
 import 'package:irish_coffe/views/games/view/games_view.dart';
 import 'package:mobx/mobx.dart';
 
@@ -23,7 +23,7 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
   }
 
   final PageController pageController = PageController();
-  final GamesMockService service = GamesMockService();
+  final GamesServices service = GamesServices();
   bool isEventsFetched = false;
   late final TabController tabController;
 
@@ -44,8 +44,8 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
   }
 
   Future<List<EventModel>> getEvents() async {
-    final List<EventModel> response = await service.getEvents();
-    return response;
+    final List<EventModel>? response = await service.getActiveEvents();
+    return response ?? [];
   }
 
   Future<List<Widget>> fetchEventsToWidget() async {

@@ -4,13 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:irish_coffe/core/service/mock_services/profile_mock_services.dart';
+import 'package:irish_coffe/core/init/model/lite_user_data_model.dart';
 import 'package:irish_coffe/core/widgets/are_you_sure_dialog.dart';
-import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
+import 'package:irish_coffe/views/profile/models/boolean_single_response_model.dart';
 import 'package:irish_coffe/views/profile/models/favorite_foods_model.dart';
+import 'package:irish_coffe/views/profile/models/post_id_send_request_model.dart';
 import 'package:irish_coffe/views/profile/models/scores_model.dart';
 import 'package:irish_coffe/views/profile/models/user_settings_model.dart';
+import 'package:irish_coffe/views/profile/models/user_token_send_request_model.dart';
+import 'package:irish_coffe/views/profile/services/profile_services.dart';
 import 'package:irish_coffe/views/profile/view/profile_view.dart';
 import 'package:mobx/mobx.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
@@ -34,12 +37,12 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   String? phoneNumber;
   String? password;
   String? token;
-  UserDataModel? cameUserData;
+  LiteUserDataModel? cameUserData;
   UserSettingsModel? settings;
   final PageController pageController = PageController();
   @observable
   ObservableList<PostModel> posts = ObservableList<PostModel>.of([]);
-  final ProfileMockServices services = ProfileMockServices();
+  final ProfileServices services = ProfileServices();
   @observable
   bool? anonymValue;
   late final TextEditingController nameController;
@@ -68,9 +71,14 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   }
 
   Future<void> deleteAccount() async {
-    final bool response = await services.deleteAccount(token!);
-    if (response) {
-      logOut();
+    final BooleanSingleResponseModel? response = await services
+        .deleteAccount(UserTokenSendRequestModel(userToken: token!));
+    if (response != null) {
+      if (response.isSuccess!) {
+        logOut();
+      } else {
+        Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz");
+      }
     } else {
       Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz");
     }
@@ -87,7 +95,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   }
 
   Future<void> _initSettings() async {
-    settings = await services.getUserSettings();
+    settings = await services.getUserSettings(
+        localeManager.getStringData(LocaleKeysEnums.token.name));
   }
 
   Future<void> initProfileValues() async {
@@ -108,7 +117,6 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
       password = settings?.password;
     } else {
       userName = cameUserData!.name;
-      mail = cameUserData!.eMail;
       profileImage = cameUserData!.profileImage;
       token = cameUserData!.token;
     }
@@ -182,15 +190,16 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   }
 
   Future<void> setNewUserSettings() async {
-    final bool response = await services.setNewSettings(UserSettingsModel(
-        name: nameController.text,
-        mail: mailController.text,
-        phoneNumber: numberController.text,
-        isAnonym: anonymValue,
-        password: passwordController.text
-        //TODO: add profile image after real services
-        ));
-    if (response) {
+    final UserSettingsModel? response = await services.setNewSettings(
+        UserSettingsModel(
+            name: nameController.text,
+            mail: mailController.text,
+            phoneNumber: numberController.text,
+            isAnonym: anonymValue,
+            password: passwordController.text
+            //TODO: add profile image after real services
+            ));
+    if (response != null) {
       await _resetLocalSettingsValues();
       _navigatorPop();
     } else {
@@ -266,20 +275,27 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   }
 
   Future<void> deleteProfileImage() async {
-    final bool response = await services.removeProfileImage(
-        localeManager.getStringData(LocaleKeysEnums.token.name));
-    if (!response) {
-      Fluttertoast.showToast(msg: "Bir şeyler ters gitti. Tekrar deneyiniz.");
-    } else {
-      await localeManager.removeData(LocaleKeysEnums.profileImage.name);
-      _navigatorPop();
+    final BooleanSingleResponseModel? response =
+        await services.removeProfileImage(
+      UserTokenSendRequestModel(
+        userToken: localeManager.getStringData(LocaleKeysEnums.token.name),
+      ),
+    );
+    if (response != null) {
+      if (response.isSuccess == false) {
+        Fluttertoast.showToast(msg: "Bir şeyler ters gitti. Tekrar deneyiniz.");
+      } else {
+        await localeManager.removeData(LocaleKeysEnums.profileImage.name);
+        _navigatorPop();
+      }
     }
   }
 
   @action
   Future<void> deletePost(String postId) async {
-    final bool response = await services.removePost(postId);
-    if (response) {
+    final BooleanSingleResponseModel? response =
+        await services.removePost(PostIdSendRequestModel(postId: postId));
+    if (response != null && response.isSuccess!) {
       await getUserPosts();
     } else {
       Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz.");

@@ -1,9 +1,8 @@
 import 'dart:typed_data';
-
-import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
+import 'package:irish_coffe/core/init/model/lite_user_data_model.dart';
 
 class PostModel {
-  UserDataModel? user;
+  LiteUserDataModel? user;
   String? description;
   String? apiImage;
   String? time;
@@ -18,7 +17,7 @@ class PostModel {
   });
 
   PostModel copyWith({
-    UserDataModel? user,
+    LiteUserDataModel? user,
     String? description,
     Uint8List? image,
     String? apiImage,
@@ -46,7 +45,7 @@ class PostModel {
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-      user: json['user'] as UserDataModel?,
+      user: LiteUserDataModel.fromJson(json['user'] as Map<String, dynamic>),
       description: json['description'] as String?,
       apiImage: json['apiImage'] as String?,
       time: json['time'] as String?,

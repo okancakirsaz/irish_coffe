@@ -8,10 +8,10 @@ import 'package:irish_coffe/core/consts/color_consts/color_consts.dart';
 import 'package:irish_coffe/core/consts/padding_consts.dart';
 import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/consts/text_consts.dart';
+import 'package:irish_coffe/core/init/model/lite_user_data_model.dart';
 import 'package:irish_coffe/core/widgets/custom_app_bar.dart';
 import 'package:irish_coffe/core/widgets/custom_button.dart';
 import 'package:irish_coffe/core/widgets/custom_scaffold.dart';
-import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/profile/models/favorite_foods_model.dart';
 import 'package:irish_coffe/views/profile/models/scores_model.dart';
@@ -27,7 +27,7 @@ part 'components/opened_post.dart';
 
 class ProfileView extends StatelessWidget {
   //TODO: Implement this.
-  final UserDataModel? userData;
+  final LiteUserDataModel? userData;
   const ProfileView({super.key, this.userData});
 
   @override

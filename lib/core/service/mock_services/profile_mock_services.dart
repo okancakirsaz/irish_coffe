@@ -1,22 +1,15 @@
 import 'package:irish_coffe/core/service/mock_services/login_mock_services.dart';
-import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/profile/models/favorite_foods_model.dart';
 import 'package:irish_coffe/views/profile/models/scores_model.dart';
 import 'package:irish_coffe/views/profile/models/user_settings_model.dart';
 
-//!!!IMPORTANT TODO: We are already getting user datas with token. Sepereate datas in viewmodel file!!!
 class ProfileMockServices {
   Future<List<PostModel>?> getUserPosts(String userToken) async {
     List<PostModel> response = [];
     for (Map<String, dynamic> data in dataSet) {
       if (data["token"] == userToken) {
         for (Map<String, dynamic> post in data["posts"]) {
-          try {
-            post["user"] = UserDataModel.fromJson(post["user"]);
-          } catch (e) {
-            //Already converted
-          }
           final PostModel postAsModel = PostModel.fromJson(post);
           response.add(postAsModel);
         }

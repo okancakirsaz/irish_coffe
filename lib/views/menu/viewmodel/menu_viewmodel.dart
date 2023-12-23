@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:irish_coffe/core/service/mock_services/menu_mock_services.dart';
 import 'package:irish_coffe/views/menu/models/menu_item_model.dart';
+import 'package:irish_coffe/views/menu/services/menu_services.dart';
 import 'package:irish_coffe/views/menu/views/menu_view.dart';
 import 'package:irish_coffe/views/payment/view/payment_view.dart';
 import 'package:mobx/mobx.dart';
@@ -25,11 +25,11 @@ abstract class _MenuViewModelBase with Store, BaseViewModel {
   @observable
   ObservableList basket = ObservableList.of([]);
   List<int> selectedItemsPrices = [];
-  final MenuMockServices service = MenuMockServices();
+  final MenuServices service = MenuServices();
 
   Future<List<MenuItemModel>> getMenu() async {
-    final List<MenuItemModel> response = await service.getMenu();
-    return response;
+    final List<MenuItemModel>? response = await service.getAllMenu();
+    return response ?? [];
   }
 
   @action

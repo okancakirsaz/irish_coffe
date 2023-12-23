@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
+import 'package:irish_coffe/views/authantication/sign_up/services/sign_up_services.dart';
 import 'package:mobx/mobx.dart';
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
-import '../../../../core/service/mock_services/sign_up_mock_services.dart';
 import '../../login/viewmodel/login_viewmodel.dart';
 
 part 'sign_up_viewmodel.g.dart';
@@ -20,7 +20,7 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
     loginViewModel.viewModelContext = viewModelContext;
   }
 
-  final SignUpMockServices services = SignUpMockServices();
+  final SignUpServices services = SignUpServices();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
@@ -45,10 +45,10 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
       );
 
       if (_validation(request)) {
-        services.post(request);
+        await services.sendSignUpRequest(request);
         await loginViewModel.tryToLogin(
-            comedMail: emailController.text,
-            comedPassword: passwordController.text);
+            cameMail: emailController.text,
+            camePassword: passwordController.text);
       }
     } catch (e) {
       showErrorDialog("Bir şeyler ters gitti. Lütfen tekrar deneyiniz");

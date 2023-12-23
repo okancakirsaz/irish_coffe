@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:irish_coffe/views/authantication/login/models/login_request_model.dart';
+import 'package:irish_coffe/views/authantication/login/services/login_services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/init/navigation/navigation_enums.dart';
 import 'package:irish_coffe/core/init/navigation/navigation_manager.dart';
-import 'package:irish_coffe/core/service/mock_services/login_mock_services.dart';
 import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
 
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
@@ -18,15 +19,16 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
   void setContext(BuildContext context) => viewModelContext = context;
   @override
   void init() {}
-  final LoginMockServices services = LoginMockServices();
+  final LoginServices services = LoginServices();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
-  Future<void> tryToLogin({String? comedMail, String? comedPassword}) async {
+  Future<void> tryToLogin({String? cameMail, String? camePassword}) async {
     try {
-      final UserDataModel? response = services.getUserData(
-          comedMail ?? emailController.text,
-          comedPassword ?? passwordController.text);
+      final UserDataModel? response = await services.sendLoginRequest(
+          LoginRequestModel(
+              mail: cameMail ?? emailController.text,
+              password: camePassword ?? passwordController.text));
 
       if (response != null) {
         //Navigate to main page
@@ -37,7 +39,7 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
       }
     } catch (_) {
       //TODO: Add craslytics
-      showErrorDialog("Email veya şifre yanlış, tekrar deneyiniz.");
+      showErrorDialog("Beklenmeyen bir sorun oluştu. Lütfen tekrar deneyiniz.");
     }
   }
 

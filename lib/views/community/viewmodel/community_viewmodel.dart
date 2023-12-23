@@ -6,9 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:irish_coffe/core/consts/color_consts/color_consts.dart';
 import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
-import 'package:irish_coffe/core/service/mock_services/community_mock_service.dart';
-import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
+import 'package:irish_coffe/core/init/model/lite_user_data_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
+import 'package:irish_coffe/views/community/services/community_services.dart';
 import 'package:irish_coffe/views/community/view/community_view.dart';
 import 'package:irish_coffe/views/main/view/main_view.dart';
 import 'package:irish_coffe/views/profile/view/profile_view.dart';
@@ -30,7 +30,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
 
   final PageController pageController = PageController();
   Uint8List? pickedImage;
-  final CommunityMockService service = CommunityMockService();
+  final CommunityServices service = CommunityServices();
   final TextEditingController postDescriptionController =
       TextEditingController();
   late final TabController tabController;
@@ -110,17 +110,20 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     await service.postNewPost(
       PostModel(
         //TODO: This will be dont work use an api and get api image path
-        //apiImage: pickedImage,
+        apiImage:
+            "https://i.pinimg.com/236x/b9/41/53/b941537aa093ec0b9dc488a6811d819d.jpg", //pickedImage,
         description: postDescriptionController.text,
-        user: UserDataModel(
-          token:
-              localeManager.getNullableStringData(LocaleKeysEnums.token.name)!,
-          name: localeManager.getNullableStringData(LocaleKeysEnums.name.name)!,
-          profileImage: localeManager
-                  .getNullableStringData(LocaleKeysEnums.profileImage.name) ??
-              "",
-          phoneNumber: "",
-        ),
+        user: LiteUserDataModel(
+            token: localeManager
+                .getNullableStringData(LocaleKeysEnums.token.name)!,
+            name:
+                localeManager.getNullableStringData(LocaleKeysEnums.name.name)!,
+            profileImage: localeManager
+                    .getNullableStringData(LocaleKeysEnums.profileImage.name) ??
+                "",
+            gender: localeManager
+                    .getNullableStringData(LocaleKeysEnums.gender.name) ??
+                ""),
         time: getCurrentTimeAsString(),
         id: const Uuid().v1(),
       ),
@@ -146,11 +149,11 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   }
 
   Future<List<PostModel>> getAllPosts() async {
-    final List<PostModel> response = await service.getPosts();
-    return response;
+    final List<PostModel>? response = await service.getPosts();
+    return response ?? [];
   }
 
-  navigateToProfile(UserDataModel data) {
+  navigateToProfile(LiteUserDataModel data) {
     Navigator.push(
         viewModelContext,
         CupertinoPageRoute(

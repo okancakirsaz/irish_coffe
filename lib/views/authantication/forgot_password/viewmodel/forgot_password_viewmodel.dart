@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:irish_coffe/views/authantication/forgot_password/model/forgot_password_request_model.dart';
+import 'package:irish_coffe/views/authantication/forgot_password/model/forgot_password_response_model.dart';
+import 'package:irish_coffe/views/authantication/forgot_password/service/forgot_password_services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/init/navigation/navigation_enums.dart';
 import 'package:irish_coffe/core/init/navigation/navigation_manager.dart';
-import 'package:irish_coffe/core/models/mail_status_model.dart';
-import 'package:irish_coffe/core/service/mock_services/forgot_password_mock_service.dart';
 
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
 
@@ -28,17 +30,22 @@ abstract class _ForgotPasswordViewModelBase with Store, BaseViewModel {
     }
   }
 
-  final ForgotPasswordMockService service = ForgotPasswordMockService();
+  final ForgotPasswordServices service = ForgotPasswordServices();
   final TextEditingController controller = TextEditingController();
 
   Future<void> takeMailStatus() async {
-    final MailStatusModel? response = await service.getStatus(controller.text);
-    if (response!.isMailSended) {
-      //TODO: Add succesfull UI
-      navigateToLoginPage();
+    final ForgotPasswordResponseModel? response = await service
+        .postEmailData(ForgotPasswordRequestModel(mailAdress: controller.text));
+    if (response != null) {
+      if (response.isMailSended) {
+        Fluttertoast.showToast(msg: "Doğrulama e-postası gönderildi.");
+        navigateToLoginPage();
+      } else {
+        Fluttertoast.showToast(msg: response.reason!);
+      }
     } else {
-      //TODO: Add error screen
-      print("Reasoned error screen");
+      Fluttertoast.showToast(
+          msg: "Beklenmeyen bir sorun oluştu, tekrar deneyiniz.");
     }
   }
 

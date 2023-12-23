@@ -1,13 +1,25 @@
-class MailStatusModel {
+class ForgotPasswordResponseModel {
   String mailAdress;
   bool isMailSended;
   String? reason;
 
-  MailStatusModel({
+  ForgotPasswordResponseModel({
     required this.mailAdress,
     required this.isMailSended,
-    this.reason,
+    required this.reason,
   });
+
+  ForgotPasswordResponseModel copyWith({
+    String? mailAdress,
+    bool? isMailSended,
+    String? reason,
+  }) {
+    return ForgotPasswordResponseModel(
+      mailAdress: mailAdress ?? this.mailAdress,
+      isMailSended: isMailSended ?? this.isMailSended,
+      reason: reason ?? this.reason,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -17,8 +29,8 @@ class MailStatusModel {
     };
   }
 
-  factory MailStatusModel.fromJson(Map<String, dynamic> json) {
-    return MailStatusModel(
+  factory ForgotPasswordResponseModel.fromJson(Map<String, dynamic> json) {
+    return ForgotPasswordResponseModel(
       mailAdress: json['mailAdress'] as String,
       isMailSended: json['isMailSended'] as bool,
       reason: json['reason'] as String?,
@@ -27,7 +39,7 @@ class MailStatusModel {
 
   @override
   String toString() =>
-      "MailStatusModel(mailAdress: $mailAdress,isMailSended: $isMailSended,reason: $reason)";
+      "ForgotPasswordResponseModel(mailAdress: $mailAdress,isMailSended: $isMailSended,reason: $reason)";
 
   @override
   int get hashCode => Object.hash(mailAdress, isMailSended, reason);
@@ -35,7 +47,7 @@ class MailStatusModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MailStatusModel &&
+      other is ForgotPasswordResponseModel &&
           runtimeType == other.runtimeType &&
           mailAdress == other.mailAdress &&
           isMailSended == other.isMailSended &&

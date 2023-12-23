@@ -1,9 +1,9 @@
-import 'package:irish_coffe/core/models/mail_status_model.dart';
+import 'package:irish_coffe/views/authantication/forgot_password/model/forgot_password_response_model.dart';
 
 class ForgotPasswordMockService {
-  MailStatusModel? getStatus(String mail) {
+  ForgotPasswordResponseModel? getStatus(String mail) {
     try {
-      return MailStatusModel.fromJson(alternativeDataSet);
+      return ForgotPasswordResponseModel.fromJson(alternativeDataSet);
     } catch (_) {
       return null;
     }

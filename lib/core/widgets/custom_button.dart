@@ -23,13 +23,16 @@ class CustomButton extends StatelessWidget {
       height: height,
       child: ElevatedButton(
           style: ButtonStyle(
-              backgroundColor:
-                  MaterialStatePropertyAll(ColorConsts.instance.lightGray),
-              elevation: const MaterialStatePropertyAll(0),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: RadiusConsts.instance.circularAll100,
-                      side: BorderSide(color: ColorConsts.instance.black)))),
+            backgroundColor:
+                MaterialStatePropertyAll(ColorConsts.instance.lightGray),
+            elevation: const MaterialStatePropertyAll(0),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: RadiusConsts.instance.circularAll100,
+                side: BorderSide(color: ColorConsts.instance.black),
+              ),
+            ),
+          ),
           onPressed: onPressed,
           child: Text(
             text,

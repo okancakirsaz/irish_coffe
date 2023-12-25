@@ -1,4 +1,4 @@
-package com.example.irish_coffe
+package com.app.irish_coffe
 
 import io.flutter.embedding.android.FlutterActivity
 

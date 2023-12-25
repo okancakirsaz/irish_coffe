@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:irish_coffe/core/init/cache/local_manager.dart';
-import 'package:irish_coffe/core/service/mock_services/login_mock_services.dart';
-import 'package:irish_coffe/views/authantication/core/models/user_data_model.dart';
 
 import '../../consts/asset_consts.dart';
-import '../../init/cache/local_keys_enums.dart';
 
 abstract mixin class BaseViewModel {
   late BuildContext viewModelContext;
@@ -12,17 +9,7 @@ abstract mixin class BaseViewModel {
   LocaleManager localeManager = LocaleManager.instance;
   void init() {}
   final ScrollController defaultScrollController = ScrollController();
-  Future<String> pickImageForGender([String? userToken]) async {
-    String? gender;
-    if (userToken == null) {
-      gender = localeManager.getNullableStringData(LocaleKeysEnums.gender.name);
-    } else {
-      //TODO: Deprecate dependency injection
-      final UserDataModel user =
-          await LoginMockServices.findUserFromToken(userToken);
-      gender = user.gender;
-    }
-
+  String pickImageForGender(String gender) {
     if (gender == "Kadın") {
       return AssetConsts.instance.woman;
     } else {

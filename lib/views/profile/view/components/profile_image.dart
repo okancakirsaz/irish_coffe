@@ -6,30 +6,22 @@ class ProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-        future: viewModel.pickImageForGender(viewModel.cameUserData?.token),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: viewModel.profileImage != null
-                      ? NetworkImage(viewModel.profileImage!)
-                      : Svg(
-                          snapshot.data!,
-                        ) as ImageProvider<Object>,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        });
+    return Container(
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        image: DecorationImage(
+          image: NetworkImage(viewModel.profileImage ?? ""),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: viewModel.profileImage == null
+          ? SvgPicture.asset(
+              viewModel.pickImageForGender(viewModel.gender!),
+              fit: BoxFit.contain,
+            )
+          : null,
+    );
   }
 }

@@ -10,6 +10,7 @@
         "Paylaşımları",
         "Profilim",
         "Topluluk",
-        "viewmodel"
+        "viewmodel",
+        "vsync"
     ]
 }

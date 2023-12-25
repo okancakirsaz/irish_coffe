@@ -37,6 +37,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   String? phoneNumber;
   String? password;
   String? token;
+  String? gender;
   LiteUserDataModel? cameUserData;
   UserSettingsModel? settings;
   final PageController pageController = PageController();
@@ -58,9 +59,6 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     mailController = TextEditingController(text: mail);
     numberController = TextEditingController(text: phoneNumber);
     passwordController = TextEditingController(text: password);
-    anonymValue =
-        localeManager.getNullableBoolData(LocaleKeysEnums.isUserAnonym.name) ??
-            settings?.isAnonym;
     //Returning any value because init function using in future builder and snapshot requires any data
     return true;
   }
@@ -114,8 +112,13 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
               .getNullableStringData(LocaleKeysEnums.phoneNumber.name) ??
           settings!.phoneNumber;
       token = localeManager.getStringData(LocaleKeysEnums.token.name);
+      anonymValue = localeManager
+              .getNullableBoolData(LocaleKeysEnums.isUserAnonym.name) ??
+          settings?.isAnonym;
+      gender = localeManager.getStringData(LocaleKeysEnums.gender.name);
       password = settings?.password;
     } else {
+      gender = cameUserData!.gender;
       userName = cameUserData!.name;
       profileImage = cameUserData!.profileImage;
       token = cameUserData!.token;
@@ -209,6 +212,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
 
   Future<void> _resetLocalSettingsValues() async {
     await _initSettings();
+    /*This function is not saving your changes to local. This function saving api settings datas to local */
     await localeManager.setNullableStringData(
         LocaleKeysEnums.name.name, settings!.name);
     await localeManager.setNullableStringData(

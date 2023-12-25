@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:irish_coffe/core/base/view/base_view.dart';
 import 'package:irish_coffe/core/consts/asset_consts.dart';
 import 'package:irish_coffe/core/consts/color_consts/color_consts.dart';

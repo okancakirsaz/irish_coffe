@@ -35,20 +35,11 @@ class SharedPost extends StatelessWidget {
           )
         : Padding(
             padding: PaddingConsts.instance.left10,
-            child: FutureBuilder<String>(
-                future: viewModel.pickImageForGender(data.user!.token),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return CircleAvatar(
-                      child: SvgPicture.asset(snapshot.data!),
-                    );
-                  } else {
-                    return CircleAvatar(
-                      child: SvgPicture.asset(AssetConsts.instance.man),
-                    );
-                  }
-                }),
-          );
+            child: CircleAvatar(
+              child: SvgPicture.asset(
+                viewModel.pickImageForGender(data.user!.gender ?? "Erkek"),
+              ),
+            ));
   }
 
   Widget infoBar() {

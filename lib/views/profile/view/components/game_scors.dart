@@ -28,9 +28,7 @@ class GameScors extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image(
-            image: Svg(AssetConsts.instance.snake),
-          ),
+          SvgPicture.asset(AssetConsts.instance.snake),
           Text(
             "Bu kullanıcı daha önce hiç oyun oynamamış :(",
             style: TextConsts.instance.regularBlack25Bold,
@@ -60,14 +58,12 @@ class GameScors extends StatelessWidget {
               height: 50,
               child: Column(
                 children: <Widget>[
-                  Image(
+                  SvgPicture.asset(
                     width: 30,
                     height: 30,
-                    image: Svg(
-                      snapshot[index].isWinned
-                          ? AssetConsts.instance.rainbow
-                          : AssetConsts.instance.pipe,
-                    ),
+                    snapshot[index].isWinned
+                        ? AssetConsts.instance.rainbow
+                        : AssetConsts.instance.pipe,
                   ),
                   Text(
                     snapshot[index].isWinned ? "Kazandı" : "Kaybetti",

@@ -28,9 +28,7 @@ class FavoriteFoods extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image(
-            image: Svg(AssetConsts.instance.beer),
-          ),
+          SvgPicture.asset(AssetConsts.instance.beer),
           Text(
             "Bu kullanıcı henüz sipariş vermemiş",
             style: TextConsts.instance.regularBlack25Bold,

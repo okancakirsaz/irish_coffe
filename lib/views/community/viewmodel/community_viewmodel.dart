@@ -2,11 +2,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:irish_coffe/core/consts/color_consts/color_consts.dart';
 import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/init/model/lite_user_data_model.dart';
+import 'package:irish_coffe/views/community/models/currently_in_irish_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/community/services/community_services.dart';
 import 'package:irish_coffe/views/community/view/community_view.dart';
@@ -160,5 +162,27 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
             builder: (context) => ProfileView(
                   userData: data,
                 )));
+  }
+
+  Future<List<CurrentlyInIrishModel>?> getCustomerList() async {
+    final List<CurrentlyInIrishModel>? response =
+        await service.getWhoInIrishData();
+    return response;
+  }
+
+  checkUserIsAnonymAndNavigateProfile(CurrentlyInIrishModel data) {
+    if (data.isAnonym) {
+      Fluttertoast.showToast(
+          msg: "Kullanıcı anonim kalmak istediği için profilini açamazsınız.",
+          backgroundColor: ColorConsts.instance.orange);
+    } else {
+      navigateToProfile(
+        LiteUserDataModel(
+            name: data.name,
+            gender: data.gender,
+            token: data.token,
+            profileImage: data.profileImage),
+      );
+    }
   }
 }

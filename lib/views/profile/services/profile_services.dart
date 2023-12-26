@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'package:flutter/material.dart';
+import 'package:irish_coffe/core/consts/app_consts.dart';
 import 'package:irish_coffe/core/init/network_manager.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/profile/models/user_token_send_request_model.dart';
@@ -13,8 +14,8 @@ import 'package:irish_coffe/views/profile/models/user_settings_model.dart';
 final class ProfileServices extends NetworkManager {
   Future<List<PostModel>?> getUserPosts(String userToken) async {
     try {
-      final response = await network
-          .get("/users", queryParameters: {"tokenForPosts": userToken});
+      final response = await network.get(AppConst.instance.users,
+          queryParameters: {"tokenForPosts": userToken});
       List<PostModel> responseAsData = [];
       (response.data as List<dynamic>).forEach((element) {
         responseAsData.add(PostModel.fromJson(element));
@@ -28,8 +29,8 @@ final class ProfileServices extends NetworkManager {
 
   Future<List<ScoresModel>?> getUserScores(String userToken) async {
     try {
-      final response = await network
-          .get("/users", queryParameters: {"tokenForScores": userToken});
+      final response = await network.get(AppConst.instance.users,
+          queryParameters: {"tokenForScores": userToken});
       List<ScoresModel> responseAsData = [];
       (response.data as List<dynamic>).forEach((element) {
         responseAsData.add(ScoresModel.fromJson(element));
@@ -43,8 +44,8 @@ final class ProfileServices extends NetworkManager {
 
   Future<List<FavoreiteFoodsModel>?> getFavoriteFoods(String userToken) async {
     try {
-      final response = await network
-          .get("/users", queryParameters: {"tokenForFoods": userToken});
+      final response = await network.get(AppConst.instance.users,
+          queryParameters: {"tokenForFoods": userToken});
       List<FavoreiteFoodsModel> responseAsData = [];
       (response.data as List<dynamic>).forEach((element) {
         responseAsData.add(FavoreiteFoodsModel.fromJson(element));
@@ -59,7 +60,8 @@ final class ProfileServices extends NetworkManager {
   Future<BooleanSingleResponseModel?> deleteAccount(
       UserTokenSendRequestModel data) async {
     try {
-      final response = await network.post("/delete-account", data: data);
+      final response =
+          await network.post(AppConst.instance.deleteAccount, data: data);
       return BooleanSingleResponseModel.fromJson(response.data);
     } catch (_) {
       debugPrint(_.toString());
@@ -69,8 +71,8 @@ final class ProfileServices extends NetworkManager {
 
   Future<UserSettingsModel?> getUserSettings(String userToken) async {
     try {
-      final response = await network
-          .get("/user-settings", queryParameters: {"token": userToken});
+      final response = await network.get(AppConst.instance.userSettings,
+          queryParameters: {"token": userToken});
       return UserSettingsModel.fromJson(response.data);
     } catch (_) {
       debugPrint(_.toString());
@@ -80,7 +82,8 @@ final class ProfileServices extends NetworkManager {
 
   Future<UserSettingsModel?> setNewSettings(UserSettingsModel data) async {
     try {
-      final response = await network.post("/set-new-user-settings", data: data);
+      final response =
+          await network.post(AppConst.instance.setNewUserSettings, data: data);
       return UserSettingsModel.fromJson(response.data);
     } catch (_) {
       debugPrint(_.toString());
@@ -91,7 +94,8 @@ final class ProfileServices extends NetworkManager {
   Future<BooleanSingleResponseModel?> removePost(
       PostIdSendRequestModel data) async {
     try {
-      final response = await network.post("/delete-post", data: data);
+      final response =
+          await network.post(AppConst.instance.deletePost, data: data);
       return BooleanSingleResponseModel.fromJson(response.data);
     } catch (_) {
       debugPrint(_.toString());
@@ -102,7 +106,8 @@ final class ProfileServices extends NetworkManager {
   Future<BooleanSingleResponseModel?> removeProfileImage(
       UserTokenSendRequestModel data) async {
     try {
-      final response = await network.post("/delete-profile-image", data: data);
+      final response =
+          await network.post(AppConst.instance.deleteProfileImage, data: data);
       return BooleanSingleResponseModel.fromJson(response.data);
     } catch (_) {
       debugPrint(_.toString());

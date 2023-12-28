@@ -41,6 +41,22 @@ mixin _$CommunityViewModel on _CommunityViewModelBase, Store {
     });
   }
 
+  late final _$customersAtom =
+      Atom(name: '_CommunityViewModelBase.customers', context: context);
+
+  @override
+  ObservableList<CurrentlyInIrishModel> get customers {
+    _$customersAtom.reportRead();
+    return super.customers;
+  }
+
+  @override
+  set customers(ObservableList<CurrentlyInIrishModel> value) {
+    _$customersAtom.reportWrite(value, super.customers, () {
+      super.customers = value;
+    });
+  }
+
   late final _$getFirstPostsAsyncAction =
       AsyncAction('_CommunityViewModelBase.getFirstPosts', context: context);
 
@@ -57,11 +73,20 @@ mixin _$CommunityViewModel on _CommunityViewModelBase, Store {
     return _$getMorePostsAsyncAction.run(() => super.getMorePosts());
   }
 
+  late final _$getCustomerListAsyncAction =
+      AsyncAction('_CommunityViewModelBase.getCustomerList', context: context);
+
+  @override
+  Future<void> getCustomerList() {
+    return _$getCustomerListAsyncAction.run(() => super.getCustomerList());
+  }
+
   @override
   String toString() {
     return '''
 moreDataNotExist: ${moreDataNotExist},
-allPosts: ${allPosts}
+allPosts: ${allPosts},
+customers: ${customers}
     ''';
   }
 }

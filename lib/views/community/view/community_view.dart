@@ -11,7 +11,6 @@ import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/widgets/custom_button.dart';
 import 'package:irish_coffe/core/widgets/custom_scaffold.dart';
 import 'package:irish_coffe/core/widgets/custom_sliver_app_bar.dart';
-import 'package:irish_coffe/views/community/models/currently_in_irish_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/community/viewmodel/community_viewmodel.dart';
 import '../../../core/consts/text_consts.dart';

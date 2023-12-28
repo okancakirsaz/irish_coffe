@@ -3,6 +3,7 @@ class CurrentlyInIrishModel {
   String gender;
   bool isAnonym;
   String token;
+  int index;
   String? profileImage;
 
   CurrentlyInIrishModel({
@@ -10,6 +11,7 @@ class CurrentlyInIrishModel {
     required this.gender,
     required this.isAnonym,
     required this.token,
+    required this.index,
     required this.profileImage,
   });
 
@@ -25,6 +27,7 @@ class CurrentlyInIrishModel {
       gender: gender ?? this.gender,
       isAnonym: isAnonym ?? this.isAnonym,
       token: token ?? this.token,
+      index: index,
       profileImage: profileImage ?? this.profileImage,
     );
   }
@@ -35,6 +38,7 @@ class CurrentlyInIrishModel {
       'gender': gender,
       'isAnonym': isAnonym,
       'token': token,
+      'index': index,
       'profileImage': profileImage,
     };
   }
@@ -45,13 +49,14 @@ class CurrentlyInIrishModel {
       gender: json['gender'] as String,
       isAnonym: json['isAnonym'] as bool,
       token: json['token'] as String,
+      index: json['index'] as int,
       profileImage: json['profileImage'] as String?,
     );
   }
 
   @override
   String toString() =>
-      "CurrentlyInIrishModel(name: $name,gender: $gender,isAnonym: $isAnonym,token: $token,profileImage: $profileImage)";
+      "CurrentlyInIrishModel(name: $name,gender: $gender,isAnonym: $isAnonym,token: $token,profileImage: $profileImage, index:$index)";
 
   @override
   int get hashCode => Object.hash(name, gender, isAnonym, token, profileImage);

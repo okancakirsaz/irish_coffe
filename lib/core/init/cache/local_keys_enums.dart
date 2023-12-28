@@ -7,5 +7,6 @@ enum LocaleKeysEnums {
   phoneNumber,
   gender,
   posts,
-  lastCamePost
+  lastCamePost,
+  customers
 }

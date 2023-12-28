@@ -32,6 +32,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   init() async {
     postsScrollController = ScrollController();
     await getPostsFirstInit();
+    await getCustomersFirstInit();
     addScrollControllerPageFinishListener(postsScrollController);
   }
 
@@ -50,6 +51,9 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   bool isDataLoadSuccessful = false;
   @observable
   ObservableList<PostModel> allPosts = ObservableList<PostModel>.of([]);
+  @observable
+  ObservableList<CurrentlyInIrishModel> customers =
+      ObservableList<CurrentlyInIrishModel>.of([]);
 
   navigateToIndexedPage(int index) {
     pageController.animateToPage(index,
@@ -180,6 +184,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     } else {
       //Posts already cached.
       allPosts = convertCachedPostsToModel();
+      isDataLoadSuccessful = true;
     }
   }
 
@@ -253,10 +258,47 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
                 )));
   }
 
-  Future<List<CurrentlyInIrishModel>?> getCustomerList() async {
-    final List<CurrentlyInIrishModel>? response =
-        await service.getWhoInIrishData();
-    return response;
+  @action
+  Future<void> getCustomerList() async {
+    try {
+      isDataLoadSuccessful = false;
+      final List<CurrentlyInIrishModel>? response =
+          await service.getWhoInIrishData();
+      await localeManager.setJsonData(LocaleKeysEnums.customers.name, response);
+      isDataLoadSuccessful = true;
+      customers = convertCachedCustomerListAsModel();
+    } catch (e) {
+      debugPrint("$e");
+      Fluttertoast.showToast(
+          backgroundColor: ColorConsts.instance.orange,
+          msg: "Bir sorun oluştu. Tekrar deneyiniz.");
+    }
+  }
+
+  ObservableList<CurrentlyInIrishModel> convertCachedCustomerListAsModel() {
+    final List<dynamic> cachedList =
+        localeManager.getJsonData(LocaleKeysEnums.customers.name);
+    ObservableList<CurrentlyInIrishModel> convertedList =
+        ObservableList<CurrentlyInIrishModel>.of([]);
+    for (var element in cachedList) {
+      convertedList.add(
+        CurrentlyInIrishModel.fromJson(element),
+      );
+    }
+
+    return convertedList;
+  }
+
+  Future<void> getCustomersFirstInit() async {
+    List<dynamic>? cachedList =
+        localeManager.getNullableJsonData(LocaleKeysEnums.customers.name);
+    if (cachedList == null) {
+      await getCustomerList();
+    } else {
+      //Customers already cached.
+      customers = convertCachedCustomerListAsModel();
+      isDataLoadSuccessful = true;
+    }
   }
 
   checkUserIsAnonymAndNavigateProfile(CurrentlyInIrishModel data) {

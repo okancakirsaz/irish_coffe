@@ -6,6 +6,8 @@ class CommunityShares extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: IMPORTANT!!! Sliver app bar dont work in the list mod
+
     return Observer(builder: (context) {
       if (viewModel.allPosts.isNotEmpty) {
         return buildPostList(viewModel);

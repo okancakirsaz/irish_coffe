@@ -18,6 +18,7 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
   @override
   init() async {
     await localeManager.removeData(LocaleKeysEnums.posts.name);
+    await localeManager.removeData(LocaleKeysEnums.customers.name);
   }
 
   @observable

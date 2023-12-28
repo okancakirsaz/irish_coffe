@@ -1,3 +1,4 @@
+import 'package:irish_coffe/views/community/models/currently_in_irish_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 
 class CommunityMockService {
@@ -22,8 +23,13 @@ class CommunityMockService {
     //Nothing.
   }
 
-  getWhoInIrishData() {
-    //Nothing.
+  Future<List<CurrentlyInIrishModel>>? getWhoInIrishData() async {
+    await Future.delayed(const Duration(seconds: 1));
+    List<CurrentlyInIrishModel> modelList = [];
+    for (var data in currentlyInIrish) {
+      modelList.add(CurrentlyInIrishModel.fromJson(data));
+    }
+    return modelList;
   }
 
   static List<Map<String, dynamic>> posts = [
@@ -85,4 +91,99 @@ class CommunityMockService {
       "id": "sdsds-dasdsa-dasdsa-dasdgdhshdas"
     }
   ];
+
+  static List<Map<String, dynamic>> currentlyInIrish = [
+    {
+      "name": "Volkan Konak",
+      "gender": "Erkek",
+      "index": 1,
+      "isAnonym": false,
+      "token": "UFC123JAOKF0P0ICJOJFOĞ0Q0J03UJVPOAS",
+      "profileImage":
+          "https://i.pinimg.com/236x/0f/74/81/0f7481fcf1051babffa8a03c34c24ea8.jpg"
+    },
+    {
+      "name": "İrem Abdestsizyatmazoğulları",
+      "gender": "Kadın",
+      "index": 2,
+      "isAnonym": false,
+      "token": "UFC123JAOKF0P0ICdas",
+      "profileImage": null
+    },
+    {
+      "name": "Süleyman Soyluluğutartışılıroğulları",
+      "gender": "Belirtmek İstemiyorum",
+      "index": 3,
+      "isAnonym": false,
+      "token": "orspıucocy",
+      "profileImage": null
+    },
+    {
+      "name": "Volkan Konak",
+      "gender": "Erkek",
+      "index": 1,
+      "isAnonym": false,
+      "token": "UFC123JAOKF0P0ICJOJFOĞ0Q0J03UJVPOAS",
+      "profileImage":
+          "https://i.pinimg.com/236x/0f/74/81/0f7481fcf1051babffa8a03c34c24ea8.jpg"
+    },
+    {
+      "name": "İrem Abdestsizyatmazoğulları",
+      "gender": "Kadın",
+      "index": 2,
+      "isAnonym": false,
+      "token": "UFC123JAOKF0P0ICdas",
+      "profileImage": null
+    },
+    {
+      "name": "Süleyman Soyluluğutartışılıroğulları",
+      "gender": "Belirtmek İstemiyorum",
+      "index": 3,
+      "isAnonym": false,
+      "token": "orspıucocy",
+      "profileImage": null
+    },
+    {
+      "name": "Keziban Materyılgörloğulları",
+      "gender": "Kadın",
+      "index": 4,
+      "isAnonym": true,
+      "token": "saodsajfıhsaofp",
+      "profileImage": null
+    },
+    {
+      "name": "Bernand Redflag",
+      "gender": "Belirtmek İstemiyorum",
+      "index": 5,
+      "isAnonym": false,
+      "token": "anasınıs2ktinekonominin",
+      "profileImage": "https://abcgazetesi.com/d/news/8331.jpg"
+    },
+    {
+      "name": "Adnan Arrowtar",
+      "gender": "Erkek",
+      "index": 6,
+      "isAnonym": true,
+      "token": "u0p",
+      "profileImage": null
+    },
+    {
+      "name": "Hacer Hacıyatmaz",
+      "gender": "Kadın",
+      "index": 7,
+      "isAnonym": false,
+      "token": "dsadsadsadsa",
+      "profileImage": null
+    },
+    {
+      "name": "Sümeyye Redflag",
+      "gender": "Kadın",
+      "index": 8,
+      "isAnonym": false,
+      "token": "ıoFJPOS",
+      "profileImage": "https://abcgazetesi.com/d/news/8331.jpg"
+    }
+  ];
+
+  static List emptyList = [];
 }

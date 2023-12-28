@@ -7,6 +7,7 @@ import 'package:irish_coffe/views/community/models/currently_in_irish_model.dart
 import 'package:irish_coffe/views/community/models/post_model.dart';
 
 final class CommunityServices extends NetworkManager {
+  //TODO: Add get more posts
   Future<List<PostModel>?> getPosts() async {
     try {
       final response = await network.get(AppConst.instance.communityShares);

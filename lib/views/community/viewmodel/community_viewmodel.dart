@@ -6,11 +6,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:irish_coffe/core/consts/color_consts/color_consts.dart';
 import 'package:irish_coffe/core/consts/radius_consts.dart';
+import 'package:irish_coffe/core/consts/text_consts.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/init/model/lite_user_data_model.dart';
+import 'package:irish_coffe/core/service/mock_services/community_mock_service.dart';
 import 'package:irish_coffe/views/community/models/currently_in_irish_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
-import 'package:irish_coffe/views/community/services/community_services.dart';
 import 'package:irish_coffe/views/community/view/community_view.dart';
 import 'package:irish_coffe/views/main/view/main_view.dart';
 import 'package:irish_coffe/views/profile/view/profile_view.dart';
@@ -28,14 +29,27 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   void setContext(BuildContext context) => viewModelContext = context;
 
   @override
-  void init() {}
+  init() async {
+    postsScrollController = ScrollController();
+    await getPostsFirstInit();
+    addScrollControllerPageFinishListener(postsScrollController);
+  }
 
   final PageController pageController = PageController();
   Uint8List? pickedImage;
-  final CommunityServices service = CommunityServices();
+
+  //TODO:Change to real services
+  final CommunityMockService service = CommunityMockService();
+  late final ScrollController postsScrollController;
   final TextEditingController postDescriptionController =
       TextEditingController();
   late final TabController tabController;
+
+  @observable
+  Widget? moreDataNotExist;
+  bool isDataLoadSuccessful = false;
+  @observable
+  ObservableList<PostModel> allPosts = ObservableList<PostModel>.of([]);
 
   navigateToIndexedPage(int index) {
     pageController.animateToPage(index,
@@ -48,6 +62,14 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
 
   whenPageChangedWithHand(int index) {
     tabController.animateTo(index);
+  }
+
+  addScrollControllerPageFinishListener(ScrollController controller) {
+    controller.addListener(() {
+      if (controller.position.pixels == controller.position.maxScrollExtent) {
+        getMorePosts();
+      }
+    });
   }
 
   openImageModeSelector() {
@@ -150,9 +172,76 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     return "$day.$month.$year/$hour.$minute";
   }
 
-  Future<List<PostModel>> getAllPosts() async {
-    final List<PostModel>? response = await service.getPosts();
-    return response ?? [];
+  Future<void> getPostsFirstInit() async {
+    List<dynamic>? cachedPosts =
+        localeManager.getNullableJsonData(LocaleKeysEnums.posts.name);
+    if (cachedPosts == null) {
+      await getFirstPosts();
+    } else {
+      //Posts already cached.
+      allPosts = convertCachedPostsToModel();
+    }
+  }
+
+  @action
+  Future<void> getFirstPosts() async {
+    try {
+      final List<PostModel>? response = await service.getPosts();
+      await localeManager.setJsonData(
+          LocaleKeysEnums.posts.name, response ?? []);
+      allPosts = convertCachedPostsToModel();
+      if (allPosts.isNotEmpty) {
+        await localeManager.setStringData(
+            LocaleKeysEnums.lastCamePost.name, allPosts.last.time!);
+      }
+      isDataLoadSuccessful = true;
+    } catch (e) {
+      debugPrint("$e");
+      Fluttertoast.showToast(
+          backgroundColor: ColorConsts.instance.orange,
+          msg: "Bir sorun oluştu. Tekrar deneyiniz.");
+    }
+  }
+
+  @action
+  Future<void> getMorePosts() async {
+    final List<PostModel> response = await service.getMorePosts(
+        localeManager.getStringData(LocaleKeysEnums.lastCamePost.name));
+    if (response.isEmpty) {
+      moreDataNotExist = Text(
+        "O kadar çok kaydırdın ki görüntülenebilecek başka içerik bırakmadın. :)",
+        style: TextConsts.instance.regularBlack14Bold,
+        textAlign: TextAlign.center,
+      );
+    }
+    for (PostModel post in response) {
+      allPosts.add(post);
+    }
+    await cacheMoreGettedPosts();
+  }
+
+  Future<void> cacheMoreGettedPosts() async {
+    List<Map<String, dynamic>> allPostsAsJson = [];
+    for (PostModel post in allPosts) {
+      allPostsAsJson.add(post.toJson());
+    }
+    await localeManager.setJsonData(LocaleKeysEnums.posts.name, allPostsAsJson);
+    await localeManager.setStringData(
+        LocaleKeysEnums.lastCamePost.name, allPosts.last.time!);
+  }
+
+  ObservableList<PostModel> convertCachedPostsToModel() {
+    final List<dynamic> cachedList =
+        localeManager.getJsonData(LocaleKeysEnums.posts.name);
+    ObservableList<PostModel> convertedList = ObservableList<PostModel>.of([]);
+
+    for (var element in cachedList) {
+      convertedList.add(
+        PostModel.fromJson(element),
+      );
+    }
+
+    return convertedList;
   }
 
   navigateToProfile(LiteUserDataModel data) {

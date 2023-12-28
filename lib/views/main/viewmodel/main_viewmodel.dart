@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/views/community/view/community_view.dart';
 import 'package:irish_coffe/views/games/view/games_view.dart';
 import 'package:irish_coffe/views/menu/views/menu_view.dart';
@@ -15,7 +16,9 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
   @override
   void setContext(BuildContext context) => viewModelContext = context;
   @override
-  void init() {}
+  init() async {
+    await localeManager.removeData(LocaleKeysEnums.posts.name);
+  }
 
   @observable
   ObservableList<Widget> pages = ObservableList.of(<Widget>[

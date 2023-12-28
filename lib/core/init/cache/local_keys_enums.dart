@@ -5,5 +5,7 @@ enum LocaleKeysEnums {
   profileImage,
   isUserAnonym,
   phoneNumber,
-  gender
+  gender,
+  posts,
+  lastCamePost
 }

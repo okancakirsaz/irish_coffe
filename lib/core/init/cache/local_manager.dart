@@ -9,7 +9,7 @@ class LocaleManager {
     _instance = await SharedPreferences.getInstance();
   }
 
-  Future<void> setJsonData(String key, Map<String, dynamic> value) async {
+  Future<void> setJsonData(String key, dynamic value) async {
     await _instance.setString(key, jsonEncode(value));
   }
 
@@ -19,7 +19,7 @@ class LocaleManager {
     }
   }
 
-  Map<String, dynamic> getJsonData(String key) {
+  dynamic getJsonData(String key) {
     return jsonDecode(_instance.getString(key)!);
   }
 

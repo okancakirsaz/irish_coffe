@@ -41,6 +41,55 @@ mixin _$MenuViewModel on _MenuViewModelBase, Store {
     });
   }
 
+  late final _$allMenuAtom =
+      Atom(name: '_MenuViewModelBase.allMenu', context: context);
+
+  @override
+  ObservableList<MenuItemModel> get allMenu {
+    _$allMenuAtom.reportRead();
+    return super.allMenu;
+  }
+
+  @override
+  set allMenu(ObservableList<MenuItemModel> value) {
+    _$allMenuAtom.reportWrite(value, super.allMenu, () {
+      super.allMenu = value;
+    });
+  }
+
+  late final _$isLoadSuccessfulAtom =
+      Atom(name: '_MenuViewModelBase.isLoadSuccessful', context: context);
+
+  @override
+  bool get isLoadSuccessful {
+    _$isLoadSuccessfulAtom.reportRead();
+    return super.isLoadSuccessful;
+  }
+
+  @override
+  set isLoadSuccessful(bool value) {
+    _$isLoadSuccessfulAtom.reportWrite(value, super.isLoadSuccessful, () {
+      super.isLoadSuccessful = value;
+    });
+  }
+
+  late final _$getMenuAsyncAction =
+      AsyncAction('_MenuViewModelBase.getMenu', context: context);
+
+  @override
+  Future<void> getMenu() {
+    return _$getMenuAsyncAction.run(() => super.getMenu());
+  }
+
+  late final _$getAllMenuFirstInitAsyncAction =
+      AsyncAction('_MenuViewModelBase.getAllMenuFirstInit', context: context);
+
+  @override
+  Future<void> getAllMenuFirstInit() {
+    return _$getAllMenuFirstInitAsyncAction
+        .run(() => super.getAllMenuFirstInit());
+  }
+
   late final _$_MenuViewModelBaseActionController =
       ActionController(name: '_MenuViewModelBase', context: context);
 
@@ -81,7 +130,9 @@ mixin _$MenuViewModel on _MenuViewModelBase, Store {
   String toString() {
     return '''
 selectedItemCount: ${selectedItemCount},
-basket: ${basket}
+basket: ${basket},
+allMenu: ${allMenu},
+isLoadSuccessful: ${isLoadSuccessful}
     ''';
   }
 }

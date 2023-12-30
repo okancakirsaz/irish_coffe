@@ -1,7 +1,8 @@
 import 'package:irish_coffe/views/menu/models/menu_item_model.dart';
 
 class MenuMockServices {
-  Future<List<MenuItemModel>> getMenu() async {
+  Future<List<MenuItemModel>?> getAllMenu() async {
+    await Future.delayed(const Duration(seconds: 1));
     List<MenuItemModel> menuList = [];
     for (var data in dataSet) {
       menuList.add(MenuItemModel.fromJson(data));

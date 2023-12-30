@@ -6,25 +6,32 @@ class MenuItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<MenuItemModel>>(
-        future: viewModel.getMenu(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  return MenuItem(
-                    viewModel: viewModel,
-                    data: snapshot.data![index],
-                  );
-                });
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+    return Observer(builder: (context) {
+      if (viewModel.isLoadSuccessful) {
+        return buildMenu();
+      } else {
+        return Center(
+          child: CircularProgressIndicator(color: ColorConsts.instance.orange),
+        );
+      }
+    });
+  }
+
+  Widget buildMenu() {
+    return RefreshIndicator(
+      backgroundColor: ColorConsts.instance.lightGray,
+      color: ColorConsts.instance.orange,
+      onRefresh: () async => viewModel.getMenu(),
+      child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 1),
+          itemCount: viewModel.allMenu.length,
+          itemBuilder: (context, index) {
+            return MenuItem(
+              viewModel: viewModel,
+              data: viewModel.allMenu[index],
             );
-          }
-        });
+          }),
+    );
   }
 }

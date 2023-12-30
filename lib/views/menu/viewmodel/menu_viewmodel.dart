@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
+import 'package:irish_coffe/core/service/mock_services/menu_mock_services.dart';
 import 'package:irish_coffe/views/menu/models/menu_item_model.dart';
-import 'package:irish_coffe/views/menu/services/menu_services.dart';
 import 'package:irish_coffe/views/menu/views/menu_view.dart';
 import 'package:irish_coffe/views/payment/view/payment_view.dart';
 import 'package:mobx/mobx.dart';
@@ -17,19 +18,57 @@ abstract class _MenuViewModelBase with Store, BaseViewModel {
   void setContext(BuildContext context) => viewModelContext = context;
 
   @override
-  void init() {}
+  init() async {
+    await getAllMenuFirstInit();
+  }
 
   @observable
   int selectedItemCount = 1;
 
   @observable
   ObservableList basket = ObservableList.of([]);
+  @observable
+  ObservableList<MenuItemModel> allMenu = ObservableList<MenuItemModel>.of([]);
   List<int> selectedItemsPrices = [];
-  final MenuServices service = MenuServices();
 
-  Future<List<MenuItemModel>> getMenu() async {
-    final List<MenuItemModel>? response = await service.getAllMenu();
-    return response ?? [];
+  @observable
+  bool isLoadSuccessful = false;
+
+  //TODO: Change to real services
+  final MenuMockServices service = MenuMockServices();
+
+  @action
+  Future<void> getMenu() async {
+    try {
+      final List<MenuItemModel>? response = await service.getAllMenu();
+      await localeManager.setJsonData(LocaleKeysEnums.menu.name, response);
+      allMenu = getCachedMenuAsModel();
+    } catch (e) {
+      debugPrint("$e");
+      Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz.");
+    }
+  }
+
+  @action
+  Future<void> getAllMenuFirstInit() async {
+    if (localeManager.getNullableJsonData(LocaleKeysEnums.menu.name) == null) {
+      await getMenu();
+    } else {
+      //Already in cache
+      allMenu = getCachedMenuAsModel();
+    }
+    isLoadSuccessful = true;
+  }
+
+  ObservableList<MenuItemModel> getCachedMenuAsModel() {
+    List<dynamic> cachedList =
+        localeManager.getJsonData(LocaleKeysEnums.menu.name);
+    ObservableList<MenuItemModel> convertedList =
+        ObservableList<MenuItemModel>.of([]);
+    for (var element in cachedList) {
+      convertedList.add(MenuItemModel.fromJson(element));
+    }
+    return convertedList;
   }
 
   @action

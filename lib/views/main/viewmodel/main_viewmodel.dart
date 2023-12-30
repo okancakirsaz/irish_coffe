@@ -17,8 +17,13 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
   void setContext(BuildContext context) => viewModelContext = context;
   @override
   init() async {
+    await deleteCachedValues();
+  }
+
+  Future<void> deleteCachedValues() async {
     await localeManager.removeData(LocaleKeysEnums.posts.name);
     await localeManager.removeData(LocaleKeysEnums.customers.name);
+    await localeManager.removeData(LocaleKeysEnums.menu.name);
   }
 
   @observable

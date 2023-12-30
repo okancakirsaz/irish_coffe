@@ -8,5 +8,6 @@ enum LocaleKeysEnums {
   gender,
   posts,
   lastCamePost,
-  customers
+  customers,
+  menu
 }

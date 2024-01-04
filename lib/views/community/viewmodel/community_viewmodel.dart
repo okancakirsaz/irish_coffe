@@ -39,7 +39,6 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
 
   //TODO:Change to real services
   final CommunityMockService service = CommunityMockService();
-  late final ScrollController postsScrollController;
   final TextEditingController postDescriptionController =
       TextEditingController();
   late final TabController tabController;

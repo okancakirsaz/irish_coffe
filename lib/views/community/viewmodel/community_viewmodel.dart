@@ -30,10 +30,8 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
 
   @override
   init() async {
-    postsScrollController = ScrollController();
     await getPostsFirstInit();
     await getCustomersFirstInit();
-    addScrollControllerPageFinishListener(postsScrollController);
   }
 
   final PageController pageController = PageController();
@@ -68,12 +66,12 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     tabController.animateTo(index);
   }
 
-  addScrollControllerPageFinishListener(ScrollController controller) {
-    controller.addListener(() {
-      if (controller.position.pixels == controller.position.maxScrollExtent) {
-        getMorePosts();
-      }
-    });
+  addPageFinishListener(ScrollNotification notification) {
+    if (notification is ScrollEndNotification) {
+      getMorePosts();
+    } else {
+      //Nothing.
+    }
   }
 
   openImageModeSelector() {

@@ -6,8 +6,6 @@ class CommunityShares extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: IMPORTANT!!! Sliver app bar dont work in the list mod
-
     return Observer(builder: (context) {
       if (viewModel.allPosts.isNotEmpty) {
         return buildPostList(viewModel);
@@ -52,8 +50,12 @@ class CommunityShares extends StatelessWidget {
       onRefresh: () async => await viewModel.getFirstPosts(),
       child: Observer(
         builder: (context) {
-          return ListView.builder(
-              controller: viewModel.postsScrollController,
+          return NotificationListener(
+            onNotification: (ScrollNotification notification) {
+              viewModel.addPageFinishListener(notification);
+              return true;
+            },
+            child: ListView.builder(
               itemCount: viewModel.allPosts.length + 1,
               itemBuilder: (context, index) {
                 if (index == viewModel.allPosts.length) {
@@ -69,7 +71,9 @@ class CommunityShares extends StatelessWidget {
                     data: viewModel.allPosts[index],
                   );
                 }
-              });
+              },
+            ),
+          );
         },
       ),
     );

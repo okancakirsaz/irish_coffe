@@ -26,35 +26,42 @@ class CommunityShares extends StatelessWidget {
   }
 
   Widget buildListIsEmptyView() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          AssetConsts.instance.hand,
-          width: 150,
+    return RefreshIndicator(
+      onRefresh: () async => await viewModel.getFirstPosts(),
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                AssetConsts.instance.hand,
+                width: 150,
+              ),
+              const SizedBox(height: 40),
+              Text(
+                "Henüz bir topluluk gönderisi yok. Hadi ilk paylaşan sen ol!",
+                textAlign: TextAlign.center,
+                style: TextConsts.instance.regularBlack18,
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 40),
-        Text(
-          "Henüz bir topluluk gönderisi yok. Hadi ilk paylaşan sen ol!",
-          textAlign: TextAlign.center,
-          style: TextConsts.instance.regularBlack18,
-        ),
-      ],
+      ),
     );
   }
 
   Widget buildPostList(CommunityViewModel viewModel) {
-    return RefreshIndicator(
-      backgroundColor: ColorConsts.instance.lightGray,
-      color: ColorConsts.instance.orange,
-      onRefresh: () async => await viewModel.getFirstPosts(),
-      child: Observer(
-        builder: (context) {
-          return NotificationListener(
-            onNotification: (ScrollNotification notification) {
-              viewModel.addPageFinishListener(notification);
-              return true;
-            },
+    return Observer(
+      builder: (context) {
+        return NotificationListener(
+          onNotification: (ScrollNotification notification) {
+            viewModel.addPageFinishListener(notification);
+            return true;
+          },
+          child: RefreshIndicator(
+            backgroundColor: ColorConsts.instance.lightGray,
+            color: ColorConsts.instance.orange,
+            onRefresh: () async => await viewModel.getFirstPosts(),
             child: ListView.builder(
               itemCount: viewModel.allPosts.length + 1,
               itemBuilder: (context, index) {
@@ -73,9 +80,9 @@ class CommunityShares extends StatelessWidget {
                 }
               },
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

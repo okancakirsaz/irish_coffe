@@ -45,6 +45,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
 
   @observable
   Widget? moreDataNotExist;
+  @observable
   bool isDataLoadSuccessful = false;
   @observable
   ObservableList<PostModel> allPosts = ObservableList<PostModel>.of([]);
@@ -173,11 +174,13 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     return "$day.$month.$year/$hour.$minute";
   }
 
+  @action
   Future<void> getPostsFirstInit() async {
     List<dynamic>? cachedPosts =
         localeManager.getNullableJsonData(LocaleKeysEnums.posts.name);
     if (cachedPosts == null) {
       await getFirstPosts();
+      isDataLoadSuccessful = true;
     } else {
       //Posts already cached.
       allPosts = convertCachedPostsToModel();
@@ -196,7 +199,6 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
         await localeManager.setStringData(
             LocaleKeysEnums.lastCamePost.name, allPosts.last.time!);
       }
-      isDataLoadSuccessful = true;
     } catch (e) {
       debugPrint("$e");
       Fluttertoast.showToast(
@@ -242,7 +244,6 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
         PostModel.fromJson(element),
       );
     }
-
     return convertedList;
   }
 

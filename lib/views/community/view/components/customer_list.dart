@@ -61,16 +61,25 @@ class CustomerList extends StatelessWidget {
   }
 
   Widget buildNobodyHereWidget() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        SvgPicture.asset(AssetConsts.instance.pipe),
-        const SizedBox(height: 15),
-        Text(
-          "Henüz kimse yok.",
-          style: TextConsts.instance.regularBlack25Bold,
-        )
-      ],
+    return RefreshIndicator(
+      color: ColorConsts.instance.orange,
+      backgroundColor: ColorConsts.instance.lightGray,
+      onRefresh: () async => await viewModel.getCustomerList(),
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SvgPicture.asset(AssetConsts.instance.pipe),
+              const SizedBox(height: 15),
+              Text(
+                "Henüz kimse yok.",
+                style: TextConsts.instance.regularBlack25Bold,
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -25,6 +25,23 @@ mixin _$CommunityViewModel on _CommunityViewModelBase, Store {
     });
   }
 
+  late final _$isDataLoadSuccessfulAtom = Atom(
+      name: '_CommunityViewModelBase.isDataLoadSuccessful', context: context);
+
+  @override
+  bool get isDataLoadSuccessful {
+    _$isDataLoadSuccessfulAtom.reportRead();
+    return super.isDataLoadSuccessful;
+  }
+
+  @override
+  set isDataLoadSuccessful(bool value) {
+    _$isDataLoadSuccessfulAtom.reportWrite(value, super.isDataLoadSuccessful,
+        () {
+      super.isDataLoadSuccessful = value;
+    });
+  }
+
   late final _$allPostsAtom =
       Atom(name: '_CommunityViewModelBase.allPosts', context: context);
 
@@ -57,6 +74,15 @@ mixin _$CommunityViewModel on _CommunityViewModelBase, Store {
     });
   }
 
+  late final _$getPostsFirstInitAsyncAction = AsyncAction(
+      '_CommunityViewModelBase.getPostsFirstInit',
+      context: context);
+
+  @override
+  Future<void> getPostsFirstInit() {
+    return _$getPostsFirstInitAsyncAction.run(() => super.getPostsFirstInit());
+  }
+
   late final _$getFirstPostsAsyncAction =
       AsyncAction('_CommunityViewModelBase.getFirstPosts', context: context);
 
@@ -85,6 +111,7 @@ mixin _$CommunityViewModel on _CommunityViewModelBase, Store {
   String toString() {
     return '''
 moreDataNotExist: ${moreDataNotExist},
+isDataLoadSuccessful: ${isDataLoadSuccessful},
 allPosts: ${allPosts},
 customers: ${customers}
     ''';

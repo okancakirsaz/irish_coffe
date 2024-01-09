@@ -7,7 +7,6 @@ import 'package:irish_coffe/core/consts/padding_consts.dart';
 import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/consts/text_consts.dart';
 import 'package:irish_coffe/core/widgets/custom_button.dart';
-import 'package:irish_coffe/core/widgets/custom_text_field.dart';
 import 'package:irish_coffe/views/payment/viewmodel/payment_viewmodel.dart';
 
 class PaymentView extends StatelessWidget {
@@ -31,10 +30,7 @@ class PaymentView extends StatelessWidget {
                   ),
                   Padding(
                     padding: PaddingConsts.instance.all20,
-                    child: Expanded(
-                      flex: 10,
-                      child: buildInputs(model),
-                    ),
+                    child: buildInputs(model),
                   ),
                 ],
               ),
@@ -111,7 +107,7 @@ class PaymentView extends StatelessWidget {
                 text: "Onayla",
                 width: 150,
                 height: 50),
-          )
+          ),
         ],
       ),
     );
@@ -126,25 +122,5 @@ class PaymentView extends StatelessWidget {
           label,
           style: TextConsts.instance.regularBlack18,
         ));
-  }
-
-  Widget buildTextFieldWithTitle(TextEditingController controller, String title,
-      [TextInputType? type]) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          title,
-          style: TextConsts.instance.regularBlack18Bold,
-        ),
-        const SizedBox(height: 5),
-        CustomTextField(
-          controller: controller,
-          height: 50,
-          inputType: type,
-          style: TextConsts.instance.regularBlack18,
-        ),
-      ],
-    );
   }
 }

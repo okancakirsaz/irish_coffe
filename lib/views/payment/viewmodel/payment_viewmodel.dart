@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:irish_coffe/views/menu/views/components/order_final.dart';
 import 'package:mobx/mobx.dart';
 
@@ -17,10 +17,17 @@ abstract class _PaymentViewModelBase with Store, BaseViewModel {
 
   List<int> priceList = [];
   late final int totalPrice;
-  final TextEditingController cardNumber = TextEditingController();
-  final TextEditingController cardOwnerName = TextEditingController();
-  final TextEditingController cardDate = TextEditingController();
-  final TextEditingController cvc = TextEditingController();
+  @observable
+  String cardNumber = "1XXX XXXX XXXX XXXX";
+  @observable
+  String cardHolderName = "Kart Sahibi";
+  @observable
+  String expiryDate = "XX/XX";
+  @observable
+  String cvvCode = "XXX";
+  @observable
+  bool isCvvFocused = false;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   int calculateTotalPrice(List<int> prices) {
     priceList = prices;
@@ -30,6 +37,23 @@ abstract class _PaymentViewModelBase with Store, BaseViewModel {
 
   Future<void> finishPayment() async {
     _navigateToFinalPage();
+  }
+
+  onValidate() {
+    if (formKey.currentState?.validate() ?? false) {
+      debugPrint('valid! $cardNumber $cardHolderName $expiryDate $cvvCode');
+    } else {
+      debugPrint('invalid!');
+    }
+  }
+
+  @action
+  onCreditCardModelChange(CreditCardModel creditCardModel) {
+    cardNumber = creditCardModel.cardNumber;
+    expiryDate = creditCardModel.expiryDate;
+    cardHolderName = creditCardModel.cardHolderName;
+    cvvCode = creditCardModel.cvvCode;
+    isCvvFocused = creditCardModel.isCvvFocused;
   }
 
   _navigateToFinalPage() {

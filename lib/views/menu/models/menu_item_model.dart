@@ -1,24 +1,24 @@
 class MenuItemModel {
-  String? img;
+  String? image;
   String? name;
   String? price;
   List<String>? materials;
 
   MenuItemModel({
-    this.img,
+    this.image,
     this.name,
     this.price,
     this.materials,
   });
 
   MenuItemModel copyWith({
-    String? img,
+    String? image,
     String? name,
     String? price,
     List<String>? materials,
   }) {
     return MenuItemModel(
-      img: img ?? this.img,
+      image: image ?? this.image,
       name: name ?? this.name,
       price: price ?? this.price,
       materials: materials ?? this.materials,
@@ -27,7 +27,7 @@ class MenuItemModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'img': img,
+      'image': image,
       'name': name,
       'price': price,
       'materials': materials,
@@ -36,7 +36,7 @@ class MenuItemModel {
 
   factory MenuItemModel.fromJson(Map<String, dynamic> json) {
     return MenuItemModel(
-      img: json['img'] as String?,
+      image: json['image'] as String?,
       name: json['name'] as String?,
       price: json['price'] as String?,
       materials: (json['materials'] as List<dynamic>?)
@@ -47,17 +47,17 @@ class MenuItemModel {
 
   @override
   String toString() =>
-      "MenuItemModel(img: $img,name: $name,price: $price,materials: $materials)";
+      "MenuItemModel(image: $image,name: $name,price: $price,materials: $materials)";
 
   @override
-  int get hashCode => Object.hash(img, name, price, materials);
+  int get hashCode => Object.hash(image, name, price, materials);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is MenuItemModel &&
           runtimeType == other.runtimeType &&
-          img == other.img &&
+          image == other.image &&
           name == other.name &&
           price == other.price &&
           materials == other.materials;

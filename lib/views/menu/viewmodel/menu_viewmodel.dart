@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
-import 'package:irish_coffe/core/service/mock_services/menu_mock_services.dart';
 import 'package:irish_coffe/views/menu/models/menu_item_model.dart';
+import 'package:irish_coffe/views/menu/services/menu_services.dart';
 import 'package:irish_coffe/views/menu/views/menu_view.dart';
 import 'package:irish_coffe/views/payment/view/payment_view.dart';
 import 'package:mobx/mobx.dart';
@@ -34,8 +34,7 @@ abstract class _MenuViewModelBase with Store, BaseViewModel {
   @observable
   bool isLoadSuccessful = false;
 
-  //TODO: Change to real services
-  final MenuMockServices service = MenuMockServices();
+  final MenuServices service = MenuServices();
 
   @action
   Future<void> getMenu() async {
@@ -93,8 +92,7 @@ abstract class _MenuViewModelBase with Store, BaseViewModel {
 
   int calculateElementPrice(int index) {
     String price = basket[index]["element"].price!;
-    int response = int.parse(price.substring(0, price.length - 1)) *
-        basket[index]["count"] as int;
+    int response = int.parse(price) * basket[index]["count"] as int;
     selectedItemsPrices.add(response);
     return response;
   }

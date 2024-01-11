@@ -34,8 +34,8 @@ class MenuItem extends StatelessWidget {
       height: 270,
       decoration: BoxDecoration(
         borderRadius: RadiusConsts.instance.circularTop10,
-        image:
-            DecorationImage(fit: BoxFit.cover, image: NetworkImage(data.img!)),
+        image: DecorationImage(
+            fit: BoxFit.cover, image: NetworkImage(data.image!)),
       ),
     );
   }
@@ -47,7 +47,7 @@ class MenuItem extends StatelessWidget {
         style: TextConsts.instance.regularWhite25Bold,
       ),
       trailing: Text(
-        data.price!,
+        "${data.price!}₺",
         style: TextConsts.instance.regularWhite25Bold,
       ),
       subtitle: Text(

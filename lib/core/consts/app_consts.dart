@@ -2,7 +2,7 @@ class AppConst {
   static final AppConst instance = AppConst();
 
   //Endpoints
-  final String getMenu = "/get-menu";
+  final String getMenu = "/menu/get-menu";
   final String getActiveEvents = "/get-active-events";
   final String logIn = "/auth/log-in";
   final String users = "/users";

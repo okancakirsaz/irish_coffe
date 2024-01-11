@@ -1,11 +1,13 @@
 class LiteUserDataModel {
   String? token;
+  String? uid;
   String? name;
   String? profileImage;
   String? gender;
 
   LiteUserDataModel({
     this.token,
+    this.uid,
     this.name,
     this.profileImage,
     this.gender,
@@ -13,12 +15,14 @@ class LiteUserDataModel {
 
   LiteUserDataModel copyWith({
     String? token,
+    String? uid,
     String? name,
     String? profileImage,
     String? gender,
   }) {
     return LiteUserDataModel(
       token: token ?? this.token,
+      uid: uid ?? this.uid,
       name: name ?? this.name,
       profileImage: profileImage ?? this.profileImage,
       gender: gender ?? this.gender,
@@ -28,6 +32,7 @@ class LiteUserDataModel {
   Map<String, dynamic> toJson() {
     return {
       'token': token,
+      'uid': uid,
       'name': name,
       'profileImage': profileImage,
       'gender': gender,
@@ -37,6 +42,7 @@ class LiteUserDataModel {
   factory LiteUserDataModel.fromJson(Map<String, dynamic> json) {
     return LiteUserDataModel(
       token: json['token'] as String?,
+      uid: json['uid'] as String?,
       name: json['name'] as String?,
       profileImage: json['profileImage'] as String?,
       gender: json['gender'] as String?,

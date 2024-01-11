@@ -6,6 +6,7 @@ class UserDataModel {
   String? eMail;
   String? password;
   String? token;
+  String? uid;
   String? name;
   String? gender;
   String? profileImage;
@@ -18,6 +19,7 @@ class UserDataModel {
     this.eMail,
     this.password,
     this.token,
+    this.uid,
     this.name,
     this.gender,
     this.profileImage,
@@ -31,6 +33,7 @@ class UserDataModel {
     String? eMail,
     String? password,
     String? token,
+    String? uid,
     String? name,
     String? gender,
     String? profileImage,
@@ -43,6 +46,7 @@ class UserDataModel {
       eMail: eMail ?? this.eMail,
       password: password ?? this.password,
       token: token ?? this.token,
+      uid: uid ?? this.uid,
       name: name ?? this.name,
       gender: gender ?? this.gender,
       profileImage: profileImage ?? this.profileImage,
@@ -58,6 +62,7 @@ class UserDataModel {
       'e_mail': eMail,
       'password': password,
       'token': token,
+      'uid': uid,
       'name': name,
       'gender': gender,
       'profileImage': profileImage,
@@ -73,6 +78,7 @@ class UserDataModel {
       eMail: json['e_mail'] as String?,
       password: json['password'] as String?,
       token: json['token'] as String?,
+      uid: json['uid'] as String?,
       name: json['name'] as String?,
       gender: json['gender'] as String?,
       profileImage: json['profileImage'] as String?,

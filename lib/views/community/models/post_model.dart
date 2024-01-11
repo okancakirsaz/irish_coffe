@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:irish_coffe/core/init/model/lite_user_data_model.dart';
 
 class PostModel {
@@ -6,6 +5,8 @@ class PostModel {
   String? description;
   String? apiImage;
   String? time;
+  String? timestamp;
+  String? imageAsByte;
   String? id;
 
   PostModel({
@@ -13,21 +14,25 @@ class PostModel {
     this.description,
     this.apiImage,
     this.time,
+    this.timestamp,
+    this.imageAsByte,
     this.id,
   });
 
   PostModel copyWith({
     LiteUserDataModel? user,
     String? description,
-    Uint8List? image,
     String? apiImage,
     String? time,
+    String? timestamp,
+    String? imageAsByte,
     String? id,
   }) {
     return PostModel(
       user: user ?? this.user,
       description: description ?? this.description,
       time: time ?? this.time,
+      timestamp: timestamp ?? this.timestamp,
       apiImage: apiImage ?? this.apiImage,
       id: id ?? this.id,
     );
@@ -38,6 +43,8 @@ class PostModel {
       'user': user,
       'description': description,
       'time': time,
+      'timestamp': timestamp,
+      'imageAsByte': imageAsByte,
       'apiImage': apiImage,
       'id': id,
     };
@@ -48,7 +55,9 @@ class PostModel {
       user: LiteUserDataModel.fromJson(json['user'] as Map<String, dynamic>),
       description: json['description'] as String?,
       apiImage: json['apiImage'] as String?,
+      imageAsByte: json['imageAsByte'] as String?,
       time: json['time'] as String?,
+      timestamp: json['timestamp'] as String?,
       id: json['id'] as String?,
     );
   }

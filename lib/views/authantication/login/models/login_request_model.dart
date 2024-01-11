@@ -19,14 +19,14 @@ class LoginRequestModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'mail': mail,
+      'email': mail,
       'password': password,
     };
   }
 
   factory LoginRequestModel.fromJson(Map<String, dynamic> json) {
     return LoginRequestModel(
-      mail: json['mail'] as String,
+      mail: json['email'] as String,
       password: json['password'] as String,
     );
   }

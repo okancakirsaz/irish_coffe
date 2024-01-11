@@ -1,37 +1,37 @@
 class ForgotPasswordRequestModel {
-  String mailAdress;
+  String email;
 
   ForgotPasswordRequestModel({
-    required this.mailAdress,
+    required this.email,
   });
 
   ForgotPasswordRequestModel copyWith({
-    String? mailAdress,
+    String? email,
   }) {
     return ForgotPasswordRequestModel(
-      mailAdress: mailAdress ?? this.mailAdress,
+      email: email ?? this.email,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'mailAdress': mailAdress,
+      'email': email,
     };
   }
 
   factory ForgotPasswordRequestModel.fromJson(Map<String, dynamic> json) {
     return ForgotPasswordRequestModel(
-      mailAdress: json['mailAdress'] as String,
+      email: json['email'] as String,
     );
   }
 
   @override
-  String toString() => "ForgotPasswordRequestModel(mailAdress: $mailAdress)";
+  String toString() => "ForgotPasswordRequestModel(email: $email)";
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ForgotPasswordRequestModel &&
           runtimeType == other.runtimeType &&
-          mailAdress == other.mailAdress;
+          email == other.email;
 }

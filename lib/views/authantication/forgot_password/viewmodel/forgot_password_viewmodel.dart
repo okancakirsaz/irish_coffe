@@ -35,7 +35,7 @@ abstract class _ForgotPasswordViewModelBase with Store, BaseViewModel {
 
   Future<void> takeMailStatus() async {
     final ForgotPasswordResponseModel? response = await service
-        .postEmailData(ForgotPasswordRequestModel(mailAdress: controller.text));
+        .postEmailData(ForgotPasswordRequestModel(email: controller.text));
     if (response != null) {
       if (response.isMailSended) {
         Fluttertoast.showToast(msg: "Doğrulama e-postası gönderildi.");

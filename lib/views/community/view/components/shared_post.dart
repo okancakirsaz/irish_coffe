@@ -19,7 +19,7 @@ class SharedPost extends StatelessWidget {
   }
 
   Widget profileImage() {
-    return data.user!.profileImage != null
+    return data.user!.profileImage!.isNotEmpty
         ? Container(
             margin: PaddingConsts.instance.left10,
             width: 45,

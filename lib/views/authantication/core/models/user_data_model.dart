@@ -3,7 +3,7 @@ import '../../../profile/models/favorite_foods_model.dart';
 import '../../../profile/models/scores_model.dart';
 
 class UserDataModel {
-  String? eMail;
+  String? email;
   String? password;
   String? token;
   String? uid;
@@ -16,7 +16,7 @@ class UserDataModel {
   List<FavoreiteFoodsModel>? favoriteFoods;
 
   UserDataModel({
-    this.eMail,
+    this.email,
     this.password,
     this.token,
     this.uid,
@@ -30,7 +30,7 @@ class UserDataModel {
   });
 
   UserDataModel copyWith({
-    String? eMail,
+    String? email,
     String? password,
     String? token,
     String? uid,
@@ -43,7 +43,7 @@ class UserDataModel {
     List<FavoreiteFoodsModel>? favoriteFoods,
   }) {
     return UserDataModel(
-      eMail: eMail ?? this.eMail,
+      email: email ?? this.email,
       password: password ?? this.password,
       token: token ?? this.token,
       uid: uid ?? this.uid,
@@ -59,7 +59,7 @@ class UserDataModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'e_mail': eMail,
+      'email': email,
       'password': password,
       'token': token,
       'uid': uid,
@@ -75,7 +75,7 @@ class UserDataModel {
 
   factory UserDataModel.fromJson(Map<String, dynamic> json) {
     return UserDataModel(
-      eMail: json['e_mail'] as String?,
+      email: json['email'] as String?,
       password: json['password'] as String?,
       token: json['token'] as String?,
       uid: json['uid'] as String?,
@@ -97,10 +97,10 @@ class UserDataModel {
 
   @override
   String toString() =>
-      "UserDataModel(eMail: $eMail,password: $password,token: $token,name: $name,gender: $gender,profileImage: $profileImage,phoneNumber: $phoneNumber,posts: $posts,scores: $scores,favoriteFoods: $favoriteFoods)";
+      "UserDataModel(email: $email,password: $password,token: $token,name: $name,gender: $gender,profileImage: $profileImage,phoneNumber: $phoneNumber,posts: $posts,scores: $scores,favoriteFoods: $favoriteFoods)";
 
   @override
-  int get hashCode => Object.hash(eMail, password, token, name, gender,
+  int get hashCode => Object.hash(email, password, token, name, gender,
       profileImage, phoneNumber, posts, scores, favoriteFoods);
 
   @override
@@ -108,7 +108,7 @@ class UserDataModel {
       identical(this, other) ||
       other is UserDataModel &&
           runtimeType == other.runtimeType &&
-          eMail == other.eMail &&
+          email == other.email &&
           password == other.password &&
           token == other.token &&
           name == other.name &&

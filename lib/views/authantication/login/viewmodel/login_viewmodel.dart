@@ -50,11 +50,13 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
       await localeManager.setNullableStringData(
           LocaleKeysEnums.name.name, response.name);
       await localeManager.setStringData(
-          LocaleKeysEnums.mail.name, response.eMail!);
+          LocaleKeysEnums.mail.name, response.email!);
       await localeManager.setStringData(
           LocaleKeysEnums.phoneNumber.name, response.phoneNumber!);
       await localeManager.setNullableStringData(
           LocaleKeysEnums.profileImage.name, response.profileImage);
+      await localeManager.setStringData(
+          LocaleKeysEnums.userId.name, response.uid!);
       await localeManager.setNullableStringData(
           LocaleKeysEnums.gender.name, response.gender);
     } catch (e) {

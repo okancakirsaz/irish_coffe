@@ -7,10 +7,24 @@ import 'package:irish_coffe/views/community/models/currently_in_irish_model.dart
 import 'package:irish_coffe/views/community/models/post_model.dart';
 
 final class CommunityServices extends NetworkManager {
-  //TODO: Add get more posts
   Future<List<PostModel>?> getPosts() async {
     try {
       final response = await network.get(AppConst.instance.communityShares);
+      List<PostModel> responseAsData = [];
+      (response.data as List<dynamic>).forEach((element) {
+        responseAsData.add(PostModel.fromJson(element));
+      });
+      return responseAsData;
+    } catch (_) {
+      debugPrint(_.toString());
+      return null;
+    }
+  }
+
+  Future<List<PostModel>?> getMorePosts(String date) async {
+    try {
+      final response = await network
+          .post(AppConst.instance.getMoreCommunityShares, data: {"time": date});
       List<PostModel> responseAsData = [];
       (response.data as List<dynamic>).forEach((element) {
         responseAsData.add(PostModel.fromJson(element));

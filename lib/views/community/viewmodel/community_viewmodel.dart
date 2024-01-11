@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
@@ -9,9 +10,9 @@ import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/consts/text_consts.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/init/model/lite_user_data_model.dart';
-import 'package:irish_coffe/core/service/mock_services/community_mock_service.dart';
 import 'package:irish_coffe/views/community/models/currently_in_irish_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
+import 'package:irish_coffe/views/community/services/community_services.dart';
 import 'package:irish_coffe/views/community/view/community_view.dart';
 import 'package:irish_coffe/views/main/view/main_view.dart';
 import 'package:irish_coffe/views/profile/view/profile_view.dart';
@@ -38,7 +39,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   Uint8List? pickedImage;
 
   //TODO:Change to real services
-  final CommunityMockService service = CommunityMockService();
+  final CommunityServices service = CommunityServices();
   final TextEditingController postDescriptionController =
       TextEditingController();
   late final TabController tabController;
@@ -135,11 +136,11 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   sharePost() async {
     await service.postNewPost(
       PostModel(
-        //TODO: This will be dont work use an api and get api image path
-        apiImage:
-            "https://i.pinimg.com/236x/b9/41/53/b941537aa093ec0b9dc488a6811d819d.jpg", //pickedImage,
+        imageAsByte: base64Encode(pickedImage!),
+        timestamp: DateTime.now().toIso8601String(),
         description: postDescriptionController.text,
         user: LiteUserDataModel(
+            uid: localeManager.getStringData(LocaleKeysEnums.userId.name),
             token: localeManager
                 .getNullableStringData(LocaleKeysEnums.token.name)!,
             name:
@@ -197,7 +198,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
       allPosts = convertCachedPostsToModel();
       if (allPosts.isNotEmpty) {
         await localeManager.setStringData(
-            LocaleKeysEnums.lastCamePost.name, allPosts.last.time!);
+            LocaleKeysEnums.lastCamePost.name, allPosts.last.timestamp!);
       }
     } catch (e) {
       debugPrint("$e");
@@ -209,19 +210,21 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
 
   @action
   Future<void> getMorePosts() async {
-    final List<PostModel> response = await service.getMorePosts(
+    final List<PostModel>? response = await service.getMorePosts(
         localeManager.getStringData(LocaleKeysEnums.lastCamePost.name));
-    if (response.isEmpty) {
+    if (response != null && response.isEmpty) {
       moreDataNotExist = Text(
         "O kadar çok kaydırdın ki görüntülenebilecek başka içerik bırakmadın. :)",
         style: TextConsts.instance.regularBlack14Bold,
         textAlign: TextAlign.center,
       );
     }
-    for (PostModel post in response) {
-      allPosts.add(post);
+    if (response != null) {
+      for (PostModel post in response) {
+        allPosts.add(post);
+      }
+      await cacheMoreGettedPosts();
     }
-    await cacheMoreGettedPosts();
   }
 
   Future<void> cacheMoreGettedPosts() async {

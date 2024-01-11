@@ -35,13 +35,17 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
   Future<void> createMembership() async {
     try {
       final UserDataModel request = UserDataModel(
-        token: "3124rıwajroıj12j1",
+        token: null,
         profileImage: null,
         name: nameController.text,
         gender: genderController.text,
         phoneNumber: numberController.text,
         password: passwordController.text,
-        eMail: emailController.text,
+        uid: null,
+        posts: [],
+        favoriteFoods: [],
+        scores: [],
+        email: emailController.text,
       );
 
       if (_validation(request)) {
@@ -57,7 +61,7 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
 
   bool _validation(UserDataModel response) {
     if (validateName(response.name!) &&
-        validateMail(response.eMail!) &&
+        validateMail(response.email!) &&
         validatePassword(response.password!) &&
         validatePhoneNumber(response.phoneNumber!) &&
         response.gender != "") {

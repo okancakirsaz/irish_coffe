@@ -2,6 +2,7 @@ enum LocaleKeysEnums {
   token,
   name,
   mail,
+  userId,
   profileImage,
   isUserAnonym,
   phoneNumber,

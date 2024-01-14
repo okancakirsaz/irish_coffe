@@ -23,6 +23,7 @@ abstract class _ForgotPasswordViewModelBase with Store, BaseViewModel {
   void setContext(BuildContext context) => viewModelContext = context;
   @override
   void init() {
+    //TODO:SOLID!(SINGLE RESPONSIBILITY)
     String? cachedMailData =
         localeManager.getNullableStringData(LocaleKeysEnums.mail.name);
     if (cachedMailData != null) {
@@ -33,6 +34,8 @@ abstract class _ForgotPasswordViewModelBase with Store, BaseViewModel {
   final ForgotPasswordServices service = ForgotPasswordServices();
   final TextEditingController controller = TextEditingController();
 
+  //TODO:CHANGE NAME THE FUNCTION
+  //TODO:SOLID(SINGLE RESBONSIBILITY)
   Future<void> takeMailStatus() async {
     final ForgotPasswordResponseModel? response = await service
         .postEmailData(ForgotPasswordRequestModel(email: controller.text));

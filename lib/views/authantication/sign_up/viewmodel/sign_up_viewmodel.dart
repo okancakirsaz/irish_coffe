@@ -32,6 +32,7 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
     Fluttertoast.showToast(msg: reason);
   }
 
+  //TODO:SOLID!(SINGLE RESPONSIBILITY)
   Future<void> createMembership() async {
     try {
       final UserDataModel request = UserDataModel(

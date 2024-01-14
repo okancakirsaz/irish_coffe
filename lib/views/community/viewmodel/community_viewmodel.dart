@@ -38,7 +38,6 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   final PageController pageController = PageController();
   Uint8List? pickedImage;
 
-  //TODO:Change to real services
   final CommunityServices service = CommunityServices();
   final TextEditingController postDescriptionController =
       TextEditingController();
@@ -75,6 +74,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     }
   }
 
+  //TODO: SEPEREATE UI CODES
   openImageModeSelector() {
     showBottomSheet(
         context: viewModelContext,
@@ -133,6 +133,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     );
   }
 
+  //TODO: SOLID!(SINGLE RESPONSIBILITY)
   sharePost() async {
     await service.postNewPost(
       PostModel(
@@ -208,6 +209,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     }
   }
 
+  //TODO:SOLID!(SINGLE RESPONSIBILITY)
   @action
   Future<void> getMorePosts() async {
     final List<PostModel>? response = await service.getMorePosts(

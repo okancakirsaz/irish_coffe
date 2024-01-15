@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:irish_coffe/core/consts/app_consts.dart';
 import 'package:irish_coffe/core/init/network_manager.dart';
@@ -14,8 +15,8 @@ import 'package:irish_coffe/views/profile/models/user_settings_model.dart';
 final class ProfileServices extends NetworkManager {
   Future<List<PostModel>?> getUserPosts(String userToken) async {
     try {
-      final response = await network.get(AppConst.instance.users,
-          queryParameters: {"tokenForPosts": userToken});
+      final response = await network.get(AppConst.instance.userPosts,
+          options: Options(headers: {"token": userToken}));
       List<PostModel> responseAsData = [];
       (response.data as List<dynamic>).forEach((element) {
         responseAsData.add(PostModel.fromJson(element));
@@ -29,8 +30,8 @@ final class ProfileServices extends NetworkManager {
 
   Future<List<ScoresModel>?> getUserScores(String userToken) async {
     try {
-      final response = await network.get(AppConst.instance.users,
-          queryParameters: {"tokenForScores": userToken});
+      final response = await network.get(AppConst.instance.userScores,
+          options: Options(headers: {"token": userToken}));
       List<ScoresModel> responseAsData = [];
       (response.data as List<dynamic>).forEach((element) {
         responseAsData.add(ScoresModel.fromJson(element));
@@ -44,8 +45,8 @@ final class ProfileServices extends NetworkManager {
 
   Future<List<FavoreiteFoodsModel>?> getFavoriteFoods(String userToken) async {
     try {
-      final response = await network.get(AppConst.instance.users,
-          queryParameters: {"tokenForFoods": userToken});
+      final response = await network.get(AppConst.instance.userFoods,
+          options: Options(headers: {"token": userToken}));
       List<FavoreiteFoodsModel> responseAsData = [];
       (response.data as List<dynamic>).forEach((element) {
         responseAsData.add(FavoreiteFoodsModel.fromJson(element));

@@ -16,7 +16,7 @@ class ProfileImage extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      child: viewModel.profileImage == null
+      child: viewModel.profileImage == "" || viewModel.profileImage == null
           ? SvgPicture.asset(
               viewModel.pickImageForGender(viewModel.gender!),
               fit: BoxFit.contain,

@@ -43,14 +43,15 @@ class UserPosts extends StatelessWidget {
               crossAxisCount: 3),
           itemBuilder: (context, index) {
             return InkWell(
-              onTap: () =>
-                  viewModel.openPost(viewModel.posts[index], viewModel),
+              onTap: () => viewModel.openPost(
+                  viewModel.posts.reversed.toList()[index], viewModel),
               child: Container(
                 margin: PaddingConsts.instance.all5,
                 decoration: BoxDecoration(
                   borderRadius: RadiusConsts.instance.circularAll10,
                   image: DecorationImage(
-                      image: NetworkImage(viewModel.posts[index].apiImage!),
+                      image: NetworkImage(
+                          viewModel.posts.reversed.toList()[index].apiImage!),
                       fit: BoxFit.cover),
                 ),
               ),

@@ -7,6 +7,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:irish_coffe/core/init/model/lite_user_data_model.dart';
 import 'package:irish_coffe/core/widgets/are_you_sure_dialog.dart';
+import 'package:irish_coffe/views/authantication/forgot_password/model/forgot_password_request_model.dart';
+import 'package:irish_coffe/views/authantication/forgot_password/model/forgot_password_response_model.dart';
+import 'package:irish_coffe/views/authantication/forgot_password/service/forgot_password_services.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/profile/models/boolean_single_response_model.dart';
 import 'package:irish_coffe/views/profile/models/favorite_foods_model.dart';
@@ -32,6 +35,8 @@ class ProfileViewModel = _ProfileViewModelBase with _$ProfileViewModel;
 abstract class _ProfileViewModelBase with Store, BaseViewModel {
   @override
   void setContext(BuildContext context) => viewModelContext = context;
+
+  //TODO: Fix profile image state bug
 
   String? userName;
   String? mail;
@@ -192,6 +197,23 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
             ),
           );
         });
+  }
+
+  //Dependency Injection!
+  Future<void> sendResetPasswordEmail() async {
+    final ForgotPasswordResponseModel? response = await ForgotPasswordServices()
+        .postEmailData(ForgotPasswordRequestModel(email: mail!));
+    if (response != null) {
+      if (response.isMailSended) {
+        Fluttertoast.showToast(msg: "Sıfırlama e-postası gönderildi.");
+        navigateToLoginPage();
+      } else {
+        Fluttertoast.showToast(msg: response.reason!);
+      }
+    } else {
+      Fluttertoast.showToast(
+          msg: "Beklenmeyen bir sorun oluştu, tekrar deneyiniz.");
+    }
   }
 
   Future<void> setNewUserSettings() async {

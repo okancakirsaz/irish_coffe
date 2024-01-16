@@ -50,7 +50,9 @@ class Settigns extends StatelessWidget {
               padding: PaddingConsts.instance.all10,
               child: specialSwitch(viewModel),
             ),
-            buildSpecialButton(() async {}, "Şifreyi Değiştir"),
+            buildSpecialButton(
+                () async => await viewModel.sendResetPasswordEmail(),
+                "Şifreyi Değiştir"),
             buildSpecialButton(
                 () async => await viewModel.logOut(), "Çıkış Yap"),
             buildSpecialButton(

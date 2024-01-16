@@ -68,7 +68,7 @@ class ForgotPasswordView extends StatelessWidget {
           const SizedBox(height: 30),
           Center(
             child: CustomButton(
-                onPressed: () async => await model.takeMailStatus(),
+                onPressed: () async => await model.sendVerificationMail(),
                 style: TextConsts.instance.regularBlack25Bold,
                 text: "Kod Gönder",
                 width: 205,

@@ -34,11 +34,13 @@ abstract class _ForgotPasswordViewModelBase with Store, BaseViewModel {
   final ForgotPasswordServices service = ForgotPasswordServices();
   final TextEditingController controller = TextEditingController();
 
-  //TODO:CHANGE NAME THE FUNCTION
-  //TODO:SOLID(SINGLE RESBONSIBILITY)
-  Future<void> takeMailStatus() async {
+  Future<void> sendVerificationMail() async {
     final ForgotPasswordResponseModel? response = await service
         .postEmailData(ForgotPasswordRequestModel(email: controller.text));
+    checkResponse(response);
+  }
+
+  checkResponse(ForgotPasswordResponseModel? response) {
     if (response != null) {
       if (response.isMailSended) {
         Fluttertoast.showToast(msg: "Doğrulama e-postası gönderildi.");

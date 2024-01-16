@@ -333,8 +333,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
 
   @action
   Future<void> deletePost(String postId) async {
-    final BooleanSingleResponseModel? response =
-        await services.removePost(PostIdSendRequestModel(postId: postId));
+    final BooleanSingleResponseModel? response = await services
+        .removePost(PostIdSendRequestModel(postId: postId, token: token));
     if (response != null && response.isSuccess!) {
       await getUserPosts();
     } else {

@@ -47,13 +47,10 @@ class Settigns extends StatelessWidget {
                   viewModel.numberController, TextInputType.phone),
             ),
             Padding(
-              padding: PaddingConsts.instance.all5,
-              child: buildSpecialPasswordField(viewModel.passwordController),
-            ),
-            Padding(
               padding: PaddingConsts.instance.all10,
               child: specialSwitch(viewModel),
             ),
+            buildSpecialButton(() async {}, "Şifreyi Değiştir"),
             buildSpecialButton(
                 () async => await viewModel.logOut(), "Çıkış Yap"),
             buildSpecialButton(

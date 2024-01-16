@@ -1,34 +1,30 @@
 class UserSettingsModel {
   String? photoUrl;
   String? name;
-  String? mail;
+  String? email;
   String? phoneNumber;
-  String? password;
   bool? isAnonym;
 
   UserSettingsModel({
     this.photoUrl,
     this.name,
-    this.mail,
+    this.email,
     this.phoneNumber,
-    this.password,
     this.isAnonym,
   });
 
   UserSettingsModel copyWith({
     String? photoUrl,
     String? name,
-    String? mail,
+    String? email,
     String? phoneNumber,
-    String? password,
     bool? isAnonym,
   }) {
     return UserSettingsModel(
       photoUrl: photoUrl ?? this.photoUrl,
       name: name ?? this.name,
-      mail: mail ?? this.mail,
+      email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
-      password: password ?? this.password,
       isAnonym: isAnonym ?? this.isAnonym,
     );
   }
@@ -37,9 +33,8 @@ class UserSettingsModel {
     return {
       'photoUrl': photoUrl,
       'name': name,
-      'mail': mail,
+      'email': email,
       'phoneNumber': phoneNumber,
-      'password': password,
       'isAnonym': isAnonym,
     };
   }
@@ -48,19 +43,18 @@ class UserSettingsModel {
     return UserSettingsModel(
       photoUrl: json['photoUrl'] as String?,
       name: json['name'] as String?,
-      mail: json['mail'] as String?,
+      email: json['email'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
-      password: json['password'] as String?,
       isAnonym: json['isAnonym'] as bool?,
     );
   }
 
   @override
   String toString() =>
-      "UserSettingsModel(photoUrl: $photoUrl,name: $name,mail: $mail,phoneNumber: $phoneNumber,isAnonym: $isAnonym, password: $password)";
+      "UserSettingsModel(photoUrl: $photoUrl,name: $name,email: $email,phoneNumber: $phoneNumber,isAnonym: $isAnonym)";
 
   @override
-  int get hashCode => Object.hash(photoUrl, name, mail, phoneNumber, isAnonym);
+  int get hashCode => Object.hash(photoUrl, name, email, phoneNumber, isAnonym);
 
   @override
   bool operator ==(Object other) =>
@@ -69,7 +63,7 @@ class UserSettingsModel {
           runtimeType == other.runtimeType &&
           photoUrl == other.photoUrl &&
           name == other.name &&
-          mail == other.mail &&
+          email == other.email &&
           phoneNumber == other.phoneNumber &&
           isAnonym == other.isAnonym;
 }

@@ -13,6 +13,7 @@ class AppConst {
   final String userSettings = "/user/user-settings";
   final String deletePost = "/user/delete-post";
   final String deleteProfileImage = "/user/delete-profile-image";
+  final String updateProfileImage = "/user/change-profile-photo";
   final String signUp = "/auth/sign-up";
   final String communityShares = "/community/community-shares";
   final String getMoreCommunityShares = "/community/get-more-community-shares";

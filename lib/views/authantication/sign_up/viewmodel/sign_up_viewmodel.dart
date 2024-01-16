@@ -36,18 +36,18 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
   Future<void> createMembership() async {
     try {
       final UserDataModel request = UserDataModel(
-        token: null,
-        profileImage: null,
-        name: nameController.text,
-        gender: genderController.text,
-        phoneNumber: numberController.text,
-        password: passwordController.text,
-        uid: null,
-        posts: [],
-        favoriteFoods: [],
-        scores: [],
-        email: emailController.text,
-      );
+          token: null,
+          profileImage: null,
+          name: nameController.text,
+          gender: genderController.text,
+          phoneNumber: numberController.text,
+          password: passwordController.text,
+          uid: null,
+          posts: [],
+          favoriteFoods: [],
+          scores: [],
+          email: emailController.text,
+          isAnonym: false);
 
       if (_validation(request)) {
         await services.sendSignUpRequest(request);

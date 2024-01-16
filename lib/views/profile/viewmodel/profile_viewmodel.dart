@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
@@ -11,8 +12,9 @@ import 'package:irish_coffe/views/profile/models/boolean_single_response_model.d
 import 'package:irish_coffe/views/profile/models/favorite_foods_model.dart';
 import 'package:irish_coffe/views/profile/models/post_id_send_request_model.dart';
 import 'package:irish_coffe/views/profile/models/scores_model.dart';
+import 'package:irish_coffe/views/profile/models/update_profile_image_model.dart';
 import 'package:irish_coffe/views/profile/models/user_settings_model.dart';
-import 'package:irish_coffe/views/profile/models/user_token_send_request_model.dart';
+import 'package:irish_coffe/views/profile/models/user_id_send_request_model.dart';
 import 'package:irish_coffe/views/profile/services/profile_services.dart';
 import 'package:irish_coffe/views/profile/view/profile_view.dart';
 import 'package:mobx/mobx.dart';
@@ -35,9 +37,9 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   String? mail;
   String? profileImage;
   String? phoneNumber;
-  String? password;
   String? token;
   String? gender;
+  String? uid;
   LiteUserDataModel? cameUserData;
   UserSettingsModel? settings;
   final PageController pageController = PageController();
@@ -49,7 +51,6 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   late final TextEditingController nameController;
   late final TextEditingController mailController;
   late final TextEditingController numberController;
-  late final TextEditingController passwordController;
   Uint8List? pickedImage;
 
   @override
@@ -58,7 +59,6 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     nameController = TextEditingController(text: userName);
     mailController = TextEditingController(text: mail);
     numberController = TextEditingController(text: phoneNumber);
-    passwordController = TextEditingController(text: password);
     //Returning any value because init function using in future builder and snapshot requires any data
     return true;
   }
@@ -69,8 +69,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   }
 
   Future<void> deleteAccount() async {
-    final BooleanSingleResponseModel? response = await services
-        .deleteAccount(UserTokenSendRequestModel(userToken: token!));
+    final BooleanSingleResponseModel? response =
+        await services.deleteAccount(UserIdSendRequestModel(uid: uid!));
     if (response != null) {
       if (response.isSuccess!) {
         logOut();
@@ -104,7 +104,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
           localeManager.getNullableStringData(LocaleKeysEnums.name.name) ??
               settings!.name;
       mail = localeManager.getNullableStringData(LocaleKeysEnums.mail.name) ??
-          settings!.mail;
+          settings!.email;
       profileImage = localeManager
               .getNullableStringData(LocaleKeysEnums.profileImage.name) ??
           settings?.photoUrl;
@@ -115,8 +115,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
       anonymValue = localeManager
               .getNullableBoolData(LocaleKeysEnums.isUserAnonym.name) ??
           settings?.isAnonym;
+      uid = localeManager.getStringData(LocaleKeysEnums.userId.name);
       gender = localeManager.getStringData(LocaleKeysEnums.gender.name);
-      password = settings?.password;
     } else {
       gender = cameUserData!.gender;
       userName = cameUserData!.name;
@@ -141,6 +141,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
       await localeManager.removeData(LocaleKeysEnums.mail.name);
       await localeManager.removeData(LocaleKeysEnums.token.name);
       await localeManager.removeData(LocaleKeysEnums.profileImage.name);
+      await localeManager.removeData(LocaleKeysEnums.isUserAnonym.name);
+      await localeManager.removeData(LocaleKeysEnums.userId.name);
     } catch (e) {
       //TODO: Add crashlytics
     }
@@ -196,12 +198,12 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     final UserSettingsModel? response = await services.setNewSettings(
         UserSettingsModel(
             name: nameController.text,
-            mail: mailController.text,
+            email: mailController.text,
             phoneNumber: numberController.text,
             isAnonym: anonymValue,
-            password: passwordController.text
             //TODO: add profile image after real services
-            ));
+            photoUrl: null),
+        token!);
     if (response != null) {
       await _resetLocalSettingsValues();
       _navigatorPop();
@@ -218,7 +220,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     await localeManager.setNullableStringData(
         LocaleKeysEnums.phoneNumber.name, settings!.phoneNumber);
     await localeManager.setNullableStringData(
-        LocaleKeysEnums.mail.name, settings!.mail);
+        LocaleKeysEnums.mail.name, settings!.email);
     await localeManager.setBoolData(
         LocaleKeysEnums.isUserAnonym.name, settings!.isAnonym!);
     await localeManager.setNullableStringData(
@@ -252,6 +254,18 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: source);
     pickedImage = await image?.readAsBytes();
+    await _setNewProfileImage();
+  }
+
+  Future<void> _setNewProfileImage() async {
+    final UpdateProfileImageModel? response = await services.updateProfileImage(
+      UpdateProfileImageModel(
+        uid: uid,
+        imageAsByte: base64Encode(pickedImage!),
+      ),
+    );
+    await localeManager.setNullableStringData(
+        LocaleKeysEnums.profileImage.name, response!.profileImage);
   }
 
   openPost(PostModel post, ProfileViewModel viewModel) {
@@ -281,8 +295,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   Future<void> deleteProfileImage() async {
     final BooleanSingleResponseModel? response =
         await services.removeProfileImage(
-      UserTokenSendRequestModel(
-        userToken: localeManager.getStringData(LocaleKeysEnums.token.name),
+      UserIdSendRequestModel(
+        uid: localeManager.getStringData(LocaleKeysEnums.userId.name),
       ),
     );
     if (response != null) {

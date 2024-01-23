@@ -36,10 +36,9 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   @override
   void setContext(BuildContext context) => viewModelContext = context;
 
-  //TODO: Fix profile image state bug
-
   String? userName;
   String? mail;
+  @observable
   String? profileImage;
   String? phoneNumber;
   String? token;
@@ -279,6 +278,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     await _setNewProfileImage();
   }
 
+  @action
   Future<void> _setNewProfileImage() async {
     final UpdateProfileImageModel? response = await services.updateProfileImage(
       UpdateProfileImageModel(
@@ -288,6 +288,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     );
     await localeManager.setNullableStringData(
         LocaleKeysEnums.profileImage.name, response!.profileImage);
+    profileImage = response.profileImage;
+    Navigator.pop(viewModelContext);
   }
 
   openPost(PostModel post, ProfileViewModel viewModel) {
@@ -314,6 +316,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     }
   }
 
+  @action
   Future<void> deleteProfileImage() async {
     final BooleanSingleResponseModel? response =
         await services.removeProfileImage(
@@ -326,6 +329,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
         Fluttertoast.showToast(msg: "Bir şeyler ters gitti. Tekrar deneyiniz.");
       } else {
         await localeManager.removeData(LocaleKeysEnums.profileImage.name);
+        profileImage = null;
         _navigatorPop();
       }
     }

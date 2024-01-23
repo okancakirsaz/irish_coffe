@@ -39,7 +39,7 @@ class CreatePost extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          CustomButton(
+          CustomStateFullButton(
             onPressed: () async => onPressed(),
             style: TextConsts.instance.regularBlack18,
             text: "Paylaş",

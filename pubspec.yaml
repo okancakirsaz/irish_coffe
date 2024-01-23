@@ -45,6 +45,7 @@ dependencies:
   #Network
   dio:
   flutter_credit_card: ^4.0.1
+  easy_loading_button: ^0.3.2
 
 dev_dependencies:
   flutter_test:

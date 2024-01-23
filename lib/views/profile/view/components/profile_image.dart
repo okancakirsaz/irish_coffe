@@ -6,22 +6,24 @@ class ProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 100,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        image: DecorationImage(
-          image: NetworkImage(viewModel.profileImage ?? ""),
-          fit: BoxFit.cover,
+    return Observer(builder: (context) {
+      return Container(
+        width: 100,
+        height: 100,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          image: DecorationImage(
+            image: NetworkImage(viewModel.profileImage ?? ""),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      child: viewModel.profileImage == "" || viewModel.profileImage == null
-          ? SvgPicture.asset(
-              viewModel.pickImageForGender(viewModel.gender!),
-              fit: BoxFit.contain,
-            )
-          : null,
-    );
+        child: viewModel.profileImage == "" || viewModel.profileImage == null
+            ? SvgPicture.asset(
+                viewModel.pickImageForGender(viewModel.gender!),
+                fit: BoxFit.contain,
+              )
+            : null,
+      );
+    });
   }
 }

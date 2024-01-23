@@ -20,7 +20,10 @@ class Settigns extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ProfileImage(viewModel: viewModel),
+                Padding(
+                  padding: PaddingConsts.instance.right10,
+                  child: ProfileImage(viewModel: viewModel),
+                ),
                 Column(
                   children: <Widget>[
                     buildSpecialButton(() => viewModel.openImageModeSelector(),

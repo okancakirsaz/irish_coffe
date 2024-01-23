@@ -3,9 +3,9 @@ import 'package:irish_coffe/core/base/view/base_view.dart';
 import 'package:irish_coffe/core/consts/asset_consts.dart';
 import 'package:irish_coffe/core/consts/color_consts/color_consts.dart';
 import 'package:irish_coffe/core/consts/text_consts.dart';
+import 'package:irish_coffe/core/widgets/custom_statefull_button.dart';
 import 'package:irish_coffe/core/widgets/pop_button.dart';
 import '../../../../core/consts/padding_consts.dart';
-import '../../../../core/widgets/custom_button.dart';
 import '../../core/components/auth_text_field.dart';
 import '../../core/components/logo_view_auth.dart';
 import '../../core/components/title.dart';
@@ -67,7 +67,7 @@ class ForgotPasswordView extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           Center(
-            child: CustomButton(
+            child: CustomStateFullButton(
                 onPressed: () async => await model.sendVerificationMail(),
                 style: TextConsts.instance.regularBlack25Bold,
                 text: "Kod Gönder",

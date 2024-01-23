@@ -3,8 +3,8 @@ import 'package:irish_coffe/core/base/view/base_view.dart';
 import 'package:irish_coffe/core/consts/asset_consts.dart';
 import 'package:irish_coffe/core/consts/padding_consts.dart';
 import 'package:irish_coffe/core/consts/text_consts.dart';
-import 'package:irish_coffe/core/widgets/custom_button.dart';
 import 'package:irish_coffe/core/widgets/custom_dropdown.dart';
+import 'package:irish_coffe/core/widgets/custom_statefull_button.dart';
 import 'package:irish_coffe/core/widgets/pop_button.dart';
 import 'package:irish_coffe/views/authantication/core/components/auth_text_field.dart';
 import 'package:irish_coffe/views/authantication/core/components/auth_text_field_password.dart';
@@ -111,7 +111,7 @@ class SignUpView extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Center(
-            child: CustomButton(
+            child: CustomStateFullButton(
               onPressed: () async => await model.createMembership(),
               style: TextConsts.instance.regularBlack25Bold,
               text: "Hesap Oluştur",

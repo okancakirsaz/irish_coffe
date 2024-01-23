@@ -5,7 +5,7 @@ import 'package:irish_coffe/core/consts/padding_consts.dart';
 import 'package:irish_coffe/core/consts/text_consts.dart';
 import 'package:irish_coffe/core/init/navigation/navigation_enums.dart';
 import 'package:irish_coffe/core/init/navigation/navigation_manager.dart';
-import 'package:irish_coffe/core/widgets/custom_button.dart';
+import 'package:irish_coffe/core/widgets/custom_statefull_button.dart';
 import 'package:irish_coffe/views/authantication/core/components/auth_text_field_password.dart';
 import 'package:irish_coffe/views/authantication/core/components/logo_view_auth.dart';
 import '../../../../core/consts/color_consts/color_consts.dart';
@@ -98,7 +98,7 @@ class LoginView extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           Center(
-            child: CustomButton(
+            child: CustomStateFullButton(
                 onPressed: () async => await model.tryToLogin(),
                 style: TextConsts.instance.regularBlack25Bold,
                 text: "Giriş",

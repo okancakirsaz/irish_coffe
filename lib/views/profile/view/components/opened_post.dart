@@ -5,7 +5,7 @@ class OpenedPost extends StatelessWidget {
   final ProfileViewModel viewModel;
   const OpenedPost(
       {super.key, required this.postData, required this.viewModel});
-
+  //TODO: Make more beatiful UI
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -30,14 +30,7 @@ class OpenedPost extends StatelessWidget {
                 ),
               ),
               viewModel.checkIsProfileMine(postData.user!.token!)
-                  ? IconButton(
-                      onPressed: () async =>
-                          await viewModel.deletePost(postData.id!),
-                      icon: Icon(
-                        Icons.delete,
-                        size: 30,
-                        color: ColorConsts.instance.red,
-                      ))
+                  ? buildDeleteIconButton
                   : const SizedBox()
             ],
           ),
@@ -60,6 +53,26 @@ class OpenedPost extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget get buildDeleteIconButton {
+    return EasyButton(
+      width: 40,
+      buttonColor: Colors.transparent,
+      onPressed: () async => await viewModel.deletePost(postData.id!),
+      idleStateWidget: Icon(
+        Icons.delete,
+        size: 30,
+        color: ColorConsts.instance.red,
+      ),
+      loadingStateWidget: Padding(
+        padding: PaddingConsts.instance.all10,
+        child: CircularProgressIndicator(
+          color: ColorConsts.instance.lightGray,
+          strokeWidth: 2,
+        ),
       ),
     );
   }

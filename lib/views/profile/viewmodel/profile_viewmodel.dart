@@ -223,8 +223,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
             email: mailController.text,
             phoneNumber: numberController.text,
             isAnonym: anonymValue,
-            //TODO: add profile image after real services
-            photoUrl: null),
+            photoUrl: profileImage),
         token!);
     if (response != null) {
       await _resetLocalSettingsValues();
@@ -274,7 +273,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
 
   Future<void> _getNewProfileImage(ImageSource source) async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: source);
+    final XFile? image =
+        await picker.pickImage(source: source, imageQuality: 20);
     pickedImage = await image?.readAsBytes();
     await _setNewProfileImage();
   }

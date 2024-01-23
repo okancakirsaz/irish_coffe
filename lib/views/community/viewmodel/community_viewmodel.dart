@@ -112,7 +112,8 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
 
   Future<void> createPost(ImageSource source) async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: source);
+    final XFile? image =
+        await picker.pickImage(source: source, imageQuality: 20);
     pickedImage = await image?.readAsBytes();
     if (pickedImage != null) {
       navigateToCreatePostPage();

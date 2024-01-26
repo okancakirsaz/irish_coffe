@@ -248,7 +248,11 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   }
 
   _navigatorPop() {
-    Navigator.pop(viewModelContext);
+    if (Navigator.of(viewModelContext).canPop()) {
+      Navigator.pop(viewModelContext);
+    } else {
+      //Nothing
+    }
   }
 
   @action
@@ -289,7 +293,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     await localeManager.setNullableStringData(
         LocaleKeysEnums.profileImage.name, response!.profileImage);
     profileImage = response.profileImage;
-    Navigator.pop(viewModelContext);
+    _navigatorPop();
   }
 
   openPost(PostModel post, ProfileViewModel viewModel) {

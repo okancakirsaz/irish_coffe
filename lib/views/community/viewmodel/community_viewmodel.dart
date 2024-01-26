@@ -26,23 +26,13 @@ part 'community_viewmodel.g.dart';
 class CommunityViewModel = _CommunityViewModelBase with _$CommunityViewModel;
 
 abstract class _CommunityViewModelBase with Store, BaseViewModel {
-  @override
-  void setContext(BuildContext context) => viewModelContext = context;
-
-  @override
-  init() async {
-    await getPostsFirstInit();
-    await getCustomersFirstInit();
-  }
-
+  //VARIABLES
   final PageController pageController = PageController();
   Uint8List? pickedImage;
-
   final CommunityServices service = CommunityServices();
   final TextEditingController postDescriptionController =
       TextEditingController();
   late final TabController tabController;
-
   @observable
   Widget? moreDataNotExist;
   @observable
@@ -53,20 +43,39 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
   ObservableList<CurrentlyInIrishModel> customers =
       ObservableList<CurrentlyInIrishModel>.of([]);
 
-  navigateToIndexedPage(int index) {
-    pageController.animateToPage(index,
-        duration: const Duration(milliseconds: 200), curve: Curves.linear);
-  }
+  //INITIALIZATION
 
   initializeTabController(TickerProvider vsync) {
     tabController = TabController(length: 2, vsync: vsync);
   }
 
-  whenPageChangedWithHand(int index) {
-    tabController.animateTo(index);
+  @action
+  Future<void> getPostsFirstInit() async {
+    List<dynamic>? cachedPosts =
+        localeManager.getNullableJsonData(LocaleKeysEnums.posts.name);
+    if (cachedPosts == null) {
+      await getFirstPosts();
+      isDataLoadSuccessful = true;
+    } else {
+      //Posts already cached.
+      allPosts = convertCachedPostsToModel();
+      isDataLoadSuccessful = true;
+    }
   }
 
+  @override
+  void setContext(BuildContext context) => viewModelContext = context;
+
+  @override
+  init() async {
+    await getPostsFirstInit();
+    await getCustomersFirstInit();
+  }
+
+  //LISTENERS
+
   addPageFinishListener(ScrollNotification notification) {
+    //TODO: Bug here
     if (notification is ScrollEndNotification) {
       getMorePosts();
     } else {
@@ -74,7 +83,43 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     }
   }
 
-  //TODO: SEPEREATE UI CODES
+  //SHARE POST
+
+  Future<void> createPost(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image =
+        await picker.pickImage(source: source, imageQuality: 20);
+    pickedImage = await image?.readAsBytes();
+    if (pickedImage != null) {
+      navigateToCreatePostPage();
+    }
+  }
+
+  sharePost() async {
+    await service.postNewPost(
+      PostModel(
+        imageAsByte: base64Encode(pickedImage!),
+        timestamp: DateTime.now().toIso8601String(),
+        description: postDescriptionController.text,
+        user: LiteUserDataModel(
+            uid: localeManager.getStringData(LocaleKeysEnums.userId.name),
+            token: localeManager
+                .getNullableStringData(LocaleKeysEnums.token.name)!,
+            name:
+                localeManager.getNullableStringData(LocaleKeysEnums.name.name)!,
+            profileImage: localeManager
+                    .getNullableStringData(LocaleKeysEnums.profileImage.name) ??
+                "",
+            gender: localeManager
+                    .getNullableStringData(LocaleKeysEnums.gender.name) ??
+                ""),
+        time: getCurrentTimeAsString(),
+        id: const Uuid().v1(),
+      ),
+    );
+    goBackPosts();
+  }
+
   openImageModeSelector() {
     showBottomSheet(
         context: viewModelContext,
@@ -110,16 +155,6 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
         });
   }
 
-  Future<void> createPost(ImageSource source) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image =
-        await picker.pickImage(source: source, imageQuality: 20);
-    pickedImage = await image?.readAsBytes();
-    if (pickedImage != null) {
-      navigateToCreatePostPage();
-    }
-  }
-
   navigateToCreatePostPage() {
     //TODO: Use navigation manager
     Navigator.push(
@@ -134,32 +169,6 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     );
   }
 
-  //TODO: SOLID!(SINGLE RESPONSIBILITY)
-  sharePost() async {
-    await service.postNewPost(
-      PostModel(
-        imageAsByte: base64Encode(pickedImage!),
-        timestamp: DateTime.now().toIso8601String(),
-        description: postDescriptionController.text,
-        user: LiteUserDataModel(
-            uid: localeManager.getStringData(LocaleKeysEnums.userId.name),
-            token: localeManager
-                .getNullableStringData(LocaleKeysEnums.token.name)!,
-            name:
-                localeManager.getNullableStringData(LocaleKeysEnums.name.name)!,
-            profileImage: localeManager
-                    .getNullableStringData(LocaleKeysEnums.profileImage.name) ??
-                "",
-            gender: localeManager
-                    .getNullableStringData(LocaleKeysEnums.gender.name) ??
-                ""),
-        time: getCurrentTimeAsString(),
-        id: const Uuid().v1(),
-      ),
-    );
-    goBackPosts();
-  }
-
   goBackPosts() {
     Navigator.pushAndRemoveUntil(
         viewModelContext,
@@ -167,29 +176,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
         (route) => false);
   }
 
-  String getCurrentTimeAsString() {
-    final DateTime dateTime = DateTime.now();
-    final int day = dateTime.day;
-    final int month = dateTime.month;
-    final int year = dateTime.year;
-    final int hour = dateTime.hour;
-    final int minute = dateTime.minute;
-    return "$day.$month.$year/$hour.$minute";
-  }
-
-  @action
-  Future<void> getPostsFirstInit() async {
-    List<dynamic>? cachedPosts =
-        localeManager.getNullableJsonData(LocaleKeysEnums.posts.name);
-    if (cachedPosts == null) {
-      await getFirstPosts();
-      isDataLoadSuccessful = true;
-    } else {
-      //Posts already cached.
-      allPosts = convertCachedPostsToModel();
-      isDataLoadSuccessful = true;
-    }
-  }
+  //GET POSTS
 
   @action
   Future<void> getFirstPosts() async {
@@ -210,7 +197,6 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     }
   }
 
-  //TODO:SOLID!(SINGLE RESPONSIBILITY)
   @action
   Future<void> getMorePosts() async {
     final List<PostModel>? response = await service.getMorePosts(
@@ -237,7 +223,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     }
     await localeManager.setJsonData(LocaleKeysEnums.posts.name, allPostsAsJson);
     await localeManager.setStringData(
-        LocaleKeysEnums.lastCamePost.name, allPosts.last.time!);
+        LocaleKeysEnums.lastCamePost.name, allPosts.last.timestamp!);
   }
 
   ObservableList<PostModel> convertCachedPostsToModel() {
@@ -261,6 +247,8 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
                   userData: data,
                 )));
   }
+
+//CUSTOMERS
 
   @action
   Future<void> getCustomerList() async {
@@ -319,5 +307,26 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
             profileImage: data.profileImage),
       );
     }
+  }
+
+  //OTHER
+
+  String getCurrentTimeAsString() {
+    final DateTime dateTime = DateTime.now();
+    final int day = dateTime.day;
+    final int month = dateTime.month;
+    final int year = dateTime.year;
+    final int hour = dateTime.hour;
+    final int minute = dateTime.minute;
+    return "$day.$month.$year/$hour.$minute";
+  }
+
+  navigateToIndexedPage(int index) {
+    pageController.animateToPage(index,
+        duration: const Duration(milliseconds: 200), curve: Curves.linear);
+  }
+
+  whenPageChangedWithHand(int index) {
+    tabController.animateTo(index);
   }
 }

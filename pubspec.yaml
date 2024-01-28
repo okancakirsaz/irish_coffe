@@ -1,5 +1,5 @@
 name: irish_coffe
-description: A new Flutter project.
+description: Irish Coffee Mobile Application
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -31,8 +31,9 @@ dependencies:
   fluttertoast: ^8.2.2
   flutter_svg: ^2.0.9
   passwordfield:
+  flutter_credit_card: ^4.0.1
+  easy_loading_button: ^0.3.2
   
-
 
   #Others
   shared_preferences: ^2.2.1
@@ -40,12 +41,13 @@ dependencies:
   
   #OS
   image_picker: ^1.0.4
+  go_router: ^13.1.0
   
 
   #Network
   dio:
-  flutter_credit_card: ^4.0.1
-  easy_loading_button: ^0.3.2
+  
+  
 
 dev_dependencies:
   flutter_test:

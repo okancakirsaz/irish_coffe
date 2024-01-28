@@ -58,10 +58,10 @@ class Settigns extends StatelessWidget {
                 "Şifreyi Değiştir"),
             buildSpecialButton(
                 () async => await viewModel.logOut(), "Çıkış Yap"),
-            buildSpecialButton(
-                () => viewModel.showSureDialog(
-                    () async => await viewModel.deleteAccount()),
-                "Hesabı Sil"),
+            // buildSpecialButton(
+            //     () => viewModel.showSureDialog(
+            //         () async => await viewModel.deleteAccount()),
+            //     "Hesabı Sil"),
             const SizedBox(height: 30),
             CustomButton(
                 onPressed: () async => await viewModel.setNewUserSettings(),

@@ -36,6 +36,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   @override
   void setContext(BuildContext context) => viewModelContext = context;
 
+  @observable
   String? userName;
   String? mail;
   @observable
@@ -215,6 +216,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     }
   }
 
+  @action
   Future<void> setNewUserSettings() async {
     final UserSettingsModel? response = await services.setNewSettings(
         UserSettingsModel(

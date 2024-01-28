@@ -54,10 +54,12 @@ class ProfileView extends StatelessWidget {
                       ],
                     ),
                     appBar: CustomAppBar(
-                      title: Text(
-                        model.userName!,
-                        style: TextConsts.instance.regularWhite20Bold,
-                      ),
+                      title: Observer(builder: (context) {
+                        return Text(
+                          model.userName!,
+                          style: TextConsts.instance.regularWhite20Bold,
+                        );
+                      }),
                     ).build(),
                   );
                 } else {
@@ -83,10 +85,12 @@ class ProfileView extends StatelessWidget {
           children: <Widget>[
             SizedBox(
               width: 210,
-              child: Text(
-                model.userName!,
-                style: TextConsts.instance.regularBlack18,
-              ),
+              child: Observer(builder: (context) {
+                return Text(
+                  model.userName!,
+                  style: TextConsts.instance.regularBlack18,
+                );
+              }),
             ),
             settingsButton(model),
           ],

@@ -28,7 +28,7 @@
                      <data android:scheme="http" android:host="irishcoffee.com" />
                      <data android:scheme="https" />
                 </intent-filter>
-            <!-- Deep Links can be deactivated -->
+            <!-- Deep Links can be deactivate -->
         </activity>
         <meta-data
             android:name="flutterEmbedding"

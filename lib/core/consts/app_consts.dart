@@ -20,4 +20,5 @@ class AppConst {
   final String sharePost = "/community/share-post";
   final String forgotPassword = "/auth/forgot-password";
   final String currentlyInIrish = "/community/currently-in-irish-coffee";
+  final String bucketVerification = "/order/verification";
 }

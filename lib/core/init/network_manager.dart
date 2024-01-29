@@ -8,8 +8,6 @@ abstract class NetworkManager {
     fetchBaseUrl();
   }
   final Dio network = Dio();
-  final String baseUrlDev =
-      "https://3b95b97c-5ed8-4a42-b107-f72eef4d706c.mock.pstmn.io";
 
   final String localHost =
       Platform.isAndroid ? "http://10.0.2.2:3000" : "http://localhost:3000";
@@ -22,7 +20,7 @@ abstract class NetworkManager {
     if (kDebugMode) {
       network.options.baseUrl = localHost;
     } else {
-      network.options.baseUrl = baseUrlProduct;
+      network.options.baseUrl = localHost;
     }
   }
 }

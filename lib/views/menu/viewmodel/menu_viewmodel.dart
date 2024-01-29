@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
+import 'package:irish_coffe/views/menu/models/bucket_verification_request_model.dart';
+import 'package:irish_coffe/views/menu/models/bucket_verification_response_model.dart';
 import 'package:irish_coffe/views/menu/models/menu_item_model.dart';
 import 'package:irish_coffe/views/menu/services/menu_services.dart';
 import 'package:irish_coffe/views/menu/views/menu_view.dart';
@@ -108,19 +110,65 @@ abstract class _MenuViewModelBase with Store, BaseViewModel {
         CupertinoPageRoute(builder: (context) => Basket(viewModel: viewModel)));
   }
 
-  navigateToPayment() {
+  Future<void> bucketVerification() async {
     if (basket.isEmpty) {
       Fluttertoast.showToast(msg: "Önce sepete bir şeyler eklemelisiniz.");
     } else {
-      //TODO: use navigation manager
-      Navigator.push(
-        viewModelContext,
-        CupertinoPageRoute(
-          builder: (context) => PaymentView(
-            priceList: selectedItemsPrices,
-          ),
-        ),
-      );
+      final BucketVerificationResponseModel? response = await _checkBucket();
+      await _handleBucketResponse(response);
     }
+  }
+
+  List<String> _separateSelectedElementsName() {
+    List<String> nameList = [];
+    for (int i = 0; i <= basket.length - 1; i++) {
+      nameList.add(basket[i]["element"].name);
+    }
+    return nameList;
+  }
+
+  Future<BucketVerificationResponseModel?> _checkBucket() async {
+    return await service.bucketVerification(
+      BucketVerificationRequestModel(
+        idList: _separateSelectedElementsName(),
+      ),
+    );
+  }
+
+  Future<void> _handleBucketResponse(
+      BucketVerificationResponseModel? response) async {
+    if (response == null) {
+      Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz");
+    } else {
+      if (response.isAllValid) {
+        _navigateToPayment();
+      } else {
+        Fluttertoast.showToast(msg: response.errorMessage!);
+        await getMenu();
+        _navigateToMenu();
+      }
+    }
+  }
+
+  _navigateToPayment() {
+    //TODO: use navigation manager
+    Navigator.push(
+      viewModelContext,
+      CupertinoPageRoute(
+        builder: (context) => PaymentView(
+          priceList: selectedItemsPrices,
+        ),
+      ),
+    );
+  }
+
+  _navigateToMenu() {
+    //TODO: use navigation manager
+    Navigator.push(
+      viewModelContext,
+      CupertinoPageRoute(
+        builder: (context) => const MenuView(),
+      ),
+    );
   }
 }

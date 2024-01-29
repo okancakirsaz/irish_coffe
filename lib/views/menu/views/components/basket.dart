@@ -21,8 +21,8 @@ class Basket extends StatelessWidget {
                     viewModel.basket.isNotEmpty ? basketList() : basketEmpty()),
             Padding(
               padding: PaddingConsts.instance.bottom50,
-              child: CustomButton(
-                onPressed: () => viewModel.navigateToPayment(),
+              child: CustomStateFullButton(
+                onPressed: () async => await viewModel.bucketVerification(),
                 style: TextConsts.instance.regularBlack18,
                 text: "Sepeti Onayla",
                 width: 200,

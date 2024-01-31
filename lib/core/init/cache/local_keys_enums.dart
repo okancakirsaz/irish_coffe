@@ -10,5 +10,10 @@ enum LocaleKeysEnums {
   posts,
   lastCamePost,
   customers,
-  menu
+  menu,
+  cvv,
+  cardHolder,
+  cardNumber,
+  cardExpireDate,
+  orderedFoods,
 }

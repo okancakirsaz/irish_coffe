@@ -21,4 +21,6 @@ class AppConst {
   final String forgotPassword = "/auth/forgot-password";
   final String currentlyInIrish = "/community/currently-in-irish-coffee";
   final String bucketVerification = "/order/verification";
+  final String payment = "/order/payment";
+  final String createOrder = "/order/create-order";
 }

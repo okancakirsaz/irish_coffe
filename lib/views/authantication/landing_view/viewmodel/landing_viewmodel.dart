@@ -13,7 +13,10 @@ abstract class _LandingViewModelBase with Store, BaseViewModel {
   @override
   Future<int> init() async {
     await localeManager.getSharedPreferencesInstance();
-    //await localeManager.removeData(LocaleKeysEnums.token.name);
+    // await localeManager.removeData(LocaleKeysEnums.cardNumber.name);
+    // await localeManager.removeData(LocaleKeysEnums.cardHolder.name);
+    // await localeManager.removeData(LocaleKeysEnums.cvv.name);
+    // await localeManager.removeData(LocaleKeysEnums.cardExpireDate.name);
     return 1;
   }
 

@@ -141,6 +141,8 @@ abstract class _MenuViewModelBase with Store, BaseViewModel {
       Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz");
     } else {
       if (response.isAllValid) {
+        await localeManager.setJsonData(
+            LocaleKeysEnums.orderedFoods.name, _separateSelectedElementsName());
         _navigateToPayment();
       } else {
         Fluttertoast.showToast(msg: response.errorMessage!);

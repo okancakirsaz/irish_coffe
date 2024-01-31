@@ -6,8 +6,9 @@ import 'package:irish_coffe/core/consts/color_consts/color_consts.dart';
 import 'package:irish_coffe/core/consts/padding_consts.dart';
 import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/consts/text_consts.dart';
-import 'package:irish_coffe/core/widgets/custom_button.dart';
 import 'package:irish_coffe/views/payment/viewmodel/payment_viewmodel.dart';
+
+import '../../../core/widgets/custom_statefull_button.dart';
 
 class PaymentView extends StatelessWidget {
   final List<int> priceList;
@@ -91,18 +92,18 @@ class PaymentView extends StatelessWidget {
               expiryDateDecoration: buildInputDecorationForCardForm("SKT"),
             ),
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            cardNumber: "",
-            expiryDate: "",
-            cardHolderName: "",
-            cvvCode: "",
+            cardNumber: model.cardNumber,
+            expiryDate: model.expiryDate,
+            cardHolderName: model.cardHolderName,
+            cvvCode: model.cvvCode,
             onCreditCardModelChange: (CreditCardModel cardModel) =>
                 model.onCreditCardModelChange(cardModel),
             formKey: model.formKey,
           ),
           Padding(
             padding: PaddingConsts.instance.top10,
-            child: CustomButton(
-                onPressed: () => model.onValidate(),
+            child: CustomStateFullButton(
+                onPressed: () async => await model.paymentGateway(),
                 style: TextConsts.instance.regularBlack18Bold,
                 text: "Onayla",
                 width: 150,

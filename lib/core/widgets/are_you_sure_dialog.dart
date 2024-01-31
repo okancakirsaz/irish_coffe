@@ -5,19 +5,20 @@ import 'package:irish_coffe/core/consts/text_consts.dart';
 
 class AreYouSure extends StatelessWidget {
   final VoidCallback onPressed;
-  const AreYouSure({super.key, required this.onPressed});
+  final String? question;
+  const AreYouSure({super.key, required this.onPressed, this.question});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: ColorConsts.instance.darkGrey,
       content: SizedBox(
-        height: 100,
+        height: 150,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Emin misiniz? ",
+              question ?? "Emin misiniz? ",
               style: TextConsts.instance.regularWhite20Bold,
             ),
             const SizedBox(height: 20),

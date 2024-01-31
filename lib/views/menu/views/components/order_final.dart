@@ -8,7 +8,14 @@ import 'package:irish_coffe/core/widgets/custom_scaffold.dart';
 import 'package:irish_coffe/views/main/view/main_view.dart';
 
 class OrderFinal extends StatelessWidget {
-  const OrderFinal({super.key});
+  final List<String> orderDetails;
+  final int orderId;
+  final bool isOrderReady;
+  const OrderFinal(
+      {super.key,
+      required this.orderDetails,
+      required this.orderId,
+      required this.isOrderReady});
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +33,25 @@ class OrderFinal extends StatelessWidget {
                 boxShadow: ColorConsts.instance.shadow,
               ),
               child: Text(
-                "Sipariş Numaranız: 10",
+                "Sipariş Numaranız: $orderId",
                 style: TextConsts.instance.regularWhite25,
               ),
+            ),
+          ),
+          Padding(
+            padding: PaddingConsts.instance.all10,
+            child: Text(
+              orderDetails.join(", "),
+              style: TextConsts.instance.regularBlack18Bold,
+            ),
+          ),
+          Padding(
+            padding: PaddingConsts.instance.all10,
+            child: Text(
+              isOrderReady
+                  ? "Siparişiniz hazır."
+                  : "Siparişiniz şu anda hazırlanıyor.",
+              style: TextConsts.instance.regularBlack18,
             ),
           ),
           TextButton(

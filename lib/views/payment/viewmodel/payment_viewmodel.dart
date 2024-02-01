@@ -105,10 +105,11 @@ abstract class _PaymentViewModelBase with Store, BaseViewModel {
   Future<void> _createOrder() async {
     final OrderResponseModel? response = await service.createOrder(
       OrderRequestModel(
-        orderList: localeManager.getJsonData(LocaleKeysEnums.orderedFoods.name),
-        totalPrice: totalPrice,
-        timestamp: DateTime.now().toIso8601String(),
-      ),
+          orderList:
+              localeManager.getJsonData(LocaleKeysEnums.orderedFoods.name),
+          totalPrice: totalPrice,
+          timestamp: DateTime.now().toIso8601String(),
+          userId: localeManager.getStringData(LocaleKeysEnums.userId.name)),
     );
 
     if (response != null) {

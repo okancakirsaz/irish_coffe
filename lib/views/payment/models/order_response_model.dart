@@ -3,10 +3,12 @@ class OrderResponseModel {
   int totalPrice;
   String timestamp;
   bool isOrderReady;
+  String userId;
   int orderId;
 
   OrderResponseModel({
     required this.orderList,
+    required this.userId,
     required this.totalPrice,
     required this.timestamp,
     required this.isOrderReady,
@@ -18,6 +20,7 @@ class OrderResponseModel {
       'orderList': orderList,
       'totalPrice': totalPrice,
       'timestamp': timestamp,
+      'userId': userId,
       'isOrderReady': isOrderReady,
       'orderId': orderId,
     };
@@ -25,13 +28,14 @@ class OrderResponseModel {
 
   factory OrderResponseModel.fromJson(Map<String, dynamic> json) {
     return OrderResponseModel(
-      orderList:
-          (json['orderList'] as List<dynamic>).map((e) => e as String).toList(),
-      totalPrice: json['totalPrice'] as int,
-      timestamp: json['timestamp'] as String,
-      isOrderReady: json['isOrderReady'] as bool,
-      orderId: json['orderId'] as int,
-    );
+        orderList: (json['orderList'] as List<dynamic>)
+            .map((e) => e as String)
+            .toList(),
+        totalPrice: json['totalPrice'] as int,
+        timestamp: json['timestamp'] as String,
+        isOrderReady: json['isOrderReady'] as bool,
+        orderId: json['orderId'] as int,
+        userId: json['userId'] as String);
   }
 
   @override

@@ -1,5 +1,5 @@
 class OrderResponseModel {
-  List<String> orderList;
+  List<dynamic> orderList;
   int totalPrice;
   String timestamp;
   bool isOrderReady;
@@ -29,7 +29,7 @@ class OrderResponseModel {
   factory OrderResponseModel.fromJson(Map<String, dynamic> json) {
     return OrderResponseModel(
         orderList: (json['orderList'] as List<dynamic>)
-            .map((e) => e as String)
+            .map((e) => e as dynamic)
             .toList(),
         totalPrice: json['totalPrice'] as int,
         timestamp: json['timestamp'] as String,

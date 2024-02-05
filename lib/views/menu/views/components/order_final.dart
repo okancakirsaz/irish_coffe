@@ -8,7 +8,7 @@ import 'package:irish_coffe/core/widgets/custom_scaffold.dart';
 import 'package:irish_coffe/views/main/view/main_view.dart';
 
 class OrderFinal extends StatelessWidget {
-  final List<String> orderDetails;
+  final List<dynamic> orderDetails;
   final int orderId;
   final bool isOrderReady;
   const OrderFinal(
@@ -38,12 +38,20 @@ class OrderFinal extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
+          Container(
+            height: 200,
             padding: PaddingConsts.instance.all10,
-            child: Text(
-              orderDetails.join(", "),
-              style: TextConsts.instance.regularBlack18Bold,
-            ),
+            color: ColorConsts.instance.orange,
+            child: ListView.builder(
+                itemCount: orderDetails.length,
+                itemBuilder: (context, index) {
+                  return Center(
+                    child: Text(
+                      "${orderDetails[index]["name"]} x${orderDetails[index]["count"]}",
+                      style: TextConsts.instance.regularBlack20Bold,
+                    ),
+                  );
+                }),
           ),
           Padding(
             padding: PaddingConsts.instance.all10,

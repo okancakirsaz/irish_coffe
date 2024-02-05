@@ -127,6 +127,15 @@ abstract class _MenuViewModelBase with Store, BaseViewModel {
     return nameList;
   }
 
+  List<dynamic> _separateSelectedElementsNameWithCount() {
+    List<dynamic> nameList = [];
+    for (int i = 0; i <= basket.length - 1; i++) {
+      nameList.add(
+          {"name": basket[i]["element"].name, "count": basket[i]["count"]});
+    }
+    return nameList;
+  }
+
   Future<BucketVerificationResponseModel?> _checkBucket() async {
     return await service.bucketVerification(
       BucketVerificationRequestModel(
@@ -141,8 +150,8 @@ abstract class _MenuViewModelBase with Store, BaseViewModel {
       Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz");
     } else {
       if (response.isAllValid) {
-        await localeManager.setJsonData(
-            LocaleKeysEnums.orderedFoods.name, _separateSelectedElementsName());
+        await localeManager.setJsonData(LocaleKeysEnums.orderedFoods.name,
+            _separateSelectedElementsNameWithCount());
         _navigateToPayment();
       } else {
         Fluttertoast.showToast(msg: response.errorMessage!);

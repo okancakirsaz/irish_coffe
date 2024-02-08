@@ -42,6 +42,7 @@ abstract class _SignUpViewModelBase with Store, BaseViewModel {
           gender: genderController.text,
           phoneNumber: numberController.text,
           password: passwordController.text,
+          isUserBanned: false,
           uid: null,
           posts: [],
           favoriteFoods: [],

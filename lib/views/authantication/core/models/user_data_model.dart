@@ -10,6 +10,7 @@ class UserDataModel {
   String? name;
   String? gender;
   String? profileImage;
+  bool? isUserBanned;
   String? phoneNumber;
   List<PostModel>? posts;
   List<ScoresModel>? scores;
@@ -23,6 +24,7 @@ class UserDataModel {
       this.uid,
       this.name,
       this.gender,
+      this.isUserBanned,
       this.profileImage,
       this.phoneNumber,
       this.posts,
@@ -38,6 +40,7 @@ class UserDataModel {
       String? name,
       String? gender,
       String? profileImage,
+      bool? isUserBanned,
       String? phoneNumber,
       List<PostModel>? posts,
       List<ScoresModel>? scores,
@@ -49,6 +52,7 @@ class UserDataModel {
         token: token ?? this.token,
         uid: uid ?? this.uid,
         name: name ?? this.name,
+        isUserBanned: isUserBanned ?? this.isUserBanned,
         gender: gender ?? this.gender,
         profileImage: profileImage ?? this.profileImage,
         phoneNumber: phoneNumber ?? this.phoneNumber,
@@ -65,6 +69,7 @@ class UserDataModel {
       'token': token,
       'uid': uid,
       'name': name,
+      'isUserBanned': isUserBanned,
       'gender': gender,
       'profileImage': profileImage,
       'phoneNumber': phoneNumber,
@@ -82,6 +87,7 @@ class UserDataModel {
         token: json['token'] as String?,
         uid: json['uid'] as String?,
         name: json['name'] as String?,
+        isUserBanned: json['isUserBanned'] as bool?,
         gender: json['gender'] as String?,
         profileImage: json['profileImage'] as String?,
         phoneNumber: json['phoneNumber'] as String?,

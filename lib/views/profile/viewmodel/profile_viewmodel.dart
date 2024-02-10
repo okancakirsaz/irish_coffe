@@ -199,8 +199,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
         });
   }
 
-  //Dependency Injection!
   Future<void> sendResetPasswordEmail() async {
+    //Dependency Injection!
     final ForgotPasswordResponseModel? response = await ForgotPasswordServices()
         .postEmailData(ForgotPasswordRequestModel(email: mail!));
     if (response != null) {

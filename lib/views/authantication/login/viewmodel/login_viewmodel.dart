@@ -30,16 +30,25 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
               mail: cameMail ?? emailController.text,
               password: camePassword ?? passwordController.text));
 
-      if (response != null) {
+      if (response != null && !response.isUserBanned!) {
         //Navigate to main page
         await _cacheDatas(response);
         navigateToMainPage();
       } else {
-        showErrorDialog("Email veya şifre yanlış, tekrar deneyiniz.");
+        _checkFailReason(response!);
       }
     } catch (_) {
       //TODO: Add craslytics
       showErrorDialog("Beklenmeyen bir sorun oluştu. Lütfen tekrar deneyiniz.");
+    }
+  }
+
+  _checkFailReason(UserDataModel response) {
+    if (response.isUserBanned!) {
+      showErrorDialog(
+          "Topluluk kurallarımıza uygun davranışlarda bulunmadığınız için uygulamadan süresiz olarak uzaklaştırıldınız.");
+    } else {
+      showErrorDialog("Email veya şifre yanlış, tekrar deneyiniz.");
     }
   }
 

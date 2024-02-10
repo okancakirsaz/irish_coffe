@@ -76,19 +76,19 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
     anonymValue = value;
   }
 
-  Future<void> deleteAccount() async {
-    final BooleanSingleResponseModel? response =
-        await services.deleteAccount(UserIdSendRequestModel(uid: uid!));
-    if (response != null) {
-      if (response.isSuccess!) {
-        await logOutManager.logOut();
-      } else {
-        Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz");
-      }
-    } else {
-      Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz");
-    }
-  }
+  // Future<void> deleteAccount() async {
+  //   final BooleanSingleResponseModel? response =
+  //       await services.deleteAccount(UserIdSendRequestModel(uid: uid!));
+  //   if (response != null) {
+  //     if (response.isSuccess!) {
+  //       await logOutManager.logOut();
+  //     } else {
+  //       Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz");
+  //     }
+  //   } else {
+  //     Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz");
+  //   }
+  // }
 
   changePageView(int index) {
     pageController.jumpToPage(index);
@@ -131,11 +131,6 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
       profileImage = cameUserData!.profileImage;
       token = cameUserData!.token;
     }
-  }
-
-  navigateToResetPassword() {
-    NavigationManager.instance
-        .navigateTo(NavigationEnums.FORGOT_PASSWORD, viewModelContext);
   }
 
   navigateToSettings(ProfileViewModel viewModel) {

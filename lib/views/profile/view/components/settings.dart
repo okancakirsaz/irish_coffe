@@ -57,7 +57,8 @@ class Settigns extends StatelessWidget {
                 () async => await viewModel.sendResetPasswordEmail(),
                 "Şifreyi Değiştir"),
             buildSpecialButton(
-                () async => await viewModel.logOut(), "Çıkış Yap"),
+                () async => await viewModel.logOutManager.logOut(),
+                "Çıkış Yap"),
             // buildSpecialButton(
             //     () => viewModel.showSureDialog(
             //         () async => await viewModel.deleteAccount()),

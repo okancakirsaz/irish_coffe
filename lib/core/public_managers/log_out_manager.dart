@@ -6,7 +6,8 @@ import '../init/navigation/navigation_enums.dart';
 import '../init/navigation/navigation_manager.dart';
 
 final class LogOutManager extends BaseViewModel {
-  LogOutManager(BuildContext viewModelContext);
+  late BuildContext managerContext;
+  LogOutManager(this.managerContext);
 
   @override
   void setContext(BuildContext context) {}
@@ -31,6 +32,6 @@ final class LogOutManager extends BaseViewModel {
 
   _navigateToLoginPage() {
     NavigationManager.instance
-        .removeUntil(NavigationEnums.LOGIN, viewModelContext);
+        .removeUntil(NavigationEnums.LOGIN, managerContext);
   }
 }

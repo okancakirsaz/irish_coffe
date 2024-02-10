@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:irish_coffe/core/init/model/lite_user_data_model.dart';
+import 'package:irish_coffe/core/public_managers/log_out_manager.dart';
 import 'package:irish_coffe/core/widgets/are_you_sure_dialog.dart';
 import 'package:irish_coffe/views/authantication/forgot_password/model/forgot_password_request_model.dart';
 import 'package:irish_coffe/views/authantication/forgot_password/model/forgot_password_response_model.dart';
@@ -58,6 +59,8 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   late final TextEditingController numberController;
   Uint8List? pickedImage;
 
+  LogOutManager get logOutManager => LogOutManager(viewModelContext);
+
   @override
   Future<bool> init() async {
     await initProfileValues();
@@ -78,7 +81,7 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
         await services.deleteAccount(UserIdSendRequestModel(uid: uid!));
     if (response != null) {
       if (response.isSuccess!) {
-        logOut();
+        await logOutManager.logOut();
       } else {
         Fluttertoast.showToast(msg: "Bir sorun oluştu, tekrar deneyiniz");
       }
@@ -133,29 +136,6 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
   navigateToResetPassword() {
     NavigationManager.instance
         .navigateTo(NavigationEnums.FORGOT_PASSWORD, viewModelContext);
-  }
-
-  Future<void> logOut() async {
-    await clearCache();
-    navigateToLoginPage();
-  }
-
-  Future<void> clearCache() async {
-    try {
-      await localeManager.removeData(LocaleKeysEnums.name.name);
-      await localeManager.removeData(LocaleKeysEnums.mail.name);
-      await localeManager.removeData(LocaleKeysEnums.token.name);
-      await localeManager.removeData(LocaleKeysEnums.profileImage.name);
-      await localeManager.removeData(LocaleKeysEnums.isUserAnonym.name);
-      await localeManager.removeData(LocaleKeysEnums.userId.name);
-    } catch (e) {
-      //TODO: Add crashlytics
-    }
-  }
-
-  navigateToLoginPage() {
-    NavigationManager.instance
-        .removeUntil(NavigationEnums.LOGIN, viewModelContext);
   }
 
   navigateToSettings(ProfileViewModel viewModel) {
@@ -214,6 +194,11 @@ abstract class _ProfileViewModelBase with Store, BaseViewModel {
       Fluttertoast.showToast(
           msg: "Beklenmeyen bir sorun oluştu, tekrar deneyiniz.");
     }
+  }
+
+  navigateToLoginPage() {
+    NavigationManager.instance
+        .removeUntil(NavigationEnums.LOGIN, viewModelContext);
   }
 
   @action

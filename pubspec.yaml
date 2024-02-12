@@ -46,6 +46,7 @@ dependencies:
 
   #Network
   dio:
+  socket_io_client: ^2.0.3+1
   
   
 

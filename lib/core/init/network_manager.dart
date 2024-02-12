@@ -22,5 +22,6 @@ abstract class NetworkManager {
     } else {
       network.options.baseUrl = localHost;
     }
+    return network.options.baseUrl;
   }
 }

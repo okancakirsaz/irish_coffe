@@ -107,6 +107,20 @@ mixin _$CommunityViewModel on _CommunityViewModelBase, Store {
     return _$getCustomerListAsyncAction.run(() => super.getCustomerList());
   }
 
+  late final _$_CommunityViewModelBaseActionController =
+      ActionController(name: '_CommunityViewModelBase', context: context);
+
+  @override
+  dynamic listenCurrentlyInIrishState() {
+    final _$actionInfo = _$_CommunityViewModelBaseActionController.startAction(
+        name: '_CommunityViewModelBase.listenCurrentlyInIrishState');
+    try {
+      return super.listenCurrentlyInIrishState();
+    } finally {
+      _$_CommunityViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

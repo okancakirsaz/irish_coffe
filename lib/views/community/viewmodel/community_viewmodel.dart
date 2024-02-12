@@ -10,6 +10,7 @@ import 'package:irish_coffe/core/consts/radius_consts.dart';
 import 'package:irish_coffe/core/consts/text_consts.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/init/model/lite_user_data_model.dart';
+import 'package:irish_coffe/core/public_managers/websocket_manager.dart';
 import 'package:irish_coffe/views/community/models/currently_in_irish_model.dart';
 import 'package:irish_coffe/views/community/models/post_model.dart';
 import 'package:irish_coffe/views/community/services/community_services.dart';
@@ -68,6 +69,7 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
 
   @override
   init() async {
+    listenCurrentlyInIrishState();
     await getPostsFirstInit();
     await getCustomersFirstInit();
   }
@@ -81,6 +83,28 @@ abstract class _CommunityViewModelBase with Store, BaseViewModel {
     } else {
       //Nothing.
     }
+  }
+
+  @action
+  listenCurrentlyInIrishState() {
+    WebSocketManager.instance.webSocketReceiver("new_customer", (data) async {
+      if (data != null &&
+          !customers.contains(CurrentlyInIrishModel.fromJson(data))) {
+        customers.add(CurrentlyInIrishModel.fromJson(data));
+        await localeManager.setJsonData(
+            LocaleKeysEnums.customers.name, customers);
+      }
+    });
+
+    WebSocketManager.instance.webSocketReceiver("delete_customer",
+        (data) async {
+      if (data != null) {
+        int index = customers.indexOf(CurrentlyInIrishModel.fromJson(data));
+        customers.removeAt(index);
+        await localeManager.setJsonData(
+            LocaleKeysEnums.customers.name, customers);
+      }
+    });
   }
 
   //SHARE POST

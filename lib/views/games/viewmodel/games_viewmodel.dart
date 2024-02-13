@@ -78,7 +78,7 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
             ));
             break;
 
-          case "quiz":
+          case "Bilgi Yarışması":
             eventsAsWidget.add(
               QuizGame(
                 onPressed: () {},

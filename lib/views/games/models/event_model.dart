@@ -3,6 +3,9 @@ class EventModel {
   String? eventName;
   String? eventTime;
   String? eventId;
+  String? award;
+  String? winner;
+  bool? isStarted;
   String? gameType;
 
   EventModel({
@@ -10,24 +13,11 @@ class EventModel {
     this.eventName,
     this.eventTime,
     this.eventId,
+    this.award,
+    this.winner,
+    this.isStarted,
     this.gameType,
   });
-
-  EventModel copyWith({
-    bool? isPysicalEvent,
-    String? eventName,
-    String? eventTime,
-    String? eventId,
-    String? gameType,
-  }) {
-    return EventModel(
-      isPysicalEvent: isPysicalEvent ?? this.isPysicalEvent,
-      eventName: eventName ?? this.eventName,
-      eventTime: eventTime ?? this.eventTime,
-      eventId: eventId ?? this.eventId,
-      gameType: gameType ?? this.gameType,
-    );
-  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -35,6 +25,9 @@ class EventModel {
       'eventName': eventName,
       'eventTime': eventTime,
       'eventId': eventId,
+      'award': award,
+      'winner': winner,
+      'isStarted': isStarted,
       'gameType': gameType,
     };
   }
@@ -45,6 +38,9 @@ class EventModel {
       eventName: json['eventName'] as String?,
       eventTime: json['eventTime'] as String?,
       eventId: json['eventId'] as String?,
+      winner: json['winner'] as String?,
+      award: json['award'] as String?,
+      isStarted: json['isStarted'] as bool?,
       gameType: json['gameType'] as String?,
     );
   }

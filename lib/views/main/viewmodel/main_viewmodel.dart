@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/views/community/view/community_view.dart';
 import 'package:irish_coffe/views/games/view/games_view.dart';
@@ -27,6 +28,7 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
   @override
   init() async {
     listenIsUserBanned();
+    listenEventsState();
     await deleteCachedValues();
     await isUserPassedBanSystem();
   }
@@ -97,5 +99,14 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
     } else {
       return false;
     }
+  }
+
+  listenEventsState() {
+    WebSocketManager.instance.webSocketReceiver("event_started", (data) async {
+      if (data != null) {
+        Fluttertoast.showToast(
+            msg: data, backgroundColor: ColorConsts.instance.orange);
+      }
+    });
   }
 }

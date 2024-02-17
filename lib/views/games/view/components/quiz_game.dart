@@ -11,7 +11,7 @@ class QuizGame extends StatelessWidget {
       icon: SvgPicture.asset(AssetConsts.instance.balloon),
       time: time,
       name: "Bilgi Yarışması",
-      onPressed: () {},
+      onPressed: onPressed,
     );
   }
 }

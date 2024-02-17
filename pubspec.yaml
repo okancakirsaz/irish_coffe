@@ -33,6 +33,7 @@ dependencies:
   passwordfield:
   flutter_credit_card: ^4.0.1
   easy_loading_button: ^0.3.2
+  circular_countdown_timer: ^0.2.3
   
 
   #Others
@@ -47,6 +48,7 @@ dependencies:
   #Network
   dio:
   socket_io_client: ^2.0.3+1
+  
   
   
 

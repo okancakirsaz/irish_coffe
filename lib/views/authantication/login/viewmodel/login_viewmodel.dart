@@ -39,6 +39,7 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
       }
     } catch (_) {
       //TODO: Add craslytics
+      //TODO: Bug here
       showErrorDialog("Beklenmeyen bir sorun oluştu. Lütfen tekrar deneyiniz.");
     }
   }

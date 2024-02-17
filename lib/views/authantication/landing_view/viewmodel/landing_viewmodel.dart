@@ -16,7 +16,8 @@ abstract class _LandingViewModelBase with Store, BaseViewModel {
   Future<int> init() async {
     WebSocketManager.instance.initializeSocketConnection();
     await localeManager.getSharedPreferencesInstance();
-    await localeManager.removeData(LocaleKeysEnums.profileImage.name);
+    //TODO:Check is necessary
+    //await localeManager.removeData(LocaleKeysEnums.profileImage.name);
     return 1;
   }
 

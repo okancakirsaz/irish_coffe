@@ -25,10 +25,12 @@ class Games extends StatelessWidget {
           child: ListView(
             children: <Widget>[
               QuizGame(
-                onPressed: () {},
+                onPressed: () =>
+                    viewModel.navigateToGame("Bilgi Yarışması", viewModel),
               ),
               SnakeGame(
-                onPressed: () {},
+                onPressed: () =>
+                    viewModel.navigateToGame("Yılan Oyunu", viewModel),
               )
             ],
           ),

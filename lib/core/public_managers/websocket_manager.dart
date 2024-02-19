@@ -29,4 +29,8 @@ final class WebSocketManager extends NetworkManager {
       onEvent(data);
     });
   }
+
+  void websSocketEmitter(String eventName, dynamic data) {
+    socket.emit(eventName, data);
+  }
 }

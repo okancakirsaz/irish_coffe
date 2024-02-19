@@ -16,4 +16,7 @@ enum LocaleKeysEnums {
   cardNumber,
   cardExpireDate,
   orderedFoods,
+  isUserInTheGame,
+  gamePage,
+  duelData,
 }

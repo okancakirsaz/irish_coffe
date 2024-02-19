@@ -2,17 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
+import 'package:irish_coffe/core/public_managers/websocket_manager.dart';
 import 'package:irish_coffe/views/community/models/currently_in_irish_model.dart';
 import 'package:irish_coffe/views/community/services/community_services.dart';
-import 'package:irish_coffe/views/games/models/duel_invite_model.dart';
-import 'package:irish_coffe/views/games/models/event_model.dart';
-import 'package:irish_coffe/views/games/services/games_services.dart';
-import 'package:irish_coffe/views/games/view/games_view.dart';
+import 'package:irish_coffe/views/game_and_event/user_waiting/view/user_waiting_view.dart';
 import 'package:irish_coffe/views/menu/models/menu_item_model.dart';
 import 'package:irish_coffe/views/menu/services/menu_services.dart';
 import 'package:mobx/mobx.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
+import '../models/duel_invite_model.dart';
+import '../models/event_model.dart';
+import '../services/games_services.dart';
+import '../view/games_view.dart';
 
 part 'games_viewmodel.g.dart';
 
@@ -37,6 +40,7 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
   final TextEditingController selectAwardDialogController =
       TextEditingController(text: "Ödülsüz");
   late final TabController tabController;
+  late final DuelInviteModel duelData;
 
   //TODO: Do remove event in overdue logic
   final List<Widget> eventsAsWidget = [];
@@ -193,10 +197,16 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
     }
   }
 
-  inviteUserToGame(CurrentlyInIrishModel targetUser, String gameName,
-      GamesViewModel viewModel) {
-    //TODO: Do websocket part
-    final DuelInviteModel duelData = DuelInviteModel(
+  inviteUserToGame(CurrentlyInIrishModel targetUser, String gameName) {
+    duelData = _getDuelDataModel(gameName, targetUser);
+    WebSocketManager.instance.websSocketEmitter("duel_invite", duelData);
+    _navigateToWaitPage(duelData);
+  }
+
+  _getDuelDataModel(String gameName, CurrentlyInIrishModel targetUser) {
+    return DuelInviteModel(
+        gameId: const Uuid().v4(),
+        isAccepted: false,
         itemName: selectAwardDialogController.text,
         itemCount: selectedItemCount,
         gameName: gameName,
@@ -212,16 +222,13 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
         challengedUserGender: targetUser.gender,
         challengerUserGender:
             localeManager.getStringData(LocaleKeysEnums.gender.name));
-    _navigateToWaitPage(duelData, viewModel);
   }
 
-  _navigateToWaitPage(DuelInviteModel data, GamesViewModel viewModel) {
+  _navigateToWaitPage(DuelInviteModel data) {
     //TODO: Use navigation manager
     Navigator.pushAndRemoveUntil(
         viewModelContext,
-        CupertinoPageRoute(
-            builder: (context) =>
-                WaitUserPage(viewModel: viewModel, data: data)),
+        CupertinoPageRoute(builder: (context) => UserWaitingView(duel: data)),
         (route) => false);
   }
 }

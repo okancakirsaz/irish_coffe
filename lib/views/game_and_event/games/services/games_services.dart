@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:irish_coffe/core/consts/app_consts.dart';
 import 'package:irish_coffe/core/init/network_manager.dart';
-import 'package:irish_coffe/views/games/models/event_model.dart';
+
+import '../models/event_model.dart';
 
 final class GamesServices extends NetworkManager {
   Future<List<EventModel>?> getActiveEvents() async {

@@ -5,15 +5,22 @@ import 'package:irish_coffe/core/consts/text_consts.dart';
 
 class AreYouSure extends StatelessWidget {
   final VoidCallback onPressed;
+  final VoidCallback? onCancelPressed;
   final String? question;
-  const AreYouSure({super.key, required this.onPressed, this.question});
+  final double? height;
+  const AreYouSure(
+      {super.key,
+      required this.onPressed,
+      this.question,
+      this.height,
+      this.onCancelPressed});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: ColorConsts.instance.darkGrey,
       content: SizedBox(
-        height: 150,
+        height: height ?? 150,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -21,12 +28,13 @@ class AreYouSure extends StatelessWidget {
               question ?? "Emin misiniz? ",
               style: TextConsts.instance.regularWhite20Bold,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 buildSpecialButton(onPressed, "Evet"),
-                buildSpecialButton(() => Navigator.pop(context), "Hayır"),
+                buildSpecialButton(
+                    onCancelPressed ?? () => Navigator.pop(context), "Hayır"),
               ],
             )
           ],

@@ -9,6 +9,12 @@ abstract mixin class BaseViewModel {
   LocaleManager localeManager = LocaleManager.instance;
   void init() {}
   final ScrollController defaultScrollController = ScrollController();
+  navigatorPop() {
+    if (Navigator.of(viewModelContext).canPop()) {
+      Navigator.pop(viewModelContext);
+    }
+  }
+
   String pickImageForGender(String gender) {
     if (gender == "Kadın") {
       return AssetConsts.instance.woman;

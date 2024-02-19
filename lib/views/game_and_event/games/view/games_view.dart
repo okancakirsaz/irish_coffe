@@ -1,20 +1,19 @@
-import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:irish_coffe/core/consts/asset_consts.dart';
 import 'package:irish_coffe/core/widgets/custom_button.dart';
-import 'package:irish_coffe/views/games/models/duel_invite_model.dart';
-import 'package:irish_coffe/views/games/view/components/games_element.dart';
-import '../../../core/base/view/base_view.dart';
-import '../../../core/consts/color_consts/color_consts.dart';
-import '../../../core/consts/padding_consts.dart';
-import '../../../core/consts/radius_consts.dart';
-import '../../../core/consts/text_consts.dart';
-import '../../../core/widgets/custom_app_bar.dart';
-import '../../../core/widgets/custom_scaffold.dart';
-import '../../community/models/currently_in_irish_model.dart';
+
+import '../../../../core/base/view/base_view.dart';
+import '../../../../core/consts/color_consts/color_consts.dart';
+import '../../../../core/consts/padding_consts.dart';
+import '../../../../core/consts/radius_consts.dart';
+import '../../../../core/consts/text_consts.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../../core/widgets/custom_scaffold.dart';
+import '../../../community/models/currently_in_irish_model.dart';
 import '../../games/viewmodel/games_viewmodel.dart';
+import 'components/games_element.dart';
 
 part 'components/events.dart';
 part 'components/games.dart';
@@ -23,7 +22,6 @@ part 'components/events_element.dart';
 part 'components/snake_game.dart';
 part 'components/select_user_page.dart';
 part 'components/select_award_dialog.dart';
-part 'components/wait_user_page.dart';
 
 class GamesView extends StatefulWidget {
   const GamesView({super.key});

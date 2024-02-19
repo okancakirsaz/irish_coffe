@@ -31,8 +31,8 @@ class SelectAwardDialog extends StatelessWidget {
                     Padding(
                       padding: PaddingConsts.instance.top10,
                       child: CustomButton(
-                          onPressed: () => viewModel.inviteUserToGame(
-                              targetUser, gameName, viewModel),
+                          onPressed: () =>
+                              viewModel.inviteUserToGame(targetUser, gameName),
                           style: TextConsts.instance.regularBlack18Bold,
                           text: "Davet Et",
                           width: 200,

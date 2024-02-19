@@ -12,8 +12,8 @@ class MainView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseView<MainViewModel>(
         onModelReady: (model) {
-          model.init();
           model.setContext(context);
+          model.init();
         },
         onDispose: () {},
         viewModel: MainViewModel(),

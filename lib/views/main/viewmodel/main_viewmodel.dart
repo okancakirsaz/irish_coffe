@@ -1,10 +1,15 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
+import 'package:irish_coffe/core/widgets/are_you_sure_dialog.dart';
 import 'package:irish_coffe/views/community/view/community_view.dart';
-import 'package:irish_coffe/views/games/view/games_view.dart';
+import 'package:irish_coffe/views/game_and_event/enums/game_pages.dart';
+import 'package:irish_coffe/views/game_and_event/game_starting/view/game_starting_view.dart';
+import 'package:irish_coffe/views/game_and_event/user_waiting/view/user_waiting_view.dart';
 import 'package:irish_coffe/views/menu/views/menu_view.dart';
 import 'package:irish_coffe/views/profile/view/profile_view.dart';
 import 'package:mobx/mobx.dart';
@@ -15,6 +20,8 @@ import '../../../core/consts/text_consts.dart';
 import '../../../core/public_managers/log_out_manager.dart';
 import '../../../core/public_managers/websocket_manager.dart';
 import '../../authantication/landing_view/services/landing_services.dart';
+import '../../game_and_event/games/models/duel_invite_model.dart';
+import '../../game_and_event/games/view/games_view.dart';
 import '../../profile/models/boolean_single_response_model.dart';
 import '../../profile/models/user_id_send_request_model.dart';
 
@@ -24,13 +31,19 @@ class MainViewModel = _MainViewModelBase with _$MainViewModel;
 
 abstract class _MainViewModelBase with Store, BaseViewModel {
   @override
-  void setContext(BuildContext context) => viewModelContext = context;
+  void setContext(BuildContext context) {
+    viewModelContext = context;
+    mainPageContext = context;
+  }
+
   @override
   init() async {
-    listenIsUserBanned();
-    listenEventsState();
     await deleteCachedValues();
     await isUserPassedBanSystem();
+    _checkIsUserInGame();
+    listenIsUserBanned();
+    listenEventsState();
+    listenDuelInviteStatement();
   }
 
   Future<void> deleteCachedValues() async {
@@ -46,8 +59,8 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
     const GamesView(),
     const ProfileView(),
   ]);
-  LogOutManager get logOutManager => LogOutManager(viewModelContext);
-
+  LogOutManager get logOutManager => LogOutManager(mainPageContext);
+  late BuildContext mainPageContext;
   //TODO: Move funcs to main services
   final LandingServices services = LandingServices();
 
@@ -63,7 +76,7 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
               localeManager
                   .getNullableStringData(LocaleKeysEnums.userId.name)) {
         await showDialog(
-            context: viewModelContext,
+            context: mainPageContext,
             builder: (context) => AlertDialog(
                   backgroundColor: ColorConsts.instance.darkGrey,
                   content: Text(
@@ -108,5 +121,89 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
             msg: data, backgroundColor: ColorConsts.instance.orange);
       }
     });
+  }
+
+  listenDuelInviteStatement() {
+    //All users have unique channel
+    String userId = localeManager.getStringData(LocaleKeysEnums.userId.name);
+    WebSocketManager.instance.webSocketReceiver(userId, (data) async {
+      if (data != null) {
+        _handleUserInvitedToDuel(data);
+      }
+    });
+  }
+
+  Future<void> _handleUserInvitedToDuel(dynamic data) async {
+    bool isPressedAnyButton = false;
+    DuelInviteModel dataAsModel = DuelInviteModel.fromJson(data);
+    showDialog(
+      context: mainPageContext,
+      builder: (context) => AreYouSure(
+        onPressed: () {
+          isPressedAnyButton = true;
+          _responseDuelInvite(dataAsModel, true);
+        },
+        onCancelPressed: () {
+          isPressedAnyButton = true;
+          _responseDuelInvite(dataAsModel, false);
+          navigatorPop();
+        },
+        height: 240,
+        question: '''${dataAsModel.challengerUserName} seni 
+            ${dataAsModel.gameName} oyununa davet etti. Katılmak ister misin?
+             Ödül: ${dataAsModel.itemName} ${dataAsModel.itemName == "Ödülsüz" ? "" : "x${dataAsModel.itemCount}"}''',
+      ),
+    );
+    Timer(const Duration(minutes: 2), () {
+      if (!isPressedAnyButton) {
+        navigatorPop();
+      }
+    });
+  }
+
+  _responseDuelInvite(DuelInviteModel data, bool isAccepted) {
+    data.isAccepted = isAccepted;
+    WebSocketManager.instance.websSocketEmitter("duel_response", data.toJson());
+    if (isAccepted) {
+      _navigateToGamePage(data);
+    }
+  }
+
+  _navigateToGamePage(DuelInviteModel data) {
+    //TODO:Use navigation manager.
+    Navigator.pushAndRemoveUntil(
+        mainPageContext,
+        CupertinoPageRoute(builder: (context) => GameStartingView(duel: data)),
+        (route) => false);
+  }
+
+  _checkIsUserInGame() {
+    final bool? isUserAtGame =
+        localeManager.getNullableBoolData(LocaleKeysEnums.isUserInTheGame.name);
+    if (isUserAtGame != null && isUserAtGame) {
+      final String gamePage =
+          localeManager.getStringData(LocaleKeysEnums.gamePage.name);
+      _sendUserToGamePage(gamePage);
+    }
+  }
+
+  _sendUserToGamePage(String gamePage) {
+    //TODO: Use navigation manager
+    final DuelInviteModel cachedDuelData = DuelInviteModel.fromJson(
+        localeManager.getJsonData(LocaleKeysEnums.duelData.name));
+    if (gamePage == GamePages.GAME_LOBBY.name) {
+      _navigateToGamePage(cachedDuelData);
+    }
+
+    if (gamePage == GamePages.WAITING_USER.name) {
+      Navigator.pushAndRemoveUntil(
+          mainPageContext,
+          CupertinoPageRoute(
+            builder: (context) => UserWaitingView(
+              duel: cachedDuelData,
+            ),
+          ),
+          (route) => false);
+    }
   }
 }

@@ -2,6 +2,8 @@ class DuelInviteModel {
   String itemName;
   int itemCount;
   String gameName;
+  bool isAccepted;
+  String gameId;
   String challengedUserId;
   String challengedUserName;
   String? challengedUserProfileImage;
@@ -15,6 +17,8 @@ class DuelInviteModel {
       {required this.itemName,
       required this.itemCount,
       required this.gameName,
+      required this.gameId,
+      required this.isAccepted,
       required this.challengedUserId,
       required this.challengedUserName,
       required this.challengedUserProfileImage,
@@ -29,6 +33,8 @@ class DuelInviteModel {
       'itemName': itemName,
       'itemCount': itemCount,
       'gameName': gameName,
+      'gameId': gameId,
+      'isAccepted': isAccepted,
       'challengedUserId': challengedUserId,
       'challengedUserName': challengedUserName,
       'challengedUserProfileImage': challengedUserProfileImage,
@@ -45,6 +51,8 @@ class DuelInviteModel {
         itemName: json['itemName'] as String,
         itemCount: json['itemCount'] as int,
         gameName: json['gameName'] as String,
+        gameId: json['gameId'] as String,
+        isAccepted: json['isAccepted'] as bool,
         challengedUserId: json['challengedUserId'] as String,
         challengedUserName: json['challengedUserName'] as String,
         challengedUserProfileImage:

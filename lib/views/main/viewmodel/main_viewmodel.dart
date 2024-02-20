@@ -126,7 +126,8 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
   listenDuelInviteStatement() {
     //All users have unique channel
     String userId = localeManager.getStringData(LocaleKeysEnums.userId.name);
-    WebSocketManager.instance.webSocketReceiver(userId, (data) async {
+    WebSocketManager.instance.webSocketReceiver("Duel Invite:$userId",
+        (data) async {
       if (data != null) {
         _handleUserInvitedToDuel(data);
       }

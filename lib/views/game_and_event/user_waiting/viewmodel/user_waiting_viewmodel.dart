@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/public_managers/websocket_manager.dart';
 import 'package:irish_coffe/views/game_and_event/enums/game_pages.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
+import 'package:irish_coffe/views/game_and_event/mock_game/view/mock_game_view.dart';
 import 'package:mobx/mobx.dart';
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
 import '../../../main/view/main_view.dart';
@@ -19,9 +21,9 @@ abstract class _UserWaitingViewModelBase with Store, BaseViewModel {
   void setContext(BuildContext context) => viewModelContext = context;
   @override
   init() async {
+    await _setUserInGameValue();
     _listenIsGameInviteAcceptedStatement();
     _listenGameStartedEvent();
-    await _setUserInGameValue();
   }
 
   late final DuelInviteModel duelData;
@@ -45,7 +47,6 @@ abstract class _UserWaitingViewModelBase with Store, BaseViewModel {
 
   _navigateToMainPage() {
     //TODO: Use navigation manager
-    //Using another context but wait_user page opening with different context.
     Navigator.pushAndRemoveUntil(
         viewModelContext,
         CupertinoPageRoute(builder: (context) => const MainView()),
@@ -55,7 +56,8 @@ abstract class _UserWaitingViewModelBase with Store, BaseViewModel {
   _listenIsGameInviteAcceptedStatement() {
     final String userId =
         localeManager.getStringData(LocaleKeysEnums.userId.name);
-    WebSocketManager.instance.webSocketReceiver(userId, (data) async {
+    WebSocketManager.instance.webSocketReceiver("Duel Response:$userId",
+        (data) async {
       if (data != null) {
         DuelInviteModel dataAsModel = DuelInviteModel.fromJson(data);
         switch (dataAsModel.isAccepted) {
@@ -66,6 +68,7 @@ abstract class _UserWaitingViewModelBase with Store, BaseViewModel {
             await localeManager
                 .removeData(LocaleKeysEnums.isUserInTheGame.name);
             _navigateToMainPage();
+            Fluttertoast.showToast(msg: "Kullanıcı davetini reddetti.");
             break;
         }
       }
@@ -90,7 +93,10 @@ abstract class _UserWaitingViewModelBase with Store, BaseViewModel {
         //TODO: Navigate to selected game page
         Navigator.pushAndRemoveUntil(
           viewModelContext,
-          CupertinoPageRoute(builder: (context) => const Scaffold()),
+          CupertinoPageRoute(
+              builder: (context) => MockGameView(
+                    duelData: duelData,
+                  )),
           (route) => false,
         );
       }

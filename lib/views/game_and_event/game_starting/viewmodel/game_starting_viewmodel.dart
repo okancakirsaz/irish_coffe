@@ -32,7 +32,7 @@ abstract class _GameStartingViewModelBase with Store, BaseViewModel {
   Future<void> _createGameRoom() async {
     if (duelData.challengerUserId ==
         localeManager.getStringData(LocaleKeysEnums.userId.name)) {
-      final GameRoomModel? response = await service.createGameRoom(
+      await service.createGameRoom(
         GameRoomModel(
           challengerUserId: duelData.challengerUserId,
           challengerUserName: duelData.challengerUserName,

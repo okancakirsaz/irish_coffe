@@ -1,33 +1,22 @@
 class ScoresModel {
   String userName;
+  String userId;
   String challengedUserName;
   bool isWinned;
   String game;
 
   ScoresModel({
     required this.userName,
+    required this.userId,
     required this.challengedUserName,
     required this.isWinned,
     required this.game,
   });
 
-  ScoresModel copyWith({
-    String? userName,
-    String? challengedUserName,
-    bool? isWinned,
-    String? game,
-  }) {
-    return ScoresModel(
-      userName: userName ?? this.userName,
-      challengedUserName: challengedUserName ?? this.challengedUserName,
-      isWinned: isWinned ?? this.isWinned,
-      game: game ?? this.game,
-    );
-  }
-
   Map<String, dynamic> toJson() {
     return {
       'userName': userName,
+      'userId': userId,
       'challengedUserName': challengedUserName,
       'isWinned': isWinned,
       'game': game,
@@ -37,6 +26,7 @@ class ScoresModel {
   factory ScoresModel.fromJson(Map<String, dynamic> json) {
     return ScoresModel(
       userName: json['userName'] as String,
+      userId: json['userId'] as String,
       challengedUserName: json['challengedUserName'] as String,
       isWinned: json['isWinned'] as bool,
       game: json['game'] as String,

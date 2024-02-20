@@ -12,6 +12,7 @@ class AppConst {
   final String userPosts = "/user/user-posts";
   final String userScores = "/user/user-scores";
   final String userFoods = "/user/user-foods";
+  final String updateUserScores = "/user/update-user-score";
   final String checkIsUserBanned = "/user/is-user-banned";
   final String deleteAccount = "/user/delete-account";
   final String setNewUserSettings = "/user/set-new-user-settings";

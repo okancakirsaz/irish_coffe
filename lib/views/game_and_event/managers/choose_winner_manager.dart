@@ -5,11 +5,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irish_coffe/core/consts/app_consts.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/init/cache/local_manager.dart';
+import 'package:irish_coffe/views/game_and_event/game_final/view/game_final_view.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
 import 'package:irish_coffe/views/game_and_event/public_models/game_room_model.dart';
 import 'package:irish_coffe/views/game_and_event/public_services/game_and_event_public_service.dart';
-
-import '../../main/view/main_view.dart';
 
 final class ChooseWinnerManager {
   DuelInviteModel duelData;
@@ -53,16 +52,17 @@ final class ChooseWinnerManager {
   }
 
   Future<void> _whoWonTheGame(BuildContext context) async {
-    _navigateToMainPage(context);
     final GameRoomModel? response = await service.getGameRoom(duelData);
-    if (response != null &&
-        response.challengedUserScore != null &&
-        response.challengerUserScore != null) {
-      _challengedScore = response.challengedUserScore!;
-      _challengerScore = response.challengerUserScore!;
-      _chooseWinner();
-    } else {
-      Fluttertoast.showToast(msg: "Beklenmedik bir sorun oluştu.");
+    if (response != null) {
+      _navigateToFinalPage(context, response);
+      if (response.challengedUserScore != null &&
+          response.challengerUserScore != null) {
+        _challengedScore = response.challengedUserScore!;
+        _challengerScore = response.challengerUserScore!;
+        _chooseWinner();
+      } else {
+        Fluttertoast.showToast(msg: "Beklenmedik bir sorun oluştu.");
+      }
     }
   }
 
@@ -77,10 +77,12 @@ final class ChooseWinnerManager {
   }
 
   //TODO: remove function
-  _navigateToMainPage(BuildContext context) {
+  _navigateToFinalPage(BuildContext context, GameRoomModel data) {
     Navigator.pushAndRemoveUntil(
         context,
-        CupertinoPageRoute(builder: (context) => const MainView()),
+        CupertinoPageRoute(
+            builder: (context) =>
+                GameFinalView(roomData: data, duelData: duelData)),
         (route) => false);
   }
 }

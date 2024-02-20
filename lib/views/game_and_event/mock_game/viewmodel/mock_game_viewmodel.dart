@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
@@ -22,7 +24,7 @@ abstract class _MockGameViewModelBase with Store, BaseViewModel {
   int score = 0;
   late final DuelInviteModel duelData;
   @observable
-  int timerSeconds = 20;
+  int timerSeconds = 5;
 
   ChooseWinnerManager get winnerManager => ChooseWinnerManager(duelData);
 
@@ -41,14 +43,12 @@ abstract class _MockGameViewModelBase with Store, BaseViewModel {
 
   @action
   Future<void> setTimer() async {
+    //winnerManager.listenIsGameRoomDone(viewModelContext);
     for (timerSeconds; timerSeconds >= 1; timerSeconds--) {
       await Future.delayed(const Duration(seconds: 1));
     }
-    await winnerManager.setGameFinalData(
-      score,
-      winnerManager.isUserChallenger(),
-    );
 
-    winnerManager.listenIsGameRoomDone(viewModelContext);
+    await winnerManager.setGameFinalData(
+        score, winnerManager.isUserChallenger(), viewModelContext);
   }
 }

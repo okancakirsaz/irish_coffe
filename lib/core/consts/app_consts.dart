@@ -4,7 +4,9 @@ class AppConst {
   //Endpoints
   final String getMenu = "/menu/get-menu";
   final String getActiveEvents = "/games/get-active-events";
-  final String updateGameRoom = "/games/set-game-room";
+  final String createGameRoom = "/games/create-game-room";
+  final String updateGameRoomChallenger = "/games/set-game-room-challenger";
+  final String updateGameRoomChallenged = "/games/set-game-room-challenged";
   final String getGameRoom = "/games/get-game-room";
   final String logIn = "/auth/log-in";
   final String userPosts = "/user/user-posts";

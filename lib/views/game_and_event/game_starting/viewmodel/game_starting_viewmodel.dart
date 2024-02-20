@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
-import 'package:irish_coffe/core/public_managers/websocket_manager.dart';
 import 'package:irish_coffe/views/game_and_event/enums/game_pages.dart';
+import 'package:irish_coffe/views/game_and_event/game_starting/service/game_starting_service.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
+import 'package:irish_coffe/views/game_and_event/public_models/game_room_model.dart';
 import 'package:mobx/mobx.dart';
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
 import '../../mock_game/view/mock_game_view.dart';
@@ -19,13 +19,31 @@ abstract class _GameStartingViewModelBase with Store, BaseViewModel {
   @override
   init() async {
     await _setUserInGameValue();
-    await counterFlow();
+    await _createGameRoom();
   }
 
   late DuelInviteModel duelData;
+  final GameStartingService service = GameStartingService();
 
   void setDuelData(DuelInviteModel data) {
     duelData = data;
+  }
+
+  Future<void> _createGameRoom() async {
+    if (duelData.challengerUserId ==
+        localeManager.getStringData(LocaleKeysEnums.userId.name)) {
+      final GameRoomModel? response = await service.createGameRoom(
+        GameRoomModel(
+          challengerUserId: duelData.challengerUserId,
+          challengerUserName: duelData.challengerUserName,
+          challengerUserScore: null,
+          challengedUserId: duelData.challengedUserId,
+          challengedUserName: duelData.challengedUserName,
+          challengedUserScore: null,
+          gameId: duelData.gameId,
+        ),
+      );
+    }
   }
 
   Future<void> _setUserInGameValue() async {
@@ -36,21 +54,8 @@ abstract class _GameStartingViewModelBase with Store, BaseViewModel {
         LocaleKeysEnums.duelData.name, duelData.toJson());
   }
 
-  @observable
-  int counterText = 10;
-
-  @action
-  Future<void> counterFlow() async {
-    for (counterText; counterText >= 1; counterText--) {
-      await Future.delayed(const Duration(seconds: 1));
-    }
-    WebSocketManager.instance
-        .websSocketEmitter("game_started", duelData.toJson());
-    _navigateToGame();
-  }
-
   //TODO: Make real game seperator
-  _navigateToGame() {
+  navigateToGame() {
     Navigator.pushAndRemoveUntil(
       viewModelContext,
       CupertinoPageRoute(

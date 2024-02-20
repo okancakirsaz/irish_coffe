@@ -10,10 +10,10 @@ class GameRoomModel {
   GameRoomModel({
     required this.challengerUserId,
     required this.challengerUserName,
-    required this.challengerUserScore,
+    this.challengerUserScore,
     required this.challengedUserId,
     required this.challengedUserName,
-    required this.challengedUserScore,
+    this.challengedUserScore,
     required this.gameId,
   });
 

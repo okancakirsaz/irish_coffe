@@ -1,5 +1,5 @@
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:irish_coffe/core/base/view/base_view.dart';
 import 'package:irish_coffe/core/consts/color_consts/color_consts.dart';
 import 'package:irish_coffe/core/consts/text_consts.dart';
@@ -44,8 +44,8 @@ class GameStartingView extends StatelessWidget {
           );
         },
         onModelReady: (model) {
-          model.init();
           model.setContext(context);
+          model.init();
           model.setDuelData(duel);
         },
         onDispose: () {});
@@ -61,11 +61,15 @@ class GameStartingView extends StatelessWidget {
   }
 
   Widget buildCounter(GameStartingViewModel model) {
-    return Observer(builder: (context) {
-      return Text(
-        "${model.counterText}",
-        style: TextConsts.instance.regularWhite70Bold,
-      );
-    });
+    return CircularCountDownTimer(
+      width: 100,
+      height: 100,
+      duration: 10,
+      fillColor: Colors.transparent,
+      ringColor: Colors.transparent,
+      textStyle: TextConsts.instance.regularWhite70Bold,
+      onComplete: () => model.navigateToGame(),
+      isReverse: true,
+    );
   }
 }

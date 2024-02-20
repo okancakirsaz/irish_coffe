@@ -1,9 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:irish_coffe/core/consts/app_consts.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/init/cache/local_manager.dart';
-import 'package:irish_coffe/core/public_managers/websocket_manager.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
 import 'package:irish_coffe/views/game_and_event/public_models/game_room_model.dart';
 import 'package:irish_coffe/views/game_and_event/public_services/game_and_event_public_service.dart';
@@ -27,13 +28,16 @@ final class ChooseWinnerManager {
     }
   }
 
-  Future<void> setGameFinalData(int score, bool isChallenger) async {
-    final GameRoomModel? response =
-        await service.setGameRoom(_getRequestModel(score, isChallenger));
-
-    if (response == null) {
-      Fluttertoast.showToast(msg: "Beklenmedik bir sorun oluştu.");
-    }
+  Future<void> setGameFinalData(
+      int score, bool isChallenger, BuildContext context) async {
+    GameRoomModel reqModel = _getRequestModel(score, isChallenger);
+    await service.setGameRoom(
+      reqModel,
+      isChallenger
+          ? AppConst.instance.updateGameRoomChallenger
+          : AppConst.instance.updateGameRoomChallenged,
+    );
+    await _whoWonTheGame(context);
   }
 
   GameRoomModel _getRequestModel(int score, bool isChallenger) {
@@ -49,6 +53,7 @@ final class ChooseWinnerManager {
   }
 
   Future<void> _whoWonTheGame(BuildContext context) async {
+    _navigateToMainPage(context);
     final GameRoomModel? response = await service.getGameRoom(duelData);
     if (response != null &&
         response.challengedUserScore != null &&
@@ -56,7 +61,6 @@ final class ChooseWinnerManager {
       _challengedScore = response.challengedUserScore!;
       _challengerScore = response.challengerUserScore!;
       _chooseWinner();
-      _navigateToMainPage(context);
     } else {
       Fluttertoast.showToast(msg: "Beklenmedik bir sorun oluştu.");
     }
@@ -64,11 +68,11 @@ final class ChooseWinnerManager {
 
   _chooseWinner() {
     if (_challengerScore > _challengedScore) {
-      print("Kazanan: ${duelData.challengerUserName}");
+      Fluttertoast.showToast(msg: "Kazanan: ${duelData.challengerUserName}");
     } else if (_challengerScore == _challengedScore) {
-      print("Berabere");
+      Fluttertoast.showToast(msg: "Berabere");
     } else {
-      print("Kazanan: ${duelData.challengedUserId}");
+      Fluttertoast.showToast(msg: "Kazanan: ${duelData.challengedUserName}");
     }
   }
 
@@ -79,15 +83,4 @@ final class ChooseWinnerManager {
         CupertinoPageRoute(builder: (context) => const MainView()),
         (route) => false);
   }
-
-  listenIsGameRoomDone(BuildContext context) {
-    WebSocketManager.instance.webSocketReceiver(duelData.gameId, (data) async {
-      if (data != null) {
-        await _whoWonTheGame(context);
-      }
-    });
-  }
-
-  //TODO: same time request bug,
-  //TODO: sender device listen bug
 }

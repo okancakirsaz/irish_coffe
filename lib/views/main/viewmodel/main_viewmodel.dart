@@ -155,7 +155,7 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
              Ödül: ${dataAsModel.itemName} ${dataAsModel.itemName == "Ödülsüz" ? "" : "x${dataAsModel.itemCount}"}''',
       ),
     );
-    Timer(const Duration(minutes: 2), () {
+    Timer(const Duration(minutes: 1), () {
       if (!isPressedAnyButton) {
         navigatorPop();
       }

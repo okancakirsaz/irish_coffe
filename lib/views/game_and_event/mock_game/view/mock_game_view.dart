@@ -12,39 +12,40 @@ class MockGameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<MockGameViewModel>(
-        viewModel: MockGameViewModel(),
-        onPageBuilder: (context, model) {
-          return Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => model.incrementScore(),
-              child: const Icon(Icons.add),
-            ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Observer(builder: (context) {
-                  return Text(
-                    'Kalan süre: ${model.timerSeconds}',
-                    style: TextConsts.instance.regularBlack18Bold,
-                  );
-                }),
-                Observer(builder: (context) {
-                  return Center(
-                    child: Text(
-                      model.score.toString(),
-                      style: TextConsts.instance.regularBlack36Bold,
-                    ),
-                  );
-                }),
-              ],
-            ),
-          );
-        },
-        onModelReady: (model) {
-          model.setContext(context);
-          model.init();
-          model.initDuelData(duelData);
-        },
-        onDispose: () {});
+      viewModel: MockGameViewModel(),
+      onPageBuilder: (context, model) {
+        return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => model.incrementScore(),
+            child: const Icon(Icons.add),
+          ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Observer(builder: (context) {
+                return Text(
+                  'Kalan süre: ${model.timerSeconds}',
+                  style: TextConsts.instance.regularBlack18Bold,
+                );
+              }),
+              Observer(builder: (context) {
+                return Center(
+                  child: Text(
+                    model.score.toString(),
+                    style: TextConsts.instance.regularBlack36Bold,
+                  ),
+                );
+              }),
+            ],
+          ),
+        );
+      },
+      onModelReady: (model) {
+        model.setContext(context);
+        model.initDuelData(duelData);
+        model.init();
+      },
+      onDispose: () {},
+    );
   }
 }

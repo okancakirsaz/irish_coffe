@@ -37,6 +37,8 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
   bool isEventsFetched = false;
   @observable
   int selectedItemCount = 1;
+  String get cachedUserName =>
+      localeManager.getStringData(LocaleKeysEnums.name.name);
   final TextEditingController selectAwardDialogController =
       TextEditingController(text: "Ödülsüz");
   late final TabController tabController;
@@ -123,16 +125,6 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
         CupertinoPageRoute(
             builder: (context) =>
                 SelectUserPage(gameName: gameName, viewModel: viewModel)));
-  }
-
-  bool isUserCanListInSelectUserPage(String userName, bool isAnonym) {
-    final String cachedUserName =
-        localeManager.getStringData(LocaleKeysEnums.name.name);
-    if (userName == cachedUserName || isAnonym) {
-      return false;
-    } else {
-      return true;
-    }
   }
 
   Future<void> showSelectAwardDialog(String gameName, GamesViewModel viewModel,

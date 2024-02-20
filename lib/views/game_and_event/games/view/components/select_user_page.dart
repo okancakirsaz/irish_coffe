@@ -36,18 +36,17 @@ class SelectUserPage extends StatelessWidget {
     return ListView.builder(
         itemCount: snapshotData.length,
         itemBuilder: (context, index) {
-          final CurrentlyInIrishModel item = snapshotData[index];
-          return !viewModel.isUserCanListInSelectUserPage(
-                  item.name, item.isAnonym)
-              ? null
-              : Card(
+          CurrentlyInIrishModel item = snapshotData[index];
+          return !item.isAnonym && item.name != viewModel.cachedUserName
+              ? Card(
                   child: ListTile(
                     onTap: () async => await viewModel.showSelectAwardDialog(
                         gameName, viewModel, item),
                     title: Text(item.name,
                         style: TextConsts.instance.regularBlack20Bold),
                   ),
-                );
+                )
+              : const SizedBox();
         });
   }
 }

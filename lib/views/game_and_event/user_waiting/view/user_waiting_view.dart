@@ -107,13 +107,15 @@ class UserWaitingView extends StatelessWidget {
   Widget buildUserPhoto(
       String? photoUrl, bool isChallenger, UserWaitingViewModel model) {
     if (photoUrl == null) {
-      return Container(
+      return SizedBox(
         width: 70,
         height: 70,
         child: SvgPicture.asset(
-          model.pickImageForGender(model.pickImageForGender(isChallenger
-              ? duel.challengerUserGender
-              : duel.challengedUserGender)),
+          model.pickImageForGender(
+            isChallenger
+                ? duel.challengerUserGender
+                : duel.challengedUserGender,
+          ),
           fit: BoxFit.contain,
         ),
       );
@@ -135,7 +137,7 @@ class UserWaitingView extends StatelessWidget {
         height: 200,
         strokeCap: StrokeCap.round,
         textStyle: TextConsts.instance.regularWhite25Bold,
-        duration: 120,
+        duration: 60,
         isReverse: true,
         isReverseAnimation: true,
         strokeWidth: 20,

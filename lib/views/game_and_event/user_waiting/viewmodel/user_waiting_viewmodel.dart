@@ -5,7 +5,6 @@ import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/public_managers/websocket_manager.dart';
 import 'package:irish_coffe/views/game_and_event/enums/game_pages.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
-import 'package:irish_coffe/views/game_and_event/mock_game/view/mock_game_view.dart';
 import 'package:mobx/mobx.dart';
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
 import '../../../main/view/main_view.dart';
@@ -23,7 +22,7 @@ abstract class _UserWaitingViewModelBase with Store, BaseViewModel {
   init() async {
     await _setUserInGameValue();
     _listenIsGameInviteAcceptedStatement();
-    _listenGameStartedEvent();
+    _listenGameWasStartedEvent();
   }
 
   late final DuelInviteModel duelData;
@@ -87,19 +86,22 @@ abstract class _UserWaitingViewModelBase with Store, BaseViewModel {
     );
   }
 
-  _listenGameStartedEvent() {
-    WebSocketManager.instance.webSocketReceiver(duelData.gameId, (data) {
-      if (data != null) {
-        //TODO: Navigate to selected game page
-        Navigator.pushAndRemoveUntil(
-          viewModelContext,
-          CupertinoPageRoute(
-              builder: (context) => MockGameView(
-                    duelData: duelData,
-                  )),
-          (route) => false,
-        );
-      }
-    });
+  //TODO: use navgiation manager
+  _listenGameWasStartedEvent() {
+    WebSocketManager.instance.webSocketReceiver(
+      "Game Started:${duelData.gameId}",
+      (data) async {
+        if (data != null) {
+          Fluttertoast.showToast(msg: "Oyun çoktan başladı.");
+          await removeGameDataCache();
+
+          // ignore: use_build_context_synchronously
+          Navigator.pushAndRemoveUntil(
+              viewModelContext,
+              CupertinoPageRoute(builder: (context) => const MainView()),
+              (route) => false);
+        }
+      },
+    );
   }
 }

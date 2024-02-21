@@ -9,14 +9,15 @@ import 'package:irish_coffe/views/game_and_event/game_final/view/game_final_view
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
 import 'package:irish_coffe/views/game_and_event/public_models/game_room_model.dart';
 import 'package:irish_coffe/views/game_and_event/public_services/game_and_event_public_service.dart';
+import 'package:irish_coffe/views/main/view/main_view.dart';
 
 final class ChooseWinnerManager {
   DuelInviteModel duelData;
   ChooseWinnerManager(this.duelData);
 
   final GameAndEventPublicService service = GameAndEventPublicService();
-  late int _challengerScore;
-  late int _challengedScore;
+  int _challengerScore = 0;
+  int _challengedScore = 0;
 
   bool isUserChallenger() {
     if (duelData.challengerUserId ==
@@ -30,23 +31,28 @@ final class ChooseWinnerManager {
   Future<void> setGameFinalData(
       int score, bool isChallenger, BuildContext context) async {
     GameRoomModel reqModel = _getRequestModel(score, isChallenger);
-    await service.setGameRoom(
+    final GameRoomModel? response = await service.setGameRoom(
       reqModel,
       isChallenger
           ? AppConst.instance.updateGameRoomChallenger
           : AppConst.instance.updateGameRoomChallenged,
     );
-    await _whoWonTheGame(context);
+    if (response != null) {
+      await _whoWonTheGame(context);
+    } else {
+      _navigateToMainPage(context);
+      Fluttertoast.showToast(msg: "Beklenmedik bir sorun oluştu.");
+    }
   }
 
   GameRoomModel _getRequestModel(int score, bool isChallenger) {
     return GameRoomModel(
       challengerUserId: duelData.challengerUserId,
       challengerUserName: duelData.challengerUserName,
-      challengerUserScore: isChallenger ? score : null,
+      challengerUserScore: isChallenger ? score : 0,
       challengedUserId: duelData.challengedUserId,
       challengedUserName: duelData.challengedUserName,
-      challengedUserScore: !isChallenger ? score : null,
+      challengedUserScore: !isChallenger ? score : 0,
       gameId: duelData.gameId,
     );
   }
@@ -55,14 +61,12 @@ final class ChooseWinnerManager {
     final GameRoomModel? response = await service.getGameRoom(duelData);
     if (response != null) {
       _navigateToFinalPage(context, response);
-      if (response.challengedUserScore != null &&
-          response.challengerUserScore != null) {
-        _challengedScore = response.challengedUserScore!;
-        _challengerScore = response.challengerUserScore!;
-        _chooseWinner();
-      } else {
-        Fluttertoast.showToast(msg: "Beklenmedik bir sorun oluştu.");
-      }
+      _challengedScore = response.challengedUserScore;
+      _challengerScore = response.challengerUserScore;
+      _chooseWinner();
+    } else {
+      _navigateToMainPage(context);
+      Fluttertoast.showToast(msg: "Beklenmedik bir sorun oluştu.");
     }
   }
 
@@ -76,13 +80,21 @@ final class ChooseWinnerManager {
     }
   }
 
-  //TODO: remove function
+  //TODO: Use navigation manager
   _navigateToFinalPage(BuildContext context, GameRoomModel data) {
     Navigator.pushAndRemoveUntil(
         context,
         CupertinoPageRoute(
             builder: (context) =>
                 GameFinalView(roomData: data, duelData: duelData)),
+        (route) => false);
+  }
+
+  //TODO: Use navigation manager
+  _navigateToMainPage(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        CupertinoPageRoute(builder: (context) => const MainView()),
         (route) => false);
   }
 }

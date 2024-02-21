@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/cupertino.dart';
-import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
 import 'package:irish_coffe/views/game_and_event/managers/choose_winner_manager.dart';
 import 'package:mobx/mobx.dart';
@@ -16,7 +15,7 @@ abstract class _MockGameViewModelBase with Store, BaseViewModel {
   void setContext(BuildContext context) => viewModelContext = context;
   @override
   init() async {
-    await _removeCache();
+    await removeGameDataCache();
     await setTimer();
   }
 
@@ -27,12 +26,6 @@ abstract class _MockGameViewModelBase with Store, BaseViewModel {
   int timerSeconds = 5;
 
   ChooseWinnerManager get winnerManager => ChooseWinnerManager(duelData);
-
-  Future<void> _removeCache() async {
-    await localeManager.removeData(LocaleKeysEnums.isUserInTheGame.name);
-    await localeManager.removeData(LocaleKeysEnums.duelData.name);
-    await localeManager.removeData(LocaleKeysEnums.gamePage.name);
-  }
 
   initDuelData(DuelInviteModel data) => duelData = data;
 

@@ -43,6 +43,7 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
       TextEditingController(text: "Ödülsüz");
   late final TabController tabController;
   late final DuelInviteModel duelData;
+  late final List<CurrentlyInIrishModel>? customers;
 
   //TODO: Do remove event in overdue logic
   final List<Widget> eventsAsWidget = [];
@@ -110,13 +111,12 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
 
   //Uses in a FutureBuilder at SelectUserPage
   Future<List<CurrentlyInIrishModel>?> getActiveUsers() async {
-    final List<CurrentlyInIrishModel>? response =
-        await CommunityServices().getWhoInIrishData();
-    if (response == null) {
+    customers = await CommunityServices().getWhoInIrishData();
+    if (customers == null) {
       //TODO: Move error messages to error consts
       Fluttertoast.showToast(msg: "Bir sorun oluştu. Tekrar deneyiniz");
     }
-    return response;
+    return customers;
   }
 
   navigateToGame(String gameName, GamesViewModel viewModel) {
@@ -190,9 +190,28 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
   }
 
   inviteUserToGame(CurrentlyInIrishModel targetUser, String gameName) {
-    duelData = _getDuelDataModel(gameName, targetUser);
-    WebSocketManager.instance.websSocketEmitter("duel_invite", duelData);
-    _navigateToWaitPage(duelData);
+    if (_checkCurrentUserIsACustomer()) {
+      duelData = _getDuelDataModel(gameName, targetUser);
+      WebSocketManager.instance.websSocketEmitter("duel_invite", duelData);
+      _navigateToWaitPage(duelData);
+    } else {
+      Fluttertoast.showToast(msg: "Önce sipariş vermelisiniz.");
+      //Close dialog
+      navigatorPop();
+      //Go main page
+      navigatorPop();
+    }
+  }
+
+  bool _checkCurrentUserIsACustomer() {
+    bool isCustomer = false;
+    for (int i = 0; i <= customers!.length - 1; i++) {
+      if (customers![i].uid ==
+          localeManager.getStringData(LocaleKeysEnums.userId.name)) {
+        isCustomer = true;
+      }
+    }
+    return isCustomer;
   }
 
   _getDuelDataModel(String gameName, CurrentlyInIrishModel targetUser) {

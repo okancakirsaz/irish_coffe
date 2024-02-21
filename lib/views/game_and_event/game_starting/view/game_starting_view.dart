@@ -64,11 +64,11 @@ class GameStartingView extends StatelessWidget {
     return CircularCountDownTimer(
       width: 100,
       height: 100,
-      duration: 10,
+      duration: 40,
       fillColor: Colors.transparent,
       ringColor: Colors.transparent,
       textStyle: TextConsts.instance.regularWhite70Bold,
-      onComplete: () => model.navigateToGame(),
+      onComplete: () => model.startGame(),
       isReverse: true,
     );
   }

@@ -43,30 +43,30 @@ abstract class _GameFinalViewModelBase with Store, BaseViewModel {
   }
 
   _challengedUserCheck() {
-    switch (roomData.challengerUserScore! > roomData.challengedUserScore!) {
+    switch (roomData.challengerUserScore > roomData.challengedUserScore) {
       case true:
         isUserWonTheGame = false;
-        winnerUserScore = roomData.challengerUserScore!;
-        loserUserScore = roomData.challengedUserScore!;
+        winnerUserScore = roomData.challengerUserScore;
+        loserUserScore = roomData.challengedUserScore;
         break;
       case false:
         isUserWonTheGame = true;
-        winnerUserScore = roomData.challengedUserScore!;
-        loserUserScore = roomData.challengerUserScore!;
+        winnerUserScore = roomData.challengedUserScore;
+        loserUserScore = roomData.challengerUserScore;
     }
   }
 
   _challengerUserCheck() {
-    switch (roomData.challengerUserScore! > roomData.challengedUserScore!) {
+    switch (roomData.challengerUserScore > roomData.challengedUserScore) {
       case true:
         isUserWonTheGame = true;
-        winnerUserScore = roomData.challengerUserScore!;
-        loserUserScore = roomData.challengedUserScore!;
+        winnerUserScore = roomData.challengerUserScore;
+        loserUserScore = roomData.challengedUserScore;
         break;
       case false:
         isUserWonTheGame = false;
-        winnerUserScore = roomData.challengedUserScore!;
-        loserUserScore = roomData.challengerUserScore!;
+        winnerUserScore = roomData.challengedUserScore;
+        loserUserScore = roomData.challengerUserScore;
     }
   }
 

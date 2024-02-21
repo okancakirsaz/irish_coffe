@@ -1,19 +1,19 @@
 class GameRoomModel {
   String challengerUserId;
   String challengerUserName;
-  int? challengerUserScore;
+  int challengerUserScore;
   String challengedUserId;
   String challengedUserName;
-  int? challengedUserScore;
+  int challengedUserScore;
   String gameId;
 
   GameRoomModel({
     required this.challengerUserId,
     required this.challengerUserName,
-    this.challengerUserScore,
+    required this.challengerUserScore,
     required this.challengedUserId,
     required this.challengedUserName,
-    this.challengedUserScore,
+    required this.challengedUserScore,
     required this.gameId,
   });
 
@@ -33,10 +33,10 @@ class GameRoomModel {
     return GameRoomModel(
       challengerUserId: json['challengerUserId'] as String,
       challengerUserName: json['challengerUserName'] as String,
-      challengerUserScore: json['challengerUserScore'] as int?,
+      challengerUserScore: json['challengerUserScore'] as int,
       challengedUserId: json['challengedUserId'] as String,
       challengedUserName: json['challengedUserName'] as String,
-      challengedUserScore: json['challengedUserScore'] as int?,
+      challengedUserScore: json['challengedUserScore'] as int,
       gameId: json['gameId'] as String,
     );
   }

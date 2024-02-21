@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
+import 'package:irish_coffe/core/public_managers/websocket_manager.dart';
 import 'package:irish_coffe/views/game_and_event/enums/game_pages.dart';
 import 'package:irish_coffe/views/game_and_event/game_starting/service/game_starting_service.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
@@ -36,10 +37,10 @@ abstract class _GameStartingViewModelBase with Store, BaseViewModel {
         GameRoomModel(
           challengerUserId: duelData.challengerUserId,
           challengerUserName: duelData.challengerUserName,
-          challengerUserScore: null,
+          challengerUserScore: 0,
           challengedUserId: duelData.challengedUserId,
           challengedUserName: duelData.challengedUserName,
-          challengedUserScore: null,
+          challengedUserScore: 0,
           gameId: duelData.gameId,
         ),
       );
@@ -52,6 +53,11 @@ abstract class _GameStartingViewModelBase with Store, BaseViewModel {
         LocaleKeysEnums.gamePage.name, GamePages.GAME_LOBBY.name);
     await localeManager.setJsonData(
         LocaleKeysEnums.duelData.name, duelData.toJson());
+  }
+
+  startGame() {
+    WebSocketManager.instance.websSocketEmitter("game_started", duelData);
+    navigateToGame();
   }
 
   //TODO: Make real game seperator

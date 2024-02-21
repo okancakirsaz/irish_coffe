@@ -2,6 +2,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:irish_coffe/core/base/view/base_view.dart';
+import 'package:irish_coffe/core/public_managers/websocket_manager.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
 import 'package:irish_coffe/views/game_and_event/user_waiting/viewmodel/user_waiting_viewmodel.dart';
 
@@ -16,50 +17,53 @@ class UserWaitingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<UserWaitingViewModel>(
-        viewModel: UserWaitingViewModel(),
-        onPageBuilder: (context, model) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                "Kullanıcıdan cevap bekleniyor...",
-                style: TextConsts.instance.regularBlack20Bold,
+      viewModel: UserWaitingViewModel(),
+      onPageBuilder: (context, model) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "Kullanıcıdan cevap bekleniyor...",
+              style: TextConsts.instance.regularBlack20Bold,
+            ),
+          ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: PaddingConsts.instance.bottom40,
+                child: Text(
+                  duel.gameName,
+                  style: TextConsts.instance.regularBlack25Bold,
+                ),
               ),
-            ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: PaddingConsts.instance.bottom40,
-                  child: Text(
-                    duel.gameName,
-                    style: TextConsts.instance.regularBlack25Bold,
-                  ),
+              Padding(
+                padding: PaddingConsts.instance.all20,
+                child: buildUserDatasRow(model),
+              ),
+              Padding(
+                padding: PaddingConsts.instance.top10,
+                child: buildTimer(model),
+              ),
+              Padding(
+                padding: PaddingConsts.instance.all20,
+                child: Text(
+                  "Ödül: ${duel.itemName} ${duel.itemName == "Ödülsüz" ? '' : 'x${duel.itemCount}'}",
+                  style: TextConsts.instance.regularBlack18,
                 ),
-                Padding(
-                  padding: PaddingConsts.instance.all20,
-                  child: buildUserDatasRow(model),
-                ),
-                Padding(
-                  padding: PaddingConsts.instance.top10,
-                  child: buildTimer(model),
-                ),
-                Padding(
-                  padding: PaddingConsts.instance.all20,
-                  child: Text(
-                    "Ödül: ${duel.itemName} ${duel.itemName == "Ödülsüz" ? '' : 'x${duel.itemCount}'}",
-                    style: TextConsts.instance.regularBlack18,
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-        onModelReady: (model) {
-          model.setContext(context);
-          model.initDuelData(duel);
-          model.init();
-        },
-        onDispose: () {});
+              ),
+            ],
+          ),
+        );
+      },
+      onModelReady: (model) {
+        model.setContext(context);
+        model.initDuelData(duel);
+        model.init();
+      },
+      onDispose: () {
+        WebSocketManager.instance.disconnectFromSocket();
+      },
+    );
   }
 
   Widget buildUserDatasRow(UserWaitingViewModel model) {

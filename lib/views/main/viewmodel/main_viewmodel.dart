@@ -40,6 +40,7 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
   init() async {
     await deleteCachedValues();
     await isUserPassedBanSystem();
+    WebSocketManager.instance.initializeSocketConnection();
     _checkIsUserInGame();
     listenIsUserBanned();
     listenEventsState();
@@ -150,9 +151,8 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
           navigatorPop();
         },
         height: 240,
-        question: '''${dataAsModel.challengerUserName} seni 
-            ${dataAsModel.gameName} oyununa davet etti. Katılmak ister misin?
-             Ödül: ${dataAsModel.itemName} ${dataAsModel.itemName == "Ödülsüz" ? "" : "x${dataAsModel.itemCount}"}''',
+        question:
+            '''${dataAsModel.challengerUserName} seni ${dataAsModel.gameName} oyununa davet etti. Katılmak ister misin? Ödül: ${dataAsModel.itemName} ${dataAsModel.itemName == "Ödülsüz" ? "" : "x${dataAsModel.itemCount}"}''',
       ),
     );
     Timer(const Duration(minutes: 1), () {

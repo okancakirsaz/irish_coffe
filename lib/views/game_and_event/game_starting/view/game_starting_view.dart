@@ -64,7 +64,7 @@ class GameStartingView extends StatelessWidget {
     return CircularCountDownTimer(
       width: 100,
       height: 100,
-      duration: 40,
+      duration: 5,
       fillColor: Colors.transparent,
       ringColor: Colors.transparent,
       textStyle: TextConsts.instance.regularWhite70Bold,

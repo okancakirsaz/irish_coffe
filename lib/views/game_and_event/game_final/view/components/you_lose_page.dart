@@ -27,8 +27,8 @@ class YouLosePage extends StatelessWidget {
                   style: TextConsts.instance.regularWhite25Bold,
                 ),
           CustomButton(
-            onPressed: () => viewModel.duelData.itemName != "Ödülsüz"
-                ? viewModel.navigateToPaymentPage()
+            onPressed: () async => viewModel.duelData.itemName != "Ödülsüz"
+                ? await viewModel.loserProgress()
                 : viewModel.navigateToMainPage(),
             style: TextConsts.instance.regularBlack18Bold,
             text: "Devam et",

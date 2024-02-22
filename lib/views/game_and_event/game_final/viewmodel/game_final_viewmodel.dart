@@ -5,6 +5,8 @@ import 'package:irish_coffe/views/game_and_event/game_final/service/game_final_s
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
 import 'package:irish_coffe/views/game_and_event/public_models/game_room_model.dart';
 import 'package:irish_coffe/views/main/view/main_view.dart';
+import 'package:irish_coffe/views/menu/models/menu_item_model.dart';
+import 'package:irish_coffe/views/menu/services/menu_services.dart';
 import 'package:irish_coffe/views/payment/view/payment_view.dart';
 import 'package:irish_coffe/views/profile/models/scores_model.dart';
 import 'package:mobx/mobx.dart';
@@ -30,6 +32,7 @@ abstract class _GameFinalViewModelBase with Store, BaseViewModel {
   late final bool isUserWonTheGame;
   late final int winnerUserScore;
   late final int loserUserScore;
+  int? totalPrice;
 
   _checkUserWonTheGame() {
     switch (_checkIsUserChallenger()) {
@@ -80,6 +83,19 @@ abstract class _GameFinalViewModelBase with Store, BaseViewModel {
     }
   }
 
+  String _getWinnerName() {
+    bool isChallenger = _checkIsUserChallenger();
+    if (isChallenger && isUserWonTheGame) {
+      return roomData.challengerUserName;
+    } else if (isChallenger && !isUserWonTheGame) {
+      return roomData.challengedUserName;
+    } else if (!isChallenger && !isUserWonTheGame) {
+      return roomData.challengerUserName;
+    } else {
+      return roomData.challengedUserName;
+    }
+  }
+
   initCameData(GameRoomModel room, DuelInviteModel duel) {
     roomData = room;
     duelData = duel;
@@ -93,13 +109,13 @@ abstract class _GameFinalViewModelBase with Store, BaseViewModel {
         (route) => false);
   }
 
-  navigateToPaymentPage() {
+  _navigateToPaymentPage() {
     //TODO: use navigation manager
     Navigator.pushAndRemoveUntil(
         viewModelContext,
         CupertinoPageRoute(
-            builder: (context) => const PaymentView(
-                  priceList: [10, 20],
+            builder: (context) => PaymentView(
+                  priceList: [totalPrice!],
                 )),
         (route) => false);
   }
@@ -128,6 +144,41 @@ abstract class _GameFinalViewModelBase with Store, BaseViewModel {
     );
   }
 
-  //TODO: Do it
-  Future<void> setOrderData() async {}
+  Future<void> setOrderData() async {
+    try {
+      await _getMenuItemPrice();
+
+      await localeManager.setStringData(
+        LocaleKeysEnums.gameWinner.name,
+        _getWinnerName(),
+      );
+
+      await localeManager.setJsonData(
+        LocaleKeysEnums.orderedFoods.name,
+        [
+          {"name": duelData.itemName, "count": duelData.itemCount}
+        ],
+      );
+    } catch (e) {
+      debugPrint("$e");
+    }
+  }
+
+  Future<void> _getMenuItemPrice() async {
+    //Dependency Injection!
+    final MenuItemModel? response =
+        await MenuServices().getMenuItem(duelData.itemName);
+    if (response != null) {
+      totalPrice = (int.parse(response.price!) * duelData.itemCount);
+    } else {
+      Fluttertoast.showToast(msg: "Beklenmedik bir sorun oluştu.");
+    }
+  }
+
+  Future<void> loserProgress() async {
+    await setOrderData();
+    if (totalPrice != null) {
+      _navigateToPaymentPage();
+    }
+  }
 }

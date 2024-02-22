@@ -108,6 +108,8 @@ abstract class _PaymentViewModelBase with Store, BaseViewModel {
           orderList:
               localeManager.getJsonData(LocaleKeysEnums.orderedFoods.name),
           totalPrice: totalPrice,
+          duelWinner: localeManager
+              .getNullableStringData(LocaleKeysEnums.gameWinner.name),
           timestamp: DateTime.now().toIso8601String(),
           userId: localeManager.getStringData(LocaleKeysEnums.userId.name)),
     );

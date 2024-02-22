@@ -19,4 +19,5 @@ enum LocaleKeysEnums {
   isUserInTheGame,
   gamePage,
   duelData,
+  gameWinner
 }

@@ -2,12 +2,14 @@ class OrderRequestModel {
   List<dynamic> orderList;
   int totalPrice;
   String timestamp;
+  String? duelWinner;
   String userId;
 
   OrderRequestModel(
       {required this.orderList,
       required this.totalPrice,
       required this.timestamp,
+      this.duelWinner,
       required this.userId});
 
   Map<String, dynamic> toJson() {
@@ -15,6 +17,7 @@ class OrderRequestModel {
       'orderList': orderList,
       'totalPrice': totalPrice,
       'timestamp': timestamp,
+      'duelWinner': duelWinner,
       'userId': userId
     };
   }
@@ -25,6 +28,7 @@ class OrderRequestModel {
             .map((e) => e as String)
             .toList(),
         totalPrice: json['totalPrice'] as int,
+        duelWinner: json['duelWinner'] as String?,
         timestamp: json['timestamp'] as String,
         userId: json['userId'] as String);
   }

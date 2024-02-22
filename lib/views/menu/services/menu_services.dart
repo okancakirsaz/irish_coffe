@@ -20,6 +20,17 @@ final class MenuServices extends NetworkManager {
     }
   }
 
+  Future<MenuItemModel?> getMenuItem(String itemName) async {
+    try {
+      final response = await network
+          .post(AppConst.instance.getMenuItem, data: {"itemName": itemName});
+      return MenuItemModel.fromJson(response.data);
+    } catch (_) {
+      debugPrint(_.toString());
+      return null;
+    }
+  }
+
   Future<BucketVerificationResponseModel?> bucketVerification(
       BucketVerificationRequestModel data) async {
     try {

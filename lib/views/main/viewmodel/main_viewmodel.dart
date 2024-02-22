@@ -42,15 +42,16 @@ abstract class _MainViewModelBase with Store, BaseViewModel {
     await isUserPassedBanSystem();
     WebSocketManager.instance.initializeSocketConnection();
     _checkIsUserInGame();
+    listenDuelInviteStatement();
     listenIsUserBanned();
     listenEventsState();
-    listenDuelInviteStatement();
   }
 
   Future<void> deleteCachedValues() async {
     await localeManager.removeData(LocaleKeysEnums.posts.name);
     await localeManager.removeData(LocaleKeysEnums.customers.name);
     await localeManager.removeData(LocaleKeysEnums.menu.name);
+    await localeManager.removeData(LocaleKeysEnums.gameWinner.name);
   }
 
   @observable

@@ -3,6 +3,7 @@ class AppConst {
 
   //Endpoints
   final String getMenu = "/menu/get-menu";
+  final String getMenuItem = "/menu/get-menu-item";
   final String getActiveEvents = "/games/get-active-events";
   final String createGameRoom = "/games/create-game-room";
   final String updateGameRoomChallenger = "/games/set-game-room-challenger";

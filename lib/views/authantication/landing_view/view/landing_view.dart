@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:irish_coffe/core/base/view/base_view.dart';
 import 'package:irish_coffe/views/authantication/landing_view/viewmodel/landing_viewmodel.dart';
 import 'package:irish_coffe/views/authantication/login/view/login_view.dart';
-import 'package:irish_coffe/views/main/view/main_view.dart';
+
+import '../../../main/view/main_view.dart';
 
 class LandingView extends StatelessWidget {
   const LandingView({super.key});

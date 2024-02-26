@@ -16,4 +16,9 @@ class AssetConsts {
   final String backgroundImage = "assets/images/bg.jpeg";
   final String rainbow = "assets/icons/rainbow.svg";
   final String pipe = "assets/icons/pipe.svg";
+  final String snakeHead = "assets/snake_game_assets/head.png";
+  final String snakeTurn = "assets/snake_game_assets/turn.png";
+  final String snakeBody = "assets/snake_game_assets/body.png";
+  final String snakeTail = "assets/snake_game_assets/tail.png";
+  final String snakeEat = "assets/snake_game_assets/eat.png";
 }

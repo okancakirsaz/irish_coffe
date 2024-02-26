@@ -25,7 +25,6 @@ abstract class _GameFinalViewModelBase with Store, BaseViewModel {
     await updateUserScores();
   }
 
-  //TODO: Create order part
   final GameFinalService service = GameFinalService();
   late final GameRoomModel roomData;
   late final DuelInviteModel duelData;

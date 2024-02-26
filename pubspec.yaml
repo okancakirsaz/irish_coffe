@@ -34,7 +34,7 @@ dependencies:
   flutter_credit_card: ^4.0.1
   easy_loading_button: ^0.3.2
   circular_countdown_timer: ^0.2.3
-  
+  flutter_snake: ^1.1.0
 
   #Others
   shared_preferences: ^2.2.1
@@ -48,6 +48,7 @@ dependencies:
   #Network
   dio:
   socket_io_client: ^2.0.3+1
+  
   
   
   
@@ -73,6 +74,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/snake_game_assets/
 
 
 

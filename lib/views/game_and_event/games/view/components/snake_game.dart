@@ -1,9 +1,9 @@
 part of '../games_view.dart';
 
-class SnakeGame extends StatelessWidget {
+class SnakeGameCard extends StatelessWidget {
   final String? time;
   final VoidCallback onPressed;
-  const SnakeGame({super.key, this.time, required this.onPressed});
+  const SnakeGameCard({super.key, this.time, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

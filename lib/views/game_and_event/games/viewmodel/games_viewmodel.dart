@@ -89,14 +89,7 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
     for (EventModel event in events) {
       if (!event.isPysicalEvent!) {
         switch (event.gameType) {
-          case "Bilgi Yarışmas":
-            eventsAsWidget.add(SnakeGame(
-              onPressed: () {},
-              time: event.eventTime,
-            ));
-            break;
-
-          case "Yılan Oyunu":
+          case "Bilgi Yarışması":
             eventsAsWidget.add(
               QuizGame(
                 onPressed: () {},
@@ -121,10 +114,12 @@ abstract class _GamesViewModelBase with Store, BaseViewModel {
 
   navigateToGame(String gameName, GamesViewModel viewModel) {
     Navigator.push(
-        viewModelContext,
-        CupertinoPageRoute(
-            builder: (context) =>
-                SelectUserPage(gameName: gameName, viewModel: viewModel)));
+      viewModelContext,
+      CupertinoPageRoute(
+        builder: (context) =>
+            SelectUserPage(gameName: gameName, viewModel: viewModel),
+      ),
+    );
   }
 
   Future<void> showSelectAwardDialog(String gameName, GamesViewModel viewModel,

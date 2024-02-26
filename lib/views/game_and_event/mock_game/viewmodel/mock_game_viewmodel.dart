@@ -36,7 +36,6 @@ abstract class _MockGameViewModelBase with Store, BaseViewModel {
 
   @action
   Future<void> setTimer() async {
-    //winnerManager.listenIsGameRoomDone(viewModelContext);
     for (timerSeconds; timerSeconds >= 1; timerSeconds--) {
       await Future.delayed(const Duration(seconds: 1));
     }

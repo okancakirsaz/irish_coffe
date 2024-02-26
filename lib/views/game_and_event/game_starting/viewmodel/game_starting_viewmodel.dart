@@ -5,6 +5,7 @@ import 'package:irish_coffe/views/game_and_event/enums/game_pages.dart';
 import 'package:irish_coffe/views/game_and_event/game_starting/service/game_starting_service.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
 import 'package:irish_coffe/views/game_and_event/public_models/game_room_model.dart';
+import 'package:irish_coffe/views/game_and_event/snake_game/view/snake_game_view.dart';
 import 'package:mobx/mobx.dart';
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
 import '../../mock_game/view/mock_game_view.dart';
@@ -57,17 +58,24 @@ abstract class _GameStartingViewModelBase with Store, BaseViewModel {
 
   startGame() {
     WebSocketManager.instance.websSocketEmitter("game_started", duelData);
-    navigateToGame();
+    _gameNameSeparator();
   }
 
-  //TODO: Make real game seperator
-  navigateToGame() {
+  _gameNameSeparator() {
+    switch (duelData.gameName) {
+      case "Yılan Oyunu":
+        navigateToGame(SnakeGameView(duelData: duelData));
+        break;
+      //TODO: Remove here
+      default:
+        navigateToGame(MockGameView(duelData: duelData));
+    }
+  }
+
+  navigateToGame(Widget page) {
     Navigator.pushAndRemoveUntil(
       viewModelContext,
-      CupertinoPageRoute(
-          builder: (context) => MockGameView(
-                duelData: duelData,
-              )),
+      CupertinoPageRoute(builder: (context) => page),
       (route) => false,
     );
   }

@@ -28,7 +28,7 @@ class Games extends StatelessWidget {
                 onPressed: () =>
                     viewModel.navigateToGame("Bilgi Yarışması", viewModel),
               ),
-              SnakeGame(
+              SnakeGameCard(
                 onPressed: () =>
                     viewModel.navigateToGame("Yılan Oyunu", viewModel),
               )

@@ -31,7 +31,11 @@ class Games extends StatelessWidget {
               SnakeGameCard(
                 onPressed: () =>
                     viewModel.navigateToGame("Yılan Oyunu", viewModel),
-              )
+              ),
+              BirdHunterGameCard(
+                onPressed: () =>
+                    viewModel.navigateToGame("Kuş Vurma", viewModel),
+              ),
             ],
           ),
         ),

@@ -22,6 +22,7 @@ part 'components/events_element.dart';
 part 'components/snake_game.dart';
 part 'components/select_user_page.dart';
 part 'components/select_award_dialog.dart';
+part 'components/bird_hunter_game_card.dart';
 
 class GamesView extends StatefulWidget {
   const GamesView({super.key});

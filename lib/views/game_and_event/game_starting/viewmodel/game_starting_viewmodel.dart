@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:irish_coffe/core/init/cache/local_keys_enums.dart';
 import 'package:irish_coffe/core/public_managers/websocket_manager.dart';
+import 'package:irish_coffe/views/game_and_event/bird_hunter/view/bird_hunter_view.dart';
 import 'package:irish_coffe/views/game_and_event/enums/game_pages.dart';
 import 'package:irish_coffe/views/game_and_event/game_starting/service/game_starting_service.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
@@ -65,6 +66,9 @@ abstract class _GameStartingViewModelBase with Store, BaseViewModel {
     switch (duelData.gameName) {
       case "Yılan Oyunu":
         navigateToGame(SnakeGameView(duelData: duelData));
+        break;
+      case "Kuş Vurma":
+        navigateToGame(BirdHunterView(duelData: duelData));
         break;
       //TODO: Remove here
       default:

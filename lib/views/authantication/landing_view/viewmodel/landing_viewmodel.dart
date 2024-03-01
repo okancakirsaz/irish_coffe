@@ -14,8 +14,7 @@ abstract class _LandingViewModelBase with Store, BaseViewModel {
   @override
   Future<int> init() async {
     await localeManager.getSharedPreferencesInstance();
-    //TODO:Check is necessary
-    //await localeManager.removeData(LocaleKeysEnums.profileImage.name);
+
     return 1;
   }
 

@@ -75,6 +75,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/snake_game_assets/
+    - assets/json/
 
 
 

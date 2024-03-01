@@ -6,6 +6,7 @@ import 'package:irish_coffe/views/game_and_event/enums/game_pages.dart';
 import 'package:irish_coffe/views/game_and_event/game_starting/service/game_starting_service.dart';
 import 'package:irish_coffe/views/game_and_event/games/models/duel_invite_model.dart';
 import 'package:irish_coffe/views/game_and_event/public_models/game_room_model.dart';
+import 'package:irish_coffe/views/game_and_event/quiz/view/quiz_game_view.dart';
 import 'package:irish_coffe/views/game_and_event/snake_game/view/snake_game_view.dart';
 import 'package:mobx/mobx.dart';
 import '../../../../core/base/viewmodel/base_viewmodel.dart';
@@ -69,6 +70,9 @@ abstract class _GameStartingViewModelBase with Store, BaseViewModel {
         break;
       case "Kuş Vurma":
         navigateToGame(BirdHunterView(duelData: duelData));
+        break;
+      case "Bilgi Yarışması":
+        navigateToGame(QuizGameView(duelData: duelData));
         break;
       //TODO: Remove here
       default:

@@ -11,27 +11,31 @@ class LandingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<LandingViewModel>(
-        viewModel: LandingViewModel(),
-        onPageBuilder: (context, model) {
-          return FutureBuilder(
-              future: model.init(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  if (model.isCacheHaveToken()) {
-                    return const MainView();
-                  } else {
-                    return const LoginView();
-                  }
+      viewModel: LandingViewModel(),
+      onPageBuilder: (context, model) {
+        return FutureBuilder(
+            future: model.init(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                if (model.isCacheHaveToken()) {
+                  return const MainView();
                 } else {
-                  //TODO: Add custom loading widget
-                  return const Scaffold(
-                      body: Center(child: CircularProgressIndicator()));
+                  return const LoginView();
                 }
-              });
-        },
-        onModelReady: (model) {
-          model.setContext(context);
-        },
-        onDispose: () {});
+              } else {
+                //TODO: Add custom loading widget
+                return const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+            });
+      },
+      onModelReady: (model) {
+        model.setContext(context);
+      },
+      onDispose: () {},
+    );
   }
 }

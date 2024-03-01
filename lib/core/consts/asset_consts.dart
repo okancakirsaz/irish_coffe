@@ -23,4 +23,5 @@ class AssetConsts {
   final String snakeBody = "assets/snake_game_assets/body.png";
   final String snakeTail = "assets/snake_game_assets/tail.png";
   final String snakeEat = "assets/snake_game_assets/eat.png";
+  final String questions = "assets/json/questions.json";
 }

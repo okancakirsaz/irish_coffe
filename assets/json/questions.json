@@ -183,6 +183,61 @@
         "question": "Dünya üzerinde son kalan bizim de mensubu olduğumuz insan türü hangisidir?",
         "options": ["Homo Neandertal","Homo Erectus","Homo Sapiens","Homo Georgicus"],
         "answer": "Homo Sapiens"
+      },
+      {
+        "question": "Hangi renk karışımı mor rengi oluşturur?",
+        "options": ["Mavi ve Yeşil", "Kırmızı ve Yeşil", "Kırmızı ve Mavi", "Sarı ve Mavi"],
+        "answer": "Kırmızı ve Mavi"
+      },
+      {
+        "question": "Türkiye Cumhuriyeti hangi yılda kurulmuştur?",
+        "options": ["1920", "1923", "1930", "1935"],
+        "answer": "1923"
+      },
+      {
+        "question": "Hangi elementin simgesi 'Ag'dir?",
+        "options": ["Gümüş", "Altın", "Bakır", "Çinko"],
+        "answer": "Gümüş"
+      },
+      {
+        "question": " Türkiye'de ilk cumhurbaşkanı seçimleri ne zaman yapılmıştır?",
+        "options": ["1923", "1924", "1925", "1926"],
+        "answer": "1923"
+      },
+      {
+        "question": "Hangi element demirle birleşerek pas oluşturur?",
+        "options": ["Oksijen", "Kükürt", "Karbondioksit", "Azot"],
+        "answer": "Oksijen"
+      },
+      {
+        "question": "Hangi element insan vücudunda en fazla bulunur?",
+        "options": ["Oksijen", "Hidrojen", "Karbon", "Kalsiyum"],
+        "answer": "Oksijen"
+      },
+      {
+        "question": "Bir yılın kaç haftası vardır?",
+        "options": ["51", "52", "53", "54"],
+        "answer": "52"
+      },
+      {
+        "question": "İlk Çağ Uygarlıklarından Hangisi Yazıyı İcat Etmiştir?",
+        "options": ["Hititler","Frigler","Sümerler","Urartular"],
+        "answer": "Sümerler"
+      },
+      {
+        "question": "2003 Yılında Euro Vizyon Şarkı Yarışmasında Ülkemizi Temsil Eden ve Yarışmada Birinci Gelen Sanatçımız Kimdir?",
+        "options": ["Sertap Erener","Şebnem Paker","MaNga","Hadise"],
+        "answer": "Sertap Erener"
+      },
+      {
+        "question": "Hangisi Dünya Sağlık Örgütü'nün kısaltılmış ismidir?",
+        "options": ["UHW","UNICEF","WHO","NATO"],
+        "answer": "WHO"
+      },
+      {
+        "question": "Romen rakamında hangi sayı yoktur?",
+        "options": ["100","1000","10.000","0"],
+        "answer": "0"
       }
     ]
   

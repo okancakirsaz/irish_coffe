@@ -62,8 +62,8 @@ final class ProfileServices extends NetworkManager {
   Future<BooleanSingleResponseModel?> deleteAccount(
       UserIdSendRequestModel data) async {
     try {
-      final response =
-          await network.post(AppConst.instance.deleteAccount, data: data);
+      final response = await network.post(AppConst.instance.deleteAccount,
+          data: data.toJson());
       return BooleanSingleResponseModel.fromJson(response.data);
     } catch (_) {
       debugPrint(_.toString());
@@ -86,7 +86,7 @@ final class ProfileServices extends NetworkManager {
       UserSettingsModel data, String userToken) async {
     try {
       final response = await network.post(AppConst.instance.setNewUserSettings,
-          data: data, options: Options(headers: {"token": userToken}));
+          data: data.toJson(), options: Options(headers: {"token": userToken}));
       return UserSettingsModel.fromJson(response.data);
     } catch (_) {
       debugPrint(_.toString());
@@ -98,7 +98,7 @@ final class ProfileServices extends NetworkManager {
       PostIdSendRequestModel data) async {
     try {
       final response =
-          await network.post(AppConst.instance.deletePost, data: data);
+          await network.post(AppConst.instance.deletePost, data: data.toJson());
       return BooleanSingleResponseModel.fromJson(response.data);
     } catch (_) {
       debugPrint(_.toString());
@@ -109,8 +109,8 @@ final class ProfileServices extends NetworkManager {
   Future<BooleanSingleResponseModel?> removeProfileImage(
       UserIdSendRequestModel data) async {
     try {
-      final response =
-          await network.post(AppConst.instance.deleteProfileImage, data: data);
+      final response = await network.post(AppConst.instance.deleteProfileImage,
+          data: data.toJson());
       return BooleanSingleResponseModel.fromJson(response.data);
     } catch (_) {
       debugPrint(_.toString());
@@ -121,8 +121,8 @@ final class ProfileServices extends NetworkManager {
   Future<UpdateProfileImageModel?> updateProfileImage(
       UpdateProfileImageModel data) async {
     try {
-      final response =
-          await network.post(AppConst.instance.updateProfileImage, data: data);
+      final response = await network.post(AppConst.instance.updateProfileImage,
+          data: data.toJson());
       return UpdateProfileImageModel.fromJson(response.data);
     } catch (_) {
       debugPrint(_.toString());

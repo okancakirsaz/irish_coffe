@@ -39,7 +39,7 @@ final class CommunityServices extends NetworkManager {
   Future<PostModel?> postNewPost(PostModel data) async {
     try {
       final response =
-          await network.post(AppConst.instance.sharePost, data: data);
+          await network.post(AppConst.instance.sharePost, data: data.toJson());
       return PostModel.fromJson(response.data);
     } catch (_) {
       debugPrint(_.toString());

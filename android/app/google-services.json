@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "615119038464",
+    "project_id": "irish-coffee-ceecd",
+    "storage_bucket": "irish-coffee-ceecd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615119038464:android:2eced67e775f5a016e10e5",
+        "android_client_info": {
+          "package_name": "com.app.irish_coffe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5O2R0um7cN_dsu1Cf2_qH34mw4kTC4VI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
